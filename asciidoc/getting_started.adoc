@@ -1,5 +1,55 @@
 Getting Started
 ---------------
+
+In this section, we will build a (very basic) ontology and start to show the
+basic capabilities of Tawny-OWL. The first step is to define a new project,
+for which we will use Leiningen.
+
+As described in <<_the_environment,the environment>>, Tawny-OWL can be used
+with several different toolchains; the instructions given here are reasonably
+generic rather than biased toward a single environment. There are often more
+efficient ways to achieve the tasks here with tool support. Initially, we will
+point out some alternative ways of achieving these task; this will be dropped
+as get further into the book to avoid cluttering the text with too many
+alternatives.
+
+
+Getting a Project
+~~~~~~~~~~~~~~~~~~~
+
+We will start this book by creating a Pizza ontology; we choose pizzas because
+they are simple, well-understood and compositional (see
+http://robertdavidstevens.wordpress.com/2010/01/22/why-the-pizza-ontology-tutorial/[here]
+for more). For this book, we will use a pre-rolled project -- in fact the one
+used to create this book. You can access the project data from
+https://github.com/phillord/take-wing[github], either using `git` or through
+the download option. If you wish to know how to build a project yourself,
+please read <<new_project,the appendix>>.
+
+A leiningen project is, essentially, a directory structure with a project
+file. The `project.clj` file for this book looks like this:
+
+[source,qclojure]
+----
+include::../project.clj[]
+----
+
+This includes three critical pieces of information. Firstly `take-wing` which
+is the name of the project. Secondly, immediately after this is a version
+number such as `0.1.0`. Finally, we have a `:dependencies` which includes only
+a single dependency to `tawny-owl` itself.
+
+
+Defining a new namespace
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+[source,clojure]
+----
+(ns take.wing.getting-started
+    (:use [tawny.owl]))
+----
+
+
 //
 // Local Variables:
 // linked-buffer-init: linked-buffer-wing-init

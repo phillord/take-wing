@@ -1,7 +1,7 @@
 (source gnu)
-(source melpa-stable)
+(source melpa)
+
 
 (depends-on "f")
-(depends-on "linked-buffer" "0.5alpha")
+(depends-on "linked-buffer")
 (depends-on "commander")
-

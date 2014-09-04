@@ -1,0 +1,29 @@
+What is an Ontology
+~~~~~~~~~~~~~~~~~~~~
+
+Ontologies are about definitions. It is, perhaps, unsurprising therefore that
+amount ontologists there are quite a few debates about what exactly an
+ontology is and is not; it is not our intention here to either cover these
+arguments, nor to give a comprehensive overview of all the uses of the word.
+
+What is generally agreed is that ontologies describe a set of entities, in
+terms of the relationships between these entities, using any of a number of
+different relationships. So, for example, we can describe entities in terms of
+their class relationships -- what is true of a superclass is also true of all
+subclasses. Or we can describe the _partonomic_ relationships: the finger is
+part of the hand, which is part of the foot.
+
+An ontology is also very similar to a taxonomy; however, ontologies place much
+greater emphasis on their computational properties. This makes ontologies much
+more suitable for driving applications and code, although this often comes at
+the cost of human understandability of the ontology. In this document, all the
+ontologies we talk about are represented using specific language, called OWL
+(the Ontology Web Language). This has very well-defined computational
+properties, and through the document we will explore the implications of these
+properties.
+
+We also use the term "ontology" to mean a specific object that you can
+manipulate in Tawny-OWL -- similar to the way we say that you are reading some
+words now.
+
+
