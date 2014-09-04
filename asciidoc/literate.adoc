@@ -1,0 +1,24 @@
+Literate
+--------
+
+This book is actually a literate program. The examples are self-standing,
+complete and can be untangled from the code-base.
+
+Each section defines it's own namespace. In most cases (not including here)
+the namespace declaration appears in a preamble to each section without
+further discussion, unless this declaration raises some issue itself. For
+other code snippets, each one (may) depend on the previous one in the same
+section. If code from other sections is required that will be made clear by
+the declarations in namespace form.
+
+
+[source,clojure]
+----
+(ns take.wing.literate)
+----
+
+//
+// Local Variables:
+// linked-buffer-init: linked-buffer-wing-init
+// End:
+//

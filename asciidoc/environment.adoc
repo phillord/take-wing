@@ -1,0 +1,96 @@
+Setting up the Environment
+--------------------------
+
+Our hope is that for structurally simple ontologies, Tawny-OWL should be
+usable by non-programmers, with a simple and straight-forward syntax. One area
+where this hope is currently not fulfilled is right at the start -- getting a
+working environment is not as simple as starting an application such as
+Protege and programming. In this section, I introduce the core technology and
+the basic environment that is needed to make effective use of Tawny-OWL.
+
+
+The OWL API
+~~~~~~~~~~~
+
+Tawny-OWL is built using the http://owlapi.sourceforge.net/[OWL API]. This
+library is a comprehensive tool for generating, transforming and using OWL
+Ontologies. It is widely used, and is the basis for the Protege 4 editor.
+Being based on this library, Tawny-OWL is reliable and standard-compliant (or
+at least as reliable and standard-compliant as Protege!). It is also easy to
+integrate directly with other tools written using the OWL API.
+
+
+Clojure
+~~~~~~~
+
+Tawny-OWL is a programmatic library build on top of the Clojure language.
+Tawny-OWL takes many things from Clojure. These include:
+
+ - the basic syntax with parentheses and with `:keywords`
+ - the ability to effectively add new syntax
+ - the ability to extend Tawny-OWL with patterns
+ - integration with other data sources
+ - the test environment
+ - the build, dependency and deployment tools
+
+In addition, most of the tools and environment that Tawny-OWL use to enable
+development were built for Clojure and are used directly with little or no
+additions. These include:
+
+ - IDEs or editors used for writing Clojure
+ - the leiningen build tool
+
+Tawny-OWL inherits a line-orientated syntax which means that it works well
+with tools written for any programming language; most notable amoung these are
+version control systems which enable highly collaborative working on
+ontologies.
+
+Clojure is treated as a programmatic library -- the user never starts or runs
+Clojure, and there is no `clojure` command. Rather confusingly, this role is
+fulilled by Leiningen, which is the next item on the list.
+
+
+Leiningen
+~~~~~~~~~
+
+http://www.leiningen.org[Leiningen] is a tool for working with Clojure
+projects. Given a directory structure, and some source code leiningen will
+perform many project tasks including checking, testing, releasing and
+deploying the project. In addition to these, it has two critical functions
+that every Tawny-OWL project will use: first, it manages dependencies, which
+means it will download both Tawny-OWL and Clojure; second, it starts a REPL
+which is the principle means by which the user will directly or indirectly
+interact with Tawny-OWL.
+
+REPL
+~~~~
+
+Clojure provides a REPL -- Read-Eval-Print-Loop. This is the same things as a
+shell, or command line. For instance, we can the following into a Clojure
+REPL, and it will print the return value, or 2 in this case.
+
+[source,clojure]
+----
+;; returns 2
+(+ 1 1)
+----
+
+The most usual way to start a REPL is to use leiningen, which then sets up the
+appropriate libraries for the local project. For example, `lein repl` in the
+source code for this document, loads a REPL with Tawny-OWL pre-loaded.
+
+In practice, most people use the REPL indirectly through their IDE.
+
+IDE or Editor
+~~~~~~~~~~~~~
+
+Clojure is supported by a wide variety of editors, which in turn means that
+they can be used for 
+
+
+//
+// Local Variables:
+// linked-buffer-init: linked-buffer-wing-init
+// End:
+//
+

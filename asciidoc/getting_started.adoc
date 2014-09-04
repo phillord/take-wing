@@ -1,0 +1,7 @@
+Getting Started
+---------------
+//
+// Local Variables:
+// linked-buffer-init: linked-buffer-wing-init
+// End:
+//

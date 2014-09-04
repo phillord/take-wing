@@ -1,0 +1,10 @@
+Take Wing: Building Ontologies with Tawny-OWL
+=============================================
+
+include::asciidoc/intro.adoc[]
+
+include::asciidoc/environment.adoc[]
+
+include::asciidoc/literate.adoc[]
+
+include::asciidoc/how_is_this_written.adoc[]
