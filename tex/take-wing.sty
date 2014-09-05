@@ -1,0 +1,23 @@
+\ProvidesPackage{take-wing}
+
+\RequirePackage{clojure}
+\lstalias{qclojure}{clojure}
+
+
+%% This stuff is stolen from asciidoc-dblatex.
+%%
+%% Requiring it is a pain because asciidoc knows where it is but latex doesn't
+\RequirePackageWithOptions{docbook}
+
+% Sidebar is a boxed minipage that can contain verbatim.
+% Changed shadow box to double box.
+\renewenvironment{sidebar}[1][0.95\textwidth]{
+  \hspace{0mm}\newline%
+  \noindent\begin{Sbox}\begin{minipage}{#1}%
+  \setlength\parskip{\medskipamount}%
+}{
+  \end{minipage}\end{Sbox}\doublebox{\TheSbox}%
+}
+
+% For DocBook literallayout elements, see `./dblatex/dblatex-readme.txt`.
+\usepackage{alltt}

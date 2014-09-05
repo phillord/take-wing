@@ -1,5 +1,5 @@
-Setting up the Environment
---------------------------
+The Environment
+---------------
 
 Our hope is that for structurally simple ontologies, Tawny-OWL should be
 usable by non-programmers, with a simple and straight-forward syntax. One area
@@ -85,7 +85,25 @@ IDE or Editor
 ~~~~~~~~~~~~~
 
 Clojure is supported by a wide variety of editors, which in turn means that
-they can be used for 
+they can be used for Tawny-OWL. The choice of an editor is a very personal
+one (I use Emacs), but in practice any good editor will work.
+
+The editor has two main roles. Firstly, as the name suggests it provides a
+rich environment for writing Tawny-OWL commands. Secondly, the IDE will
+start and interact with a REPL for you. This allows you to add or remove new
+classes and other entities to an ontology interactively. Tawny-OWL has been
+designed to take advantage of an IDE environment; in most cases, for example,
+auto-completion will happen for you.
+
+
+Further Information
+~~~~~~~~~~~~~~~~~~~
+
+There are many sources of further information about Clojure which will be
+listed here.
+
+TODO
+
 
 
 //

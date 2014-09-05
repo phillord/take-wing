@@ -1,7 +1,11 @@
 CASK=cask
 EMACS=emacs
 
-all: install gensource test build
+all: gensource test build
+
+viewing: gensource build test
+
+really-all: install all
 
 install:
 	$(CASK) install
@@ -13,7 +17,13 @@ gensource:
 test:
 	lein test
 
-build:
+pdf:
+	a2x --dblatex-opts="--debug" --dblatex-opts="--texinputs=./tex//" \
+	--dblatex-opts="--texstyle=take-wing" 	book.asciidoc
+
+html:
 	asciidoc book.asciidoc
+
+build: html pdf
 
 .PHONY: test
