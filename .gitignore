@@ -10,4 +10,4 @@ pom.xml.asc
 /.cask/
 /tex/auto
 *~
-#*#
+\#*\#
