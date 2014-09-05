@@ -8,3 +8,6 @@ pom.xml.asc
 /.lein-*
 /.nrepl-port
 /.cask/
+/tex/auto
+*~
+#*#
