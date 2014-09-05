@@ -1,0 +1,44 @@
+Appendix: Creating a new project
+--------------------------------
+[[new_project]]
+
+
+Creating a new project is simple and straight-forward.` If you are using the
+command line, first need to install http://www.leiningen.org[Leiningen]; if
+you are using Eclipse or something similar, it may already have leiningen
+built in. Now, we create a new project which we will call `take-wing`
+
+[source,sh]
+----
+lein new take-wing
+----
+
+This will create a new directory called `take-wing` and a number of files. The
+only critical one at the moment is called `project.clj`.
+
+[source,qclojure]
+----
+(defproject take-wing "0.1.0-SNAPSHOT"
+  :description "FIXME: write description"
+  :url "http://example.com/FIXME"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :dependencies [[org.clojure/clojure "1.6.0"]])
+----
+
+This is a project definition written in Clojure. We need to modify this to
+work with the current version of Tawny-OWL.
+
+[source,qclojure]
+----
+(defproject take-wing "0.1.0-SNAPSHOT"
+  :description "FIXME: write description"
+  :url "http://example.com/FIXME"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [uk.org.russet/tawny-owl "1.1"]])
+----
+
+You can now test the project with `lein deps` which should give download
+messages or `lein repl` which will start a REPL.
