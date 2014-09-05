@@ -19,11 +19,11 @@ test:
 
 pdf:
 	a2x --dblatex-opts="--debug" --dblatex-opts="--texinputs=./tex//" \
-	--dblatex-opts="--texstyle=take-wing" 	book.asciidoc
+	--dblatex-opts="--texstyle=take-wing" book.asciidoc
 
 html:
 	asciidoc book.asciidoc
 
 build: html pdf
 
-.PHONY: test
+.PHONY: test build
