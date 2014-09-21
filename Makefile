@@ -1,7 +1,8 @@
 CASK=cask
 EMACS=emacs
+WING=$(CASK) exec emacs --debug --script script/build.el --
 
-all: gensource test build
+all: gensource test build chunked
 
 viewing: gensource build test
 
@@ -14,16 +15,26 @@ install:
 gensource:
 	$(CASK) exec emacs --debug --script script/gensource.el -- generate
 
-test:
+test: gensource
 	lein test
 
 pdf:
 	a2x --dblatex-opts="--debug" --dblatex-opts="--texinputs=./tex//" \
 	--dblatex-opts="--texstyle=take-wing" book.asciidoc
+	cp book.pdf ~/Dropbox/temp/
+
+
+chunked:
+	a2x --format chunked book.asciidoc
 
 html:
 	asciidoc book.asciidoc
 
 build: html pdf
+
+clean:
+	rm book.pdf
+	rm book.html
+	rm src/take/wing/*clj
 
 .PHONY: test build

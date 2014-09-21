@@ -1,8 +1,8 @@
 Introduction
 ------------
 
-This book introduces ontology building using the OWL2 ontology language,
-and the Tawny-OWL library. Ontologies are a method for representing knowledge,
+This book introduces ontology building using the OWL2 ontology language, and
+the Tawny-OWL library. Ontologies are a method for representing knowledge,
 generally, but not necessarily, about the world around us. It is then possible
 to check that the representation is consistent, as well as drawing conclusions
 about new knowledge. They are generally used in complex, knowledge-rich areas

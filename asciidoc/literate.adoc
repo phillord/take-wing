@@ -2,20 +2,34 @@ Literate
 --------
 
 This book is actually a literate program. The examples are self-standing,
-complete and can be untangled from the code-base.
-
-Each section defines it's own namespace. In most cases (not including here)
-the namespace declaration appears in a preamble to each section without
-further discussion, unless this declaration raises some issue itself. For
-other code snippets, each one (may) depend on the previous one in the same
-section. If code from other sections is required that will be made clear by
-the declarations in namespace form.
-
+complete and can be untangled from the code-base. This has the significant
+advantage that all of the code examples in this book are complete and can be
+evaluated directly; consider this minimal ontology below.
 
 [source,clojure]
 ----
-(ns take.wing.literate)
+(ns take.wing.literate
+  (:use [tawny.owl]))
+
+(defontology o)
+
+(defclass A)
+(defclass B)
+(defoproperty r)
+
+(defclass C
+  :super A (owl-some r B))
 ----
+
+This comes at a slight cost; the code samples *must* be complete. So, some
+code is repeated between different namespaces. In this document, each section
+defines it's own namespace. In most cases (not including here) the namespace
+declaration appears in a preamble to each section without further discussion,
+unless this declaration raises some issue itself. For other code snippets,
+each one (may) depend on the previous one in the same section. If code from
+other sections is required that will be made clear by the declarations in
+namespace form.
+
 
 //
 // Local Variables:

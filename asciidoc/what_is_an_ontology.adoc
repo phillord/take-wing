@@ -27,3 +27,8 @@ manipulate in Tawny-OWL -- similar to the way we say that you are reading some
 words now.
 
 
+//
+// Local Variables:
+// linked-buffer-init: linked-buffer-wing-init
+// End:
+//
