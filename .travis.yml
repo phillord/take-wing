@@ -10,4 +10,4 @@ env:
   - EVM_EMACS=emacs-24.3-bin
 script:
   - emacs --version
-  - make travis publish
+  - make publish
