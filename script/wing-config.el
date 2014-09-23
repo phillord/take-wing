@@ -9,7 +9,7 @@
     :publishing-function
     (org-html-publish-to-html
      org-latex-publish-to-latex
-     org-latex-publish-to-pdf
+     ;;org-latex-publish-to-pdf
      )))
 
 ;;(setq org-publish-project-alist nil)
