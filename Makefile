@@ -8,11 +8,10 @@ viewing: gen-src test tex
 
 really-all: install all
 
-travis:
-	## Do this on travis, so that we can see the errors from latex
-	## if there are any.
-	mkdir -p exports
-	cp --update tex/clojure.sty tex/tawny.sty exports
+# Do this on travis, so that we can see the errors from latex
+# if there are any. In practice, will have to switch the pdf publication
+# in wing-config.el or we won't get here
+travis: publish
 	cd exports;pdflatex take_wing.tex
 
 install:
