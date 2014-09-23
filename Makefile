@@ -2,39 +2,31 @@ CASK=cask
 EMACS=emacs
 WING=$(CASK) exec emacs --debug --script script/build.el --
 
-all: gensource test build chunked
+all: gen-src test publish
 
-viewing: gensource build test
+viewing: gen-src test tex
 
 really-all: install all
+
 
 install:
 	$(CASK) install
 
 ## at the moment, this breaks where
-gensource:
-	$(CASK) exec emacs --debug --script script/gensource.el -- generate
+gen-src:
+	$(WING) gen-src
 
-test: gensource
+test: gen-src
 	lein test
 
-pdf:
-	a2x --dblatex-opts="--debug" --dblatex-opts="--texinputs=./tex//" \
-	--dblatex-opts="--texstyle=take-wing" book.asciidoc
-	cp book.pdf ~/Dropbox/temp/
-
-
-chunked:
-	a2x --format chunked book.asciidoc
-
-html:
-	asciidoc book.asciidoc
-
-build: html pdf
+publish:
+	$(WING) publish
+	cp tex/clojure.sty tex/tawny.sty exports
+	# org will publish to PDF but puts it in the wrong place
+	cd exports;pdflatex take_wing.tex;pdflatex take_wing.tex
 
 clean:
-	rm book.pdf
-	rm book.html
-	rm src/take/wing/*clj
+	- rm exports/*
+	- rm src/take/wing/*clj
 
-.PHONY: test build
+.PHONY: test build tex

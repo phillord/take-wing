@@ -4,11 +4,10 @@ before_install:
   - export PATH="/home/travis/.cask/bin:$PATH"
   - export PATH="/home/travis/.evm/bin:$PATH"
   - evm install $EVM_EMACS --skip --use
-  - sudo apt-get install source-highlight
-  - sudo apt-get install asciidoc
+  - sudo apt-get install texlive-latex-extra texlive-fonts-recommended
   - cask
 env:
   - EVM_EMACS=emacs-24.3-bin
 script:
   - emacs --version
-  - make all
+  - make publish
