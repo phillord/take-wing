@@ -8,6 +8,10 @@ viewing: gen-src build test
 
 really-all: install all
 
+tex:
+	cd exports
+	latex take_wing.tex
+
 install:
 	$(CASK) install
 

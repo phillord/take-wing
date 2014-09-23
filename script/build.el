@@ -4,6 +4,16 @@
 (require 'commander)
 (require 'wing-config
          (concat default-directory "script/wing-config.el"))
+(require 'org-publish)
+(require 'ox-latex)
+(require 'clojure-mode)
+(require 'htmlize)
+(require 'ox-html)
+
+
+
+
+
 
 ;; toggle to stack trace
 (setq debug-on-error t)
@@ -28,7 +38,7 @@ things if the file or the linked-buffer is open already."
 
 (defvar build-source-file "org/take_wing.org")
 
-(require 'org-publish)
+
 ;;(setq org-publish-project-alist nil)
 ;; this is defined in linked-buffer-wing.el
 
@@ -37,13 +47,7 @@ things if the file or the linked-buffer is open already."
 (setq org-latex-custom-lang-environments
       '((clojure "tawny")))
 
-(require 'ox-latex)
 
-(defun build/pdf ()
-    (with-current-buffer
-      (find-file-noselect build-source-file)
-    (org-export-as-pdf
-     org-export-headline-levels)))
 
 (defun init-faces ()
   (custom-set-faces
@@ -57,12 +61,6 @@ things if the file or the linked-buffer is open already."
    '(font-lock-type-face          ((t (:foreground "green"))))
    '(font-lock-variable-name-face ((t (:foreground "cyan" :bold t))))
    '(font-lock-warning-face       ((t (:foreground "red" :weight bold))))))
-
-(require 'clojure-mode)
-(require 'htmlize)
-(require 'ox-html)
-
-
 
 (defun build/publish ()
   (init-faces)
