@@ -2,13 +2,13 @@ CASK=cask
 EMACS=emacs
 WING=$(CASK) exec emacs --debug --script script/build.el --
 
-all: gen-src test publish tex
+all: gen-src test publish
 
-viewing: gen-src build test
+viewing: gen-src test tex
 
 really-all: install all
 
-tex:
+tex: publish
 	echo "Running tex"
 	mkdir -p exports
 	cp tex/clojure.sty tex/tawny.sty exports
