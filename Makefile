@@ -10,8 +10,7 @@ really-all: install all
 
 tex:
 	echo "Running tex"
-	cd exports
-	latex take_wing.tex
+	cd exports;latex take_wing.tex
 
 install:
 	$(CASK) install
