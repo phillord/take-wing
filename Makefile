@@ -11,8 +11,13 @@ really-all: install all
 # Do this on travis, so that we can see the errors from latex
 # if there are any. In practice, will have to switch the pdf publication
 # in wing-config.el or we won't get here
-travis: publish
+travis: latex
+	mkdir -p exports
+	cp tex/clojure.sty tex/tawny.sty exports
 	cd exports;pdflatex take_wing.tex
+
+latex:
+	$(WING) latex
 
 install:
 	$(CASK) install

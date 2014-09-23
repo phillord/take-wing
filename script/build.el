@@ -68,6 +68,19 @@ things if the file or the linked-buffer is open already."
       (find-file-noselect build-source-file)
     (org-publish-project "take-wing" t)))
 
+(defun build/latex ()
+  (with-current-buffer
+      (find-file-noselect build-source-file)
+    (let ((proj
+           ;; project is nearly a plist but not quite
+           (cons
+            "take-wing"
+            (plist-put
+             (cdr
+              take-wing-project)
+             :publishing-function '(org-latex-publish-to-latex)))))
+      (org-publish-project proj t))))
+
 (defun gensource-and-report (file init)
   (message "Cloning %s..."
            file)
@@ -97,6 +110,7 @@ things if the file or the linked-buffer is open already."
 
 (commander
  (command "gen-src" "Generate Clojure from Org" build/gen-src)
+ (command "latex" "Generate latex source" build/latex)
  (command "publish" "Generate all files" build/publish)
  (command "html" "Generate html" build/html)
  (command "pdf" "Generate pdf" build/pdf))
