@@ -220,7 +220,6 @@ We now move on to describe the relationships between ~Pizza~ and both of
 OWL: subproperties, domain and range constraints and property characteristics,
 which we define in Tawny-OWL as follows:
 
-
 #+BEGIN_SRC clojure
 (defoproperty hasTopping
   :super hasComponent
