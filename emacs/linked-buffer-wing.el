@@ -2,6 +2,16 @@
 (require 'linked-buffer-org)
 
 
+(defun linked-buffer-wing-clj-for-org (filename)
+  (f-join
+   (f-dirname
+    (f-dirname filename))
+   "src" "take" "wing"
+   (concat (f-no-ext
+            (f-filename
+             filename))
+           ".clj")))
+
 (defvar linked-buffer-wing-file
   (locate-library "linked-buffer-wing.el"))
 
