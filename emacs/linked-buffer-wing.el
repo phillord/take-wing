@@ -1,26 +1,17 @@
 (require 'f)
-(require 'linked-buffer-asciidoc)
+(require 'linked-buffer-org)
 
-(defun linked-buffer-wing-clj-for-asciidoc (filename)
-  (f-join
-   (f-dirname
-    (f-dirname filename))
-   "src" "take" "wing"
-   (concat (f-no-ext
-            (f-filename
-             filename))
-           ".clj")))
+
+(defvar linked-buffer-wing-file
+  (locate-library "linked-buffer-wing.el"))
 
 (defun linked-buffer-wing-init()
   (setq linked-buffer-config
-        (linked-buffer-asciidoc-uncommented-new))
+        (linked-buffer-org-to-clojure-new))
   ;; reset the linked-file to the right place
   (oset linked-buffer-config
-        :linked-file (linked-buffer-wing-clj-for-asciidoc (buffer-file-name)))
+        :linked-file (linked-buffer-wing-clj-for-org (buffer-file-name)))
   ;; add tawny as a source tag to treat as source
-  (object-add-to-list
-   linked-buffer-config
-   :srctags "tawny")
   linked-buffer-config)
 
 (add-to-list 'linked-buffer-init-functions

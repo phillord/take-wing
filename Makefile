@@ -2,9 +2,9 @@ CASK=cask
 EMACS=emacs
 WING=$(CASK) exec emacs --debug --script script/build.el --
 
-all: gensource test build chunked
+all: gen-src test build chunked
 
-viewing: gensource build test
+viewing: gen-src build test
 
 really-all: install all
 
@@ -12,29 +12,25 @@ install:
 	$(CASK) install
 
 ## at the moment, this breaks where
-gensource:
-	$(CASK) exec emacs --debug --script script/gensource.el -- generate
+gen-src:
+	$(WING) gen-src
 
-test: gensource
+test: gen-src
 	lein test
 
+publish:
+	$(WING) publish
+
 pdf:
-	a2x --dblatex-opts="--debug" --dblatex-opts="--texinputs=./tex//" \
-	--dblatex-opts="--texstyle=take-wing" book.asciidoc
-	cp book.pdf ~/Dropbox/temp/
-
-
-chunked:
-	a2x --format chunked book.asciidoc
+	$(WING) pdf
 
 html:
-	asciidoc book.asciidoc
+	$(WING) html
 
 build: html pdf
 
 clean:
-	rm book.pdf
-	rm book.html
-	rm src/take/wing/*clj
+	- rm exports/*
+	- rm src/take/wing/*clj
 
 .PHONY: test build

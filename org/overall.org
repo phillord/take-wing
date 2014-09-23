@@ -1,0 +1,231 @@
+
+linked-buffer doesn't get the point right when a window is not showing. We
+need to fiddle with the "here" function to record point and window start, and
+to fix them after swapping.
+
+* Stylistic issues
+
+How should we use language? We can use third person and passive voice.
+
+The Pizza Tutorial uses breakout boxes to say "do something". We do the same
+thing with source, of course. 
+
+For example, the ontology URI can be changed,
+annotations on the ontology such as comments may be added and edited
+
+
+* Things that I need to talk about
+
+** Background
+
+*** What is an ontology
+*** What is Clojure
+*** What is Tawny
+
+
+** Getting Started
+
+*** Picking an editor
+
+*** Leiningen anatomy
+
+*** Clojure namespaces
+
+
+** The basic components
+
+Classes and relationships using the pizza ontology
+
+
+ - [ ] Create a new project
+ - [ ] Create a new file, and define the name space
+ - [ ] Create an ontology
+ - [ ] Basic Anatomy of a def form
+ - [ ] Slots and groupification
+
+
+** Investigating the class slots
+
+ - [ ] super
+ - [ ] annotation
+ - [ ] label, comment
+ - [ ] disjoint
+
+*** Why disjoints are a pain
+
+ - [ ] Can't make two things disjoint
+ - [ ] So, use the as-disjoint
+ - [ ] Other uses of disjoint
+ - [ ] We talk about extending and refining later
+
+
+** Relationships: universal and existential
+
+
+** Names and tawny.english
+
+
+** and, not, or
+   
+
+** Simple patterns
+   
+ - [ ] some-only as a pattern
+ - [ ] annotation patterns
+
+
+** Highly patternized ontologies
+
+ - [ ] Rebuild the amino-acid ontology in tawny.
+ - [ ] With the amino acid ontology
+ - [ ] Also look at karyotype
+
+
+
+
+** The Tawny API
+
+ - The main methods
+ - add-* methods
+ - broadcasting
+
+
+** What's in an identifier
+
+ - What are identifiers
+ - What is the problem with identifiers
+ - How do we define and specify how identifiers are minted.
+
+
+** Using other ontologies
+
+*** Importing
+
+ - Add an import
+ - materializing ontologies
+
+
+*** Reading
+
+ - Reading an ontology
+ - Defining a transformation function
+ - 
+
+
+
+** Integration with Protege
+
+ - [] protege-nrepl
+
+
+** Building Pizza's further
+
+A pizza chooser.
+
+
+** Scripting in Tawny
+
+Loading external ontologies, performing batch changes on them
+
+
+* Ontologies
+ - Pizza
+ - Amino Acid
+ - OWL Primer family ontology
+ - Karyotype ontology
+ - OBO Ontologies
+ - Cyclists
+
+
+* Pizza ToC
+
+Introduction
+1.1
+
+Conventions 
+2 Requirements
+
+3 What are OWL Ontologies?
+3.1
+
+Components of OWL Ontologies 
+3.1.1 Individuals 
+3.1.2 Properties 
+3.1.3 Classes 12
+
+4 Building An OWL Ontology
+
+4.1 Named Classes 
+4.2 Disjoint Classes 
+4.3 Using Create Class Hierarchy To Create Classes
+4.4 OWL Properties 
+
+4.5 Inverse Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+4.6 OWL Object Property Characteristics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+4.6.1 Functional Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+4.6.2 Inverse Functional Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+4.6.3 Transitive Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+4.6.4 Symmetric Properties . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . 30
+
+4.6.5 Asymmetric properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+4.6.6 Reflexive properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+4.6.7 Irreflexive properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+4.7 Property Domains and Ranges . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+4.8 Describing And Defining Classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+4.8.1 Property Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+4.8.2 Existential Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+Using A Reasoner . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+4.9.1 Invoking The Reasoner . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+4.9.2 Inconsistent Classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+4.10 Necessary And Sufficient Conditions (Primitive and Defined Classes) . . . . . . . . . . . . 53
+4.10.1 Primitive And Defined Classes . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . 57
+4.11 Automated Classification
+
+4.12 Universal Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59
+4.13 Automated Classification and Open World Reasoning . . . . . . . . . . . . . . . . . . . . 62
+4.13.1 Closure Axioms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 63
+4.9
+4.14 Value Partitions
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 67
+4.14.1 Covering Axioms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 68
+4.15 Adding Spiciness to Pizza Toppings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70
+4.16 Cardinality Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 73
+4.17 Qualified Cardinality Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 75
+
+
+Datatype Properties 76
+6 More On Open World Reasoning 83
+7 Creating Other OWL Constructs In Prot ́
+eg ́
+e4 89
+7.1 Creating Individuals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 89
+7.2 hasValue Restrictions 91
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7.3 Enumerated Classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 93
+7.4 Annotation Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 94
+7.5 Multiple Sets Of Necessary & Sufficient Conditions . . . . . . . . . . . . . . . . . . . . . . 96
+A Restriction Types
+97
+A.1 Quantifier Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.1.1 someValuesFrom – Existential Restrictions
+97
+. . . . . . . . . . . . . . . . . . . . . . 98
+A.1.2 allValuesFrom – Universal Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . 98
+A.1.3 Combining Existential And Universal Restrictions in Class Descriptions . . . . . . 99
+A.2 hasValue Restrictions
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+A.3 Cardinality Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+A.3.1 Minimum Cardinality Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+A.3.1 Minimum Cardinality Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+A.3.2 Maximum Cardinality Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+A.3.3 Cardinality Restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 101
+A.3.4 The Unique Name Assumption And Cardinality Restrictions . . . . . . . . . . . . 101
+B Complex Class Descriptions
+102
+B.1 Intersection Classes ( ) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102
+B.2 Union Classes ( )
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102

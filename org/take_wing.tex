@@ -1,0 +1,748 @@
+% Created 2014-09-23 Tue 11:52
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{tawny}
+\lstnewenvironment{tawny}{\lstset{style=tawnystyle}}{}
+\author{Phillip Lord}
+\date{\today}
+\title{Take Wing: Building Ontologies with Tawny-OWL}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.3.1 (Org mode 8.2.7c)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Introduction}
+\label{sec-1}
+
+This book introduces ontology building using the OWL2 ontology language, and
+the Tawny-OWL library. Ontologies are a method for representing knowledge,
+generally, but not necessarily, about the world around us. It is then possible
+to check that the representation is consistent, as well as drawing conclusions
+about new knowledge. They are generally used in complex, knowledge-rich areas
+of knowledge, including biomedicine.
+
+Many ontology development tools provide a Graphical User Interface, through
+which the ontology developer adds the various entities involved in building an
+ontology. However, many ontologies contain large and repetitive sections; for
+these, ontology development teams often fall back to generating parts of their
+ontology programmatically. Tawny-OWL takes a different approach where ontology
+development in a domain-specific language (DSL) embedded in a full programming
+language. For structurally simple parts of an ontology, the various components
+of an ontology can be specified using the default convienient and simple
+Tawny-OWL syntax; for structurally complex parts, new syntax and new patterns
+can be built, extending the environment as a core part of ontology
+development.
+
+This form of programmatic ontology development is still young. At the moment,
+we have used it to produce large ontologies that would have been difficult
+using any other technique. However, we also hope that we can also support
+easier integration of knowledge-rich structures into applications, so that
+ontological data structures can be come a standard part of the programmers
+toolkit.
+
+
+\section{What is an Ontology}
+\label{sec-2}
+\label{what_is_an_ontology}
+
+Ontologies are about definitions. It is, perhaps, unsurprising therefore
+that amount ontologists there are quite a few debates about what exactly
+an ontology is and is not; it is not our intention here to either cover
+these arguments, nor to give a comprehensive overview of all the uses of
+the word.
+
+What is generally agreed is that ontologies describe a set of entities,
+in terms of the relationships between these entities, using any of a
+number of different relationships. So, for example, we can describe
+entities in terms of their class relationships -- what is true of a
+superclass is also true of all subclasses. Or we can describe the
+\emph{partonomic} relationships: the finger is part of the hand, which is
+part of the foot.
+
+An ontology is also very similar to a taxonomy; however, ontologies
+place much greater emphasis on their computational properties. This
+makes ontologies much more suitable for driving applications and code,
+although this often comes at the cost of human understandability of the
+ontology. In this document, all the ontologies we talk about are
+represented using specific language, called OWL (the Ontology Web
+Language). This has very well-defined computational properties, and
+through the document we will explore the implications of these
+properties.
+
+We also use the term "ontology" to mean a specific object that you can
+manipulate in Tawny-OWL -- similar to the way we say that you are
+reading some words now.
+
+
+\section{Environment}
+\label{sec-3}
+
+Our hope is that for structurally simple ontologies, Tawny-OWL should be
+usable by non-programmers, with a simple and straight-forward syntax.
+One area where this hope is currently not fulfilled is right at the
+start -- getting a working environment is not as simple as starting an
+application such as Protege and programming. In this section, I
+introduce the core technology and the basic environment that is needed
+to make effective use of Tawny-OWL.
+
+
+\subsection{The OWL API}
+\label{sec-3-1}
+
+Tawny-OWL is built using the \url{http://owlapi.sourceforge.net/[OWL} API].
+This library is a comprehensive tool for generating, transforming and
+using OWL Ontologies. It is widely used, and is the basis for the
+Protege 4 editor. Being based on this library, Tawny-OWL is reliable and
+standard-compliant (or at least as reliable and standard-compliant as
+Protege!). It is also easy to integrate directly with other tools
+written using the OWL API.
+
+\subsection{Clojure}
+\label{sec-3-2}
+
+Tawny-OWL is a programmatic library build on top of the Clojure
+language. Tawny-OWL takes many things from Clojure. These include:
+
+\begin{itemize}
+\item the basic syntax with parentheses and with \texttt{:keywords}
+\item the ability to effectively add new syntax
+\item the ability to extend Tawny-OWL with patterns
+\item integration with other data sources
+\item the test environment
+\item the build, dependency and deployment tools
+\end{itemize}
+
+In addition, most of the tools and environment that Tawny-OWL use to
+enable development were built for Clojure and are used directly with
+little or no additions. These include:
+
+\begin{itemize}
+\item IDEs or editors used for writing Clojure
+\item the leiningen build tool
+\end{itemize}
+
+Tawny-OWL inherits a line-orientated syntax which means that it works
+well with tools written for any programming language; most notable
+amoung these are version control systems which enable highly
+collaborative working on ontologies.
+
+Clojure is treated as a programmatic library -- the user never starts or
+runs Clojure, and there is no \texttt{clojure} command. Rather confusingly,
+this role is fulilled by Leiningen, which is the next item on the list.
+
+\subsection{Leiningen}
+\label{sec-3-3}
+
+\url{http://www.leiningen.org[Leiningen}] is a tool for working with Clojure
+projects. Given a directory structure, and some source code leiningen
+will perform many project tasks including checking, testing, releasing
+and deploying the project. In addition to these, it has two critical
+functions that every Tawny-OWL project will use: first, it manages
+dependencies, which means it will download both Tawny-OWL and Clojure;
+second, it starts a REPL which is the principle means by which the user
+will directly or indirectly interact with Tawny-OWL.
+
+\subsection{REPL}
+\label{sec-3-4}
+
+Clojure provides a REPL -- Read-Eval-Print-Loop. This is the same things
+as a shell, or command line. For instance, we can the following into a
+Clojure REPL, and it will print the return value, or 2 in this case.
+
+
+\begin{tawny}
+;; returns 2 
+(+ 1 1)
+\end{tawny}
+
+The most usual way to start a REPL is to use leiningen, which then sets
+up the appropriate libraries for the local project. For example,
+\texttt{lein repl} in the source code for this document, loads a REPL with
+Tawny-OWL pre-loaded.
+
+In practice, most people use the REPL indirectly through their IDE.
+
+\subsection{IDE or Editor}
+\label{sec-3-5}
+
+Clojure is supported by a wide variety of editors, which in turn means
+that they can be used for Tawny-OWL. The choice of an editor is a very
+personal one (I use Emacs), but in practice any good editor will work.
+
+The editor has two main roles. Firstly, as the name suggests it provides
+a rich environment for writing Tawny-OWL commands. Secondly, the IDE
+will start and interact with a REPL for you. This allows you to add or
+remove new classes and other entities to an ontology interactively.
+Tawny-OWL has been designed to take advantage of an IDE environment; in
+most cases, for example, auto-completion will happen for you.
+
+\subsection{Further Information}
+\label{sec-3-6}
+
+There are many sources of further information about Clojure which will
+be listed here.
+
+
+\section{Getting Started}
+\label{sec-4}
+
+In this section, we will build the most ontology and start to show the
+basic capabilities of Tawny-OWL.
+
+As described in \label{/the/environment-the-environment}, Tawny-OWL can be
+used with several different toolchains. In this section, we will run
+through the building a very simple ontology. There is an <> describing
+how to achieve each of these steps with specific tool chains.
+
+\subsection{Getting a Project}
+\label{sec-4-1}
+
+For this book, we will use a pre-rolled project -- in fact the one used
+to create this book. You can access the project data from
+\url{https://github.com/phillord/take-wing[github}], either using \texttt{git} or
+through the download option. If you wish to know how to build a project
+yourself, please read <>.
+
+A leiningen project is, essentially, a directory structure with a
+project file. The \texttt{project.clj} file for this book looks like this:
+
+\begin{tawny}
+(defproject take-wing "0.1.0-SNAPSHOT"
+  :dependencies [[uk.org.russet/tawny-owl "1.1.1-SNAPSHOT"]])
+\end{tawny}
+
+This includes three critical pieces of information. Firstly \texttt{take-wing}
+which is the name of the project. Secondly, immediately after this is a
+version number such as \texttt{0.1.0}. Finally, we have a \texttt{:dependencies} which
+includes only a single dependency to \texttt{tawny-owl} itself.
+
+
+\subsection{Starting a new ontology}
+\label{sec-4-2}
+
+It is possible to build an ontology in Tawny-OWL using almost no
+functions from Clojure, the language on which it is built; the only
+necessary exception to this is the \emph{namespace declaration}.
+
+Like most programming languages, Clojure has a namespacing mechanism.
+These are declared at the start of each file, and the namespace relates
+to the file name and location. Finally, the namespace form is also used
+to import functions from other namespaces. Here, we define a namespace
+called \texttt{take.wing.getting-started} which would be defined in a file
+\texttt{take/wing/getting\_started.clj}. Secondly, we import \texttt{tawny.owl}
+namespace which contains the core functions of Tawny-OWL.
+
+\begin{tawny}
+(ns take.wing.getting-started (:use [tawny.owl]))
+\end{tawny}
+
+Tawny-OWL also uses the namespace mechanism to define the scope of an
+ontology. In general, an ontology is defined within a single namespace,
+and each namespace defines a single ontology. A new ontology is declared
+with the \texttt{defontology} form. This also introduces a new symbol, \texttt{pizza},
+which can be used latter to refer.
+
+\begin{tawny}
+(defontology pizza)
+\end{tawny}
+
+
+\subsection{Connecting to a repl}
+\label{sec-4-3}
+
+Currently, the source for the ontology has been created, but this is not
+"live" -- for this, we must start a Clojure process and connect to it
+via a REPL and then evaluate the file. With the current contents, the
+REPL should show something like the following which is the result of
+evaluating the last form, and shows that we have defined a new symbol
+footnote:[In Clojure, it is actually a var that has been created]
+
+\begin{verbatim}
+=> #'take.wing.getting-started/pizza
+\end{verbatim}
+
+The symbol \texttt{pizza} now refers to an object live in the system. If
+evalulate \texttt{pizza}, a hopefully informative string message will be
+printed.
+
+
+\begin{verbatim}
+take.wing.getting-started> pizza
+#<OWLOntologyImpl Ontology(OntologyID(OntologyIRI(<#pizza>))) [Axioms: 0 Logical Axioms: 0]>
+\end{verbatim}
+
+\subsection{Creating some entities}
+\label{sec-4-4}
+
+Now we create some entities for our ontology, in this case two classes
+called \texttt{Pizza} and \texttt{MargheritaPizza}, and state that \texttt{MargheritaPizza}
+is a subclass of \texttt{Pizza}. This forms implicitly place these two terms
+
+\begin{tawny}
+(defclass Pizza)
+(defclass MargheritaPizza :super Pizza)
+\end{tawny}
+
+Finally, we are in a position to make a useful query against this which
+we can do using the \texttt{subclasses} function.
+
+\begin{tawny}
+(subclasses Pizza)
+\end{tawny}
+
+In a REPL session, this returns a set with one element ---
+\texttt{MargheritaPizza}. If we evaluate \texttt{pizza} (the ontology) again, we also
+see that the ontology now has a number of axioms.
+
+
+\begin{tawny}
+(subclasses Pizza)
+#{#<OWLClassImpl <#pizza#MargheritaPizza>>}
+take.wing.getting-started> pizza
+=> #<OWLOntologyImpl Ontology(OntologyID(OntologyIRI(<#pizza>))) [Axioms: 5 Logical Axioms: 1]>
+\end{tawny}
+
+
+\subsection{Summary}
+\label{sec-4-5}
+
+In this section, we have outlined the basic tasks that are needed to
+build ontologies with Tawny-OWL: creating a project, creating an
+ontology, creating some entities. We have also started to show how to
+use and query over them. In the next section, we will build this
+ontology in full, using it to demonstrate many parts of Tawny-OWL and
+OWL ontologies in general.
+
+
+
+
+
+\section{The Pizza Ontology}
+\label{sec-5}
+
+In this section, we will create a Pizza ontology; we choose pizzas because
+they are simple, well-understood and compositional (see \href{http://robertdavidstevens.wordpress.com/2010/01/22/why-the-pizza-ontology-tutorial/}{here} for more).
+
+We have described ontologies more abstractly \hyperref[what_is_an_ontology]{earlier}. More concretely, in this
+book, an ontology is a computational object, which can contain a number of
+different objects. These objects can be of several different kinds. The most
+(and least!) important of these are \emph{individuals}. We say that these are the
+most important because it is these individuals that are described and
+constrained by the other objects. We say that they are the least important
+because, in practice, many ontologies do not explicitly describe any
+individuals at all.
+
+If this seems perverse, consider a menu in a pizza shop. We might seem
+an item described saying "Margherita\ldots{}.£5.50". The menu makes no
+statements at all about an individual pizza. It is saying that any
+margherita pizza produced in this resturant is going to (or already has)
+cost £5.50. From the menu, we have no idea how many margherita pizzas
+have been produced or have been consumed. But, menu is still useful. The
+menu is comprehensive, tells you something about all the pizzas that
+exist (at least in one resturant) and the different types of pizza. This
+is different to the bill, which describes individuals -- the pizzas that
+have actually been provided, how many pizza and how much they all cost.
+In ontology terms, the menu describes the \textbf{classes}, the bill describes
+individuals \footnote{The analogy between a pizza menu and an ontology
+is not perfect. With pizza, people are generally happy with the classes
+(i.e. the menu) and start arguing once about the individuals (i.e. the
+bill); with ontologies it tends to be the other way around}. OWL
+Ontologies built with Tawny-OWL \emph{can} describe either or both of these
+entities but in most cases focus on classes.
+
+
+\subsection{Defining Classes}
+\label{sec-5-1}
+
+We start with a namespace form, and a \verb~use~ statement for \verb~tawny.owl~,
+and a statement declaring a new ontology. First, consider the syntax of
+this example, because it is shared by all statements in Tawny-OWL. All
+expresions in Clojure are delimited by \verb~(~ and \verb~)~ and Tawny-OWL follows
+this rule. Next, we have a name for the object we wish to create -- in
+this case an new ontology. This starts with \verb~def~ to indicate that we
+also want to create a new symbol which we can use to refer to this
+entity later.
+
+Finally, come a set of arguments, introduced with \emph{keywords}. These all
+end with a \verb~:~. In this case, \verb~:iri~ introduces the main IRI for this
+ontology, which is a global identifier, and finally a string which is
+the actual value of that argument.
+
+\begin{tawny}
+(ns take.wing.the-pizza-ontology (:use [tawny.owl]))
+
+(defontology pizza :iri "http://purl.org/ontolink/take-wing/pizza")
+\end{tawny}
+
+
+The semantics of this statement are quite interesting. If we had created
+a new database, by default, the database would be considered to be empty
+-- that is there would be no individuals in it. With an ontology, the
+opposite is true. By default, we assume that there could be any number
+of individuals. As of yet, we just have not said anything about these
+individuals.
+
+Next, we declare two classes. A class is a set of individuals with
+shared characteristics. For now, we create two classes, \verb~Pizza~ and
+\verb~PizzaComponent~. As with our \verb~defontology~ form, have a \verb~def~ form;
+however, in this case, we do not use any arguments. The semantics of
+these two statements are that, there is a class called \verb~Pizza~ and
+another called \verb~PizzaComponent~ which individuals may be members of.
+However, we know nothing at all about the relationship between an
+individual \verb~Pizza~ and an individual \verb~PizzaComponent~.
+
+
+\begin{tawny}
+(defclass Pizza) 
+(defclass PizzaComponent)
+\end{tawny}
+
+To build an accurate ontology, we may wish to describe this relationship
+further. We might ask the question, can an individual be both a \verb~Pizza~
+and a \verb~PizzaComponent~ at the same time. The answer to this is no, but
+currently our ontology does not state this. In OWL terminology, we wish
+to say that these two classes are \emph{disjoint}. We can achieve this by
+adding an \verb~as-disjoint~ statement.
+
+\begin{tawny}
+(as-disjoint Pizza PizzaComponent)
+\end{tawny}
+
+This works well, but is a little duplicative. If we add a new class
+which we wish to also be disjoint, it must be added in two places.
+Instead, it is possible to do both at once \footnote{In the source code,
+generated from this book, we are now defining both classes twice, as we
+have two \verb~defclass~ statements for each. This will actually work okay,
+although it is not best practice as it is somewhat dependent on the
+implementation details of the OWL API.}. This has the advantage of
+grouping the two classes together in the file, as well as semantically,
+which should make the source more future-proof; should we need new
+classes, we will automatically make them disjoint as required.
+
+\begin{tawny}
+(as-disjoint
+ (defclass Pizza)
+ (defclass PizzaComponent))
+\end{tawny}
+
+The semantics of these statements are that our ontology may have any
+number of individuals, some of which may be \verb~Pizza~, some of which may
+be \verb~PizzaComponent~, but none of which can be both \verb~Pizza~ and
+\verb~PizzaComponent~ at the same time. Before we added the \verb~as-disjoints~
+statement, we would have assumed that it was possible to be both.
+
+As well as describing that two classes are different, we may also wish
+to describe that they are closely related, or that they are
+\emph{subclasses}. Where one class is a subclass of another, we are saying
+that everything that is true of the superclass is also true of the
+subclass. Or, in terms of individuals, that every individual of the
+subclass is also an individual of the superclass.
+
+Next, we add two more classes and include the statement that they have
+\verb~PizzaComponent~ as a superclass. We do this by adding a \verb~:super~
+argument or \emph{frame} to our \verb~defclass~ statement. In Tawny-OWL the frames
+can all be read in the same way. Read forwards, we can say \verb~PizzaBase~
+has a superclass \verb~PizzaComponent~, or backwards \verb~PizzaComponent~ is a
+superclass of \verb~PizzaBase~. Earlier, we say the \verb~:iri~ frame for
+\verb~defontology~ which is read similarly -- \verb~pizza~ has the given IRI.
+
+As every individual of, for example, \verb~PizzaBase~ is \verb~PizzaComponent~, and no
+\verb~PizzaComponent~ individual can also be a \verb~Pizza~ this also implies that no
+\verb~PizzaBase~ is a \verb~Pizza~. In otherwords, the disjointness is inherited
+\footnote{In this ontology, we use a naming scheme using CamelCase, upper case
+names for classes and, later, lower case properties. As with many parts of
+ontology development, opinions differ as to whether this is good. With
+Tawny-OWL it has the fortuitous advantage that it syntax-highlights nicely,
+because it looks like Java}
+
+\begin{tawny}
+(defclass PizzaBase
+  :super PizzaComponent)
+(defclass PizzaTopping
+  :super PizzaComponent)
+\end{tawny}
+
+
+As with the disjoint statement, this is little long winded; we have to name
+the \verb~PizzaComponent~ superclass twice. Tawny-OWL provides a short cut for
+this, with the \verb~as-subclasses~ function.
+
+\begin{tawny}
+(as-subclasses
+ PizzaComponent
+ (defclass PizzaBase)
+ (defclass PizzaTopping))
+\end{tawny}
+
+We are still not complete; we asked the question previously, can you be both a
+\verb~Pizza~ and a \verb~PizzaComponent~, to which the answer is no. We can apply the
+same question, and get the same answer to a \verb~PizzaBase~ and \verb~PizzaTopping~.
+These two, therefore, should also be disjoint. However, we can make a stronger
+statement still. The only kind of \verb~PizzaComponent~ that there are either a
+\verb~PizzaBase~ or a \verb~PizzaTopping~. We say that the \verb~PizzaComponent~ class is
+\emph{covered} by its two subclasses. We can add both of these statements to the
+ontology also.
+
+\begin{tawny}
+(as-subclasses
+ PizzaComponent
+ :disjoint :cover
+ (defclass PizzaBase)
+ (defclass PizzaTopping))
+\end{tawny}
+
+We now have the basic classes that we need to describe a pizza.
+
+\subsection{Properties}
+\label{sec-5-2}
+
+Now, we wish to describe more about \verb~Pizza~; in particular, we want to say
+more about the relationship between \verb~Pizza~ and two \verb~PizzaComponent~ classes.
+OWL provides a rich mechanism for describing relationships between individuals
+and, in turn, how individuals of classes are related to each other. As well as
+there being many different types of individuals, there are can be many
+different types of relationships. It is the relationships to other classes or
+individuals that allow us to describe classes, and it is for this reason that
+the different types of relationships are called \emph{properties}.
+
+A \verb~Pizza~ is built from one or more \verb~PizzaComponent~ individuals; we first
+define two properties \footnote{Actually, two \emph{object} properties, hence
+\verb~defoproperty~. We can also define \emph{data} properties, which we will see later}
+to relate these two together, which we call \verb~hasComponent~ and
+\verb~isComponentOf~. The semantics of this statement is to say that we now have
+two properties that we can use between individuals.
+
+\begin{tawny}
+(defoproperty hasComponent)
+(defoproperty isComponentOf)
+\end{tawny}
+
+As with classes, there is more that we can say about these properties. In this
+case, the properties are natual opposites or inverses of each other. The
+semantics of this statement is that for an individual \verb~i~ which \verb~hasComponent~
+\verb~j~, we can say that \verb~j~ \verb~isComponentOf~ \verb~i~ also. 
+
+\begin{tawny}
+(as-inverse
+ (defoproperty hasComponent)
+ (defoproperty isComponentOf))
+\end{tawny}
+
+Again, the semantics here are actually between individuals, rather than
+classes. This has an important consequence with the inverses. We might make
+the statement that \verb~Pizza~ \verb~hasComponent~ \verb~PizzaComponent~, but this does not
+allow us to infer that \verb~PizzaComponent~ \verb~isComponentOf~ \verb~Pizza~. Using an
+every day analogy, just because all bicycles have wheels, we can not assume
+that all wheels are parts of a bike; we \textbf{can} assume that where a bike has a
+wheel, that wheel is part of a bike. This form of semantics is quite subtle,
+and is an example of where statements made in OWL are saying less than most
+people would assume footnote:[We will see examples of the opposite also --
+statements which are stronger in OWL than the intuitive interpretation].
+
+We now move on to describe the relationships between \verb~Pizza~ and both of
+\verb~PizzaBase~ and \verb~PizzaTopping~. For this, we will introduce three new parts of
+OWL: subproperties, domain and range constraints and property characteristics,
+which we define in Tawny-OWL as follows:
+
+
+\begin{tawny}
+(defoproperty hasTopping
+  :super hasComponent
+  :range PizzaTopping
+  :domain Pizza)
+
+(defoproperty hasBase
+  :super hasComponent
+  :characteristic :functional
+  :range PizzaBase
+  :domain Pizza)
+\end{tawny}
+
+
+First, we consider sub-properties, which are fairly analogous to sub-classes.
+For example, if two individuals \verb~i~ and \verb~j~ are related so that \verb~i hasTopping j~, then it is also true that \verb~i hasComponent j~.
+
+Domain and range constraints describe the kind of entity that be at either end
+of the property. So, for example, considering \verb~hasTopping~, we say that the
+domain is \verb~Pizza~, so only instances of \verb~Pizza~ can have a topping, while the
+range is \verb~PizzaTopping~ so only instances of \verb~PizzaTopping~ can be a topping. 
+
+Finally, we introduce a \emph{characteristic}. OWL has quite a few different
+characteristics which will introduce over time; in this case \emph{functional}
+means means that there can be only one of these, so an individual has only a
+single base.
+
+
+\subsection{Populating the Ontology}
+\label{sec-5-3}
+
+We now have enough expressivity to describe quite a lot about pizzas. So, we
+can now set about creating a larger set of 
+
+\begin{tawny}
+(as-subclasses
+ :disjoint
+ PizzaTopping
+ (defclass CheeseTopping)
+ (defclass FishTopping)
+ (defclass FruitTopping)
+ (defclass HerbSpiceTopping)
+ (defclass MeatTopping)
+ (defclass NutTopping)
+ (defclass SauceTopping)
+ (defclass VegetableTopping))
+\end{tawny}
+
+
+
+
+\section{Appendix}
+\label{sec-6}
+
+\subsection{Appendix: Tool Specific Instructions}
+\label{sec-6-1}
+
+In this appendix with give specific instructions for achieving the tasks
+in the \label{/getting/started-Getting-Started} section and elsewhere. These
+instructions are relatively brief pointers. In practice, you may need to
+consult the documentation of the various systems. Each section begins
+with a short comment on the advantages and disadvantages of each system.
+
+\begin{itemize}
+\item <>
+\item <>
+\item <>
+\item <>
+\end{itemize}
+
+\subsubsection{Emacs}
+\label{sec-6-1-1}
+
+Emacs provides a rich environment for editing Tawny-OWL ontologies,
+especially when combined with a set of other tools used from the command
+line. Emacs is itself written in Lisp. It is fantastic for
+keyboard-lovers as everything can be done from the keyboard. Emacs is a
+tool with a long history which means that it tends to conform to its own
+standards rather than those of the operating systems it works on, which
+can make it strange experience for those new to it.
+
+I (Phillip Lord) use Emacs and a few of the tools described in this
+document are Emacs-specific.
+
+\begin{enumerate}
+\item Installation
+\label{sec-6-1-1-1}
+
+Emacs can be installed with a system-specific package-manager. You will
+need at least Emacs 24. Once installed you will need to add two Emacs
+packages to get a rich Clojure environment: these are
+\url{https://github.com/clojure-emacs/cider[=cider}=] and
+\url{https://github.com/clojure-emacs/clojure-mode[=clojure-mode}=]. In
+addition, there are a set of supporting systems which add to the
+experience of using Emacs for Tawny-OWL: these include
+\url{http://github.com/magit/magit[=magit}=] for controlling
+\url{http://git-scm.org[git}];
+\url{https://github.com/bbatsov/projectile[=projectile}=] for navigating
+projects quickly; and \url{http://www.emacswiki.org/emacs/ParEdit[=paredit}=]
+which keeps parentheses in place.
+
+In addition to Emacs, \url{http://leiningen.org[leiningen}] needs to be
+installed for project management. Finally, \url{http://git-scm.org[git}] is
+used for versioning.
+
+\item Getting a project
+\label{sec-6-1-1-2}
+
+To get the take-wing project, just clone the git repository with git
+clone. Alternatively, without git download the zip file and unpack.
+Emacs does not require that the project be imported; opening a file
+inside a project is all that is needed.
+
+\begin{verbatim}
+git clone https://github.com/phillord/take-wing
+\end{verbatim}
+
+
+\item Starting a New Namespace
+\label{sec-6-1-1-3}
+
+Emacs does not need specific support for this. Simply open a new file.
+If you have installed Clojure mode and Cider correctly, Emacs will
+insert a namespace form for you. You will need to add \texttt{:use} statement
+by hand.
+
+\item Starting a REPL
+\label{sec-6-1-1-4}
+
+Emacs uses Leiningen to start a REPL so this must be installed. It is
+launched directly by cider. To do so type \texttt{M-x cider-jack-in}, which
+defaults to \texttt{C-c M-j}. It takes a short while to work (especially the
+first time, since Leiningen has to download dependencies).
+
+\item Eval a form
+\label{sec-6-1-1-5}
+
+Assuming that a REPL has been started, it is possible to evaluate forms
+in place; look for the "eval" menu items under the "Cider" menu. As well
+as individual forms and a region, whole files can be evaluated. The
+results of an the evaluaton appear in the minibuffer. It is also
+possible to interact directly with the REPL buffer which is useful for
+playing.
+\end{enumerate}
+
+\subsubsection{Eclipse}
+\label{sec-6-1-2}
+
+Eclipse is a modern IDE. This means that it is full of functionality,
+conforms to modern standards and works with lots of languages.
+Conversely, it requires lots of resources and forces you to work its
+way.
+
+\subsubsection{Vim}
+\label{sec-6-1-3}
+
+Vim, like <> is an editor with a long history. It is fast, light-weight
+and extremely functional. Also like Emacs, it can be a bit jarring at
+first. It has very good Clojure support.
+
+\subsubsection{Lighttable}
+\label{sec-6-1-4}
+
+Lighttable is a very new IDE whose purpose is to reinvent many of the
+existing idioms associated with programming. The demos are visually
+impressive.
+
+
+
+\section{Incomplete Import}
+\label{sec-7}
+
+
+
+
+include::asciidoc/literate.adoc[]
+include::asciidoc/how$_{\text{is}}$$_{\text{this}}$$_{\text{written}}$.adoc[]
+include::asciidoc/tool$_{\text{support}}$.adoc[]
+include::asciidoc/a$_{\text{new}}$$_{\text{project}}$.adoc[]
+% Emacs 24.3.1 (Org mode 8.2.7c)
+\end{document}
