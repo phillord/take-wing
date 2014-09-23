@@ -2,7 +2,7 @@ CASK=cask
 EMACS=emacs
 WING=$(CASK) exec emacs --debug --script script/build.el --
 
-all: gen-src test build chunked
+all: gen-src test publish
 
 viewing: gen-src build test
 
@@ -20,14 +20,6 @@ test: gen-src
 
 publish:
 	$(WING) publish
-
-pdf:
-	$(WING) pdf
-
-html:
-	$(WING) html
-
-build: html pdf
 
 clean:
 	- rm exports/*

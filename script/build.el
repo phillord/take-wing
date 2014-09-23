@@ -62,18 +62,6 @@ things if the file or the linked-buffer is open already."
 (require 'htmlize)
 (require 'ox-html)
 
-(defun build/html ()
-  (init-faces)
-  (setq htmlize-use-rgb-map 'force)
-  (with-current-buffer
-      (find-file-noselect build-source-file))
-  (org-html-publish-to-html
-   ;; publishing plist
-   nil
-   ;; output file name
-   "book.html"
-   ;; directory
-   "exports"))
 
 
 (defun build/publish ()
