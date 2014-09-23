@@ -8,16 +8,6 @@ viewing: gen-src test tex
 
 really-all: install all
 
-# Do this on travis, so that we can see the errors from latex
-# if there are any. In practice, will have to switch the pdf publication
-# in wing-config.el or we won't get here
-travis: latex
-	mkdir -p exports
-	cp tex/clojure.sty tex/tawny.sty exports
-	cd exports;pdflatex take_wing.tex
-
-latex:
-	$(WING) latex
 
 install:
 	$(CASK) install
@@ -30,9 +20,10 @@ test: gen-src
 	lein test
 
 publish:
-	mkdir -p exports
-	cp tex/clojure.sty tex/tawny.sty exports
 	$(WING) publish
+	cp tex/clojure.sty tex/tawny.sty exports
+	# org will publish to PDF but puts it in the wrong place
+	cd exports;pdflatex take_wing.tex;pdflatex take_wing.tex
 
 clean:
 	- rm exports/*
