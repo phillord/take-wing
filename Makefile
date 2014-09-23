@@ -31,8 +31,7 @@ publish:
 	cp tex/clojure.sty tex/tawny.sty exports
 	$(WING) publish
 
-publish-live:
-	$(WING) publish-live
+
 
 clean:
 	- rm exports/*
