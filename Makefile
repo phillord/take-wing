@@ -9,6 +9,7 @@ viewing: gen-src build test
 really-all: install all
 
 tex:
+	echo "Running tex"
 	cd exports
 	latex take_wing.tex
 
@@ -29,4 +30,4 @@ clean:
 	- rm exports/*
 	- rm src/take/wing/*clj
 
-.PHONY: test build
+.PHONY: test build tex
