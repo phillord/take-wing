@@ -8,13 +8,12 @@ viewing: gen-src test tex
 
 really-all: install all
 
-travis: publish
+travis:
 	## Do this on travis, so that we can see the errors from latex
-	## if there are any
-	echo "Running tex"
+	## if there are any.
 	mkdir -p exports
 	cp --update tex/clojure.sty tex/tawny.sty exports
-	cd exports;latex take_wing.tex
+	cd exports;pdflatex take_wing.tex
 
 install:
 	$(CASK) install
@@ -30,8 +29,6 @@ publish:
 	mkdir -p exports
 	cp tex/clojure.sty tex/tawny.sty exports
 	$(WING) publish
-
-
 
 clean:
 	- rm exports/*
