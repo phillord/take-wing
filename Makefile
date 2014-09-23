@@ -10,6 +10,7 @@ really-all: install all
 
 tex:
 	echo "Running tex"
+	mkdir -p exports
 	cp tex/clojure.sty tex/tawny.sty exports
 	cd exports;latex take_wing.tex
 
@@ -24,6 +25,7 @@ test: gen-src
 	lein test
 
 publish:
+	mkdir -p exports
 	cp tex/clojure.sty tex/tawny.sty exports
 	$(WING) publish
 
