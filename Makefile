@@ -2,7 +2,7 @@ CASK=cask
 EMACS=emacs
 WING=$(CASK) exec emacs --debug --script script/build.el --
 
-all: gen-src test publish
+all: gen-src test publish tex
 
 viewing: gen-src build test
 
