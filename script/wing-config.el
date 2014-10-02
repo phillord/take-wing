@@ -6,11 +6,6 @@
               (file-name-directory (locate-library "wing-config.el")))
     default-directory))
 
-
-
-(message "ll: %s" (locate-library "wing-config.el"))
-(message "dd: %s" default-directory)
-
 (defvar take-wing-project
   `("take-wing"
     :base-directory ,(concat wing-config-dir "/org")
@@ -25,7 +20,5 @@
 (add-to-list
  'org-publish-project-alist
  take-wing-project)
-
-(message "after-config: %s" org-publish-project-alist)
 
 (provide 'wing-config)

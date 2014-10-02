@@ -1,3 +1,5 @@
+** Introduction
+
 In this section, we will create a Pizza ontology; we choose pizzas because
 they are simple, well-understood and compositional (see [[http://robertdavidstevens.wordpress.com/2010/01/22/why-the-pizza-ontology-tutorial/][here]] for more).
 
@@ -21,7 +23,7 @@ exist (at least in one resturant) and the different types of pizza. This
 is different to the bill, which describes individuals -- the pizzas that
 have actually been provided, how many pizza and how much they all cost.
 In ontology terms, the menu describes the *classes*, the bill describes
-individuals [fn:: The analogy between a pizza menu and an ontology
+individuals [fn::The analogy between a pizza menu and an ontology
 is not perfect. With pizza, people are generally happy with the classes
 (i.e. the menu) and start arguing once about the individuals (i.e. the
 bill); with ontologies it tends to be the other way around]. OWL
@@ -29,9 +31,15 @@ Ontologies built with Tawny-OWL /can/ describe either or both of these
 entities but in most cases focus on classes.
 
 
+
 ** Defining Classes
 
-We start with a namespace form, and a ~use~ statement for ~tawny.owl~,
+We start with a namespace form. This declaration is slightly different from
+that given in [[Getting Started][Getting Started]]; it includes a ~:use~ statement for
+~tawny.english~. We 
+
+
+
 and a statement declaring a new ontology. First, consider the syntax of
 this example, because it is shared by all statements in Tawny-OWL. All
 expresions in Clojure are delimited by ~(~ and ~)~ and Tawny-OWL follows
@@ -46,7 +54,10 @@ ontology, which is a global identifier, and finally a string which is
 the actual value of that argument.
 
 #+BEGIN_SRC clojure
-(ns take.wing.the-pizza-ontology (:use [tawny.owl]))
+(ns take.wing.the-pizza-ontology
+  (:use [tawny.owl]
+        [tawny.english])
+  (:refer-clojure :only []))
 
 (defontology pizza :iri "http://purl.org/ontolink/take-wing/pizza")
 #+END_SRC
@@ -70,7 +81,7 @@ individual ~Pizza~ and an individual ~PizzaComponent~.
 
 
 #+BEGIN_SRC clojure
-(defclass Pizza) 
+(defclass Pizza)
 (defclass PizzaComponent)
 #+END_SRC
 
@@ -170,6 +181,7 @@ ontology also.
 
 We now have the basic classes that we need to describe a pizza.
 
+
 ** Properties
 
 Now, we wish to describe more about ~Pizza~; in particular, we want to say
@@ -252,12 +264,18 @@ single base.
 ** Populating the Ontology
 
 We now have enough expressivity to describe quite a lot about pizzas. So, we
-can now set about creating a larger set of 
+can now set about creating a larger set of toppings for our pizzas. First, we
+describe some top level categories of types of topping. As before, we use
+~as-subclasses~ function and state further that all of these classes are
+disjoint. Here, we have not used the ~:cover~ option. This is deliberate,
+because we cannot be sure that these classes describe all of the different
+toppings we might have; there might be toppings which fall into none of these
+categories. 
 
 #+BEGIN_SRC clojure
 (as-subclasses
- :disjoint
  PizzaTopping
+ :disjoint
  (defclass CheeseTopping)
  (defclass FishTopping)
  (defclass FruitTopping)
@@ -267,4 +285,224 @@ can now set about creating a larger set of
  (defclass SauceTopping)
  (defclass VegetableTopping))
 #+END_SRC
+
+When defining a large number of classes at once, Tawny-OWL also offers a
+shortcut, which we now use to define a large number of classes at once, which
+is ~declare-classes~. While this can be useful in a few specific
+circumstances, these are quite limited because it does not allow addition of
+any other attributes at the same time, and in particular labels which most
+classes will need. In this case, we can generate a lot of classes in a short
+space, which is useful in a tutorial document.
+
+Neither ~MeatTopping~ nor ~FruitTopping~ are declared as ~:disjoint~ because
+we have only put a single example.
+
+#+BEGIN_SRC clojure
+(as-subclasses
+ CheeseTopping
+ :disjoint
+
+ (declare-classes
+  GoatsCheeseTopping
+  GorgonzolaTopping
+  MozzarellaTopping
+  ParmesanTopping))
+
+(as-subclasses
+ VegetableTopping
+ :disjoint
+
+ (declare-classes
+  PepperTopping
+  GarlicTopping
+  PetitPoisTopping
+  AsparagusTopping
+  TomatoTopping
+  ChilliPepperTopping))
+
+(as-subclasses
+ FruitTopping
+ (defclass PineappleTopping))
+
+(as-subclasses
+ MeatTopping
+ :disjoint
+ (defclass HamTopping)
+ (defclass PepperoniTopping))
+#+END_SRC
+
+** Describing a Pizza
+
+And, now finally, we have the basic concepts that we need to build a pizza.
+First, we start off with a generic description of a pizza; we have already
+defined the class above, so we want to extend the definition rather than
+create a new one. We can achieve this using the ~class~ function:
+
+#+BEGIN_SRC clojure
+(class Pizza
+   :super
+   (some hasTopping PizzaTopping)
+   (some hasBase PizzaBase))
+#+END_SRC
+
+This introduces several new features of Tawny-OWL:
+ - this use of ~class~ requires that ~Pizza~ already be defined. In other
+   words, we are extending an existing definition. If ~Pizza~ is not defined,
+   this form will crash.
+ - a new function ~some~
+ - we create out first /unnamed/ classes from a class expression -- in this
+   case ~(some hasTopping PizzaTopping)~.
+
+The semantics of the last two of these are a little complex. Like a named
+class (all of those we have seen so far), an unnamed class defines a set of
+individuals, but it does so by combining other parts of the ontology. The
+~some~ restriction describes a class of individuals with at least one
+relationship of a particular type. So ~(some hasTopping PizzaTopping)~
+describes the set of all individuals related by the ~hasTopping~ relationship
+to at least one ~PizzaTopping~. Or alternatively, each ~Pizza~ must have a
+~PizzaTopping~. Or, alternatively again, for each ~Pizza~ there must exist one
+~PizzaTopping~; it is for this reason that this form of class is also known as
+an /existential restriction/.
+
+We combine the two statements to say that a ~Pizza~ must have at least one
+base and at least one topping. Actually, we earlier defined ~hasBase~ with the
+~:functional~ characteristic, so together this says that a ~Pizza~ must have
+exactly one base.
+
+Finally, we can build a specific pizza, and we start with one of the simplest
+pizza, that is the margherita. This has two toppings, mozzarella and tomato.
+The definition for this is as follows:
+
+#+BEGIN_SRC clojure
+(defclass MargheritaPizza
+  :super
+  Pizza
+  (some hasTopping MozzarellaTopping)
+  (some hasTopping TomatoTopping)
+  (only hasTopping (or MozzarellaTopping TomatoTopping)))
+#+END_SRC
+
+The first part of this definition is similar to ~Pizza~. It says that a
+~MargheritaPizza~ is a ~Pizza~ with two toppings, mozzarella and tomato. The
+second part of the definition adds two new features of Tawny-OWL:
+
+ - ~only~ a new function which returns a /universal restriction/
+ - ~or~ which returns a /union restriction/
+
+The ~or~ statement defines the set of individuals that is either
+~MozzarellaTopping~ or ~TomatoTopping~. The ~only~ statement defines the set
+of individuals whose toppings are either ~MozzarellaTopping~ or
+~TomatoTopping~. One important sting in the tail of ~only~ is that it does
+*NOT* state that these individuals have any toppings at all. So ~(only
+hasTopping MozzarellaTopping)~ would cover a ~Pizza~ with only
+~MozzarellaTopping~, but also many other things, including things which are
+not ~Pizza~ at all. Logically, this makes sense, but it is counter-intuitive
+[fn::Except to logicians, obviously, to whom it all makes perfect sense.].
+
+For completeness, we also define ~HawaiianPizza~ [fn::Pizza names are, sadly,
+not standardized between countries or resturants, so I've picked on which is
+quite widely known. Apologies to any Italian readers for this and any other
+culinary disasters which this book implies really are pizza.].
+
+#+BEGIN_SRC clojure
+(defclass HawaiianPizza
+  :super
+  Pizza
+  (some hasTopping MozzarellaTopping)
+  (some hasTopping TomatoTopping)
+  (some hasTopping HamTopping)
+  (some hasTopping PineappleTopping)
+  (only hasTopping
+        (or MozzarellaTopping TomatoTopping HamTopping PineappleTopping)))
+#+END_SRC
+
+We can now check that this works as expected by using the ~subclass?~ and
+~subclasses~ functions at the REPL.
+
+#+BEGIN_EXAMPLE
+take.wing.the-pizza-ontology> (subclass? Pizza MargheritaPizza)
+true
+take.wing.the-pizza-ontology> (subclasses Pizza)
+#{#<OWLClassImpl <http://purl.org/ontolink/take-wing/pizza#HawaiianPizza>>
+  #<OWLClassImpl <http://purl.org/ontolink/take-wing/pizza#MargheritaPizza>>}
+#+END_EXAMPLE
+
+** A simple pattern
+
+The last definition is rather unsatisfying for two reasons. Firstly, the
+multiple uses of ~some hasTopping~ and secondly because the toppings are
+duplicated between the universal and existential restrictions. Two features of
+Tawny-OWL enable us to work around these problems. 
+
+Firstly, the ~some~ function is /variadic/ and take a single property but any
+number of classes. We use this feature to shorten the definition of
+~AmericanPizza~. 
+
+#+BEGIN_SRC clojure
+(defclass AmericanPizza
+  :super
+  Pizza
+  (some hasTopping MozzarellaTopping
+        TomatoTopping PepperoniTopping)
+  (only hasTopping (or MozzarellaTopping TomatoTopping PepperoniTopping)))
+#+END_SRC
+
+The single ~some~ function call here expands to three existential
+restrictions, each of which becomes a super class of ~AmericanPizza~ --
+mirroring the definition of ~HawaiianPizza~.
+
+This definition, however, still leaves the duplication between the two sets of
+restrictions. This pattern is frequent enough that Tawny-OWL provides special
+support for it in the form of the ~some-only~ function, which we use to define
+the next pizza.
+
+#+BEGIN_SRC clojure
+(defclass AmericanHotPizza
+  :super
+  Pizza
+  (some-only hasTopping MozzarellaTopping TomatoTopping
+             PepperoniTopping ChilliPepperTopping))
+#+END_SRC
+
+The ~some-only~ function is Tawny-OWL's implementation of the /closure/ axiom.
+Similarly, the use of ~:cover~ described earlier implements the /covering/
+axiom. These are the only two patterns which are directly supported by the
+core of Tawny-OWL (i.e. the namespace ~tawny.owl~). In later sections, though,
+we will see how to exploit the programmatic nature of Tawny-OWL to build
+arbitrary new patterns for yourself.
+
+
+** Defined Classes
+<<defined>>
+
+So far all of the classes that we have written are /primitive/. Rather than a
+statement about complexity, this means that as they stand, they cannot be used
+to infer new facts. So, for example, we know that a individual
+~MargheritaPizza~ will have a ~MozzarellaTopping~ and a ~TomatoTopping~, but
+given an arbitrary pizza we cannot determine whether it is a margherita. Or,
+mozzarella and tomato toppings are /necessary/ for a margherita, but they are
+not sufficient.
+
+Defined classes allow us to take advantage of the power of computational
+reasoning. Let us try a simple example:
+
+#+BEGIN_SRC clojure
+(defclass VegetarianPizza
+  :equivalent
+  (and Pizza
+       (only hasTopping
+             (not (or MeatTopping FishTopping)))))
+#+END_SRC
+
+Here, we define a ~VegetarianPizza~ as a ~Pizza~ with only ~MeatTopping~ or
+~FishTopping~.
+
+
+** TODO
+
+ - Then move onto defined classes -- also including and/or/not
+ - Then add in reasoners
+ - Then stop
+
+
 

@@ -9,6 +9,6 @@ pom.xml.asc
 /.nrepl-port
 /.cask/
 auto/*
-
+Makefile-local
 *~
 \#*\#

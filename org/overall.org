@@ -68,6 +68,19 @@ Classes and relationships using the pizza ontology
 ** and, not, or
    
 
+
+** Programmatic Pizza's
+
+ - Understanding how to use tawny owls programmatic features
+ - Namespaces, tawny.english :refer-clojure
+
+ - Understanding Clojure functions
+ - A simple pizza example
+ - Understanding Clojure symbols and vars
+ - Understanding tawny-owls def forms
+ - Tawny-OWL with strings -- as an API -- see later
+ - How to intern
+
 ** Simple patterns
    
  - [ ] some-only as a pattern
@@ -127,6 +140,8 @@ A pizza chooser.
 
 Loading external ontologies, performing batch changes on them
 
+
+** Differences from Manchester syntax
 
 * Ontologies
  - Pizza

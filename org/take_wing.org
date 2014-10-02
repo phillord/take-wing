@@ -35,6 +35,12 @@ ontological data structures can be come a standard part of the programmers
 toolkit.
 
 
+** Status
+
+This manual is a work in progress and there are quite a few bits to write yet.
+Once, it is somewhat more advanced, we will mark up the individual sections
+with status markers!
+
 * What is an Ontology
 <<what_is_an_ontology>>
 

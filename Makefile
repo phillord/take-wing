@@ -29,4 +29,6 @@ clean:
 	- rm exports/*
 	- rm src/take/wing/*clj
 
+-include Makefile-local
+
 .PHONY: test build tex

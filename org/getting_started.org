@@ -8,6 +8,8 @@ how to achieve each of these steps with specific tool chains.
 
 ** Getting a Project
 
+
+
 For this book, we will use a pre-rolled project -- in fact the one used
 to create this book. You can access the project data from
 https://github.com/phillord/take-wing[github], either using =git= or
@@ -84,6 +86,7 @@ Now we create some entities for our ontology, in this case two classes
 called =Pizza= and =MargheritaPizza=, and state that =MargheritaPizza=
 is a subclass of =Pizza=. This forms implicitly place these two terms
 
+
 #+BEGIN_SRC clojure
 (defclass Pizza)
 (defclass MargheritaPizza :super Pizza) 
@@ -101,12 +104,12 @@ In a REPL session, this returns a set with one element ---
 see that the ontology now has a number of axioms.
 
 
-#+BEGIN_SRC clojure
+#+BEGIN_EXAMPLE
 (subclasses Pizza)
 #{#<OWLClassImpl <#pizza#MargheritaPizza>>}
 take.wing.getting-started> pizza
 => #<OWLOntologyImpl Ontology(OntologyID(OntologyIRI(<#pizza>))) [Axioms: 5 Logical Axioms: 1]>
-#+END_SRC
+#+END_EXAMPLE
 
 
 ** Summary
@@ -117,3 +120,5 @@ ontology, creating some entities. We have also started to show how to
 use and query over them. In the next section, we will build this
 ontology in full, using it to demonstrate many parts of Tawny-OWL and
 OWL ontologies in general.
+
+
