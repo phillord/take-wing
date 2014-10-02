@@ -1,0 +1,118 @@
+
+\section{Appendix}
+\label{sec-6}
+
+\subsection{Appendix: Tool Specific Instructions}
+\label{sec-6-1}
+
+In this appendix with give specific instructions for achieving the tasks
+in the \label{/getting/started-Getting-Started} section and elsewhere. These
+instructions are relatively brief pointers. In practice, you may need to
+consult the documentation of the various systems. Each section begins
+with a short comment on the advantages and disadvantages of each system.
+
+\begin{itemize}
+\item <>
+\item <>
+\item <>
+\item <>
+\end{itemize}
+
+\subsubsection{Emacs}
+\label{sec-6-1-1}
+
+Emacs provides a rich environment for editing Tawny-OWL ontologies,
+especially when combined with a set of other tools used from the command
+line. Emacs is itself written in Lisp. It is fantastic for
+keyboard-lovers as everything can be done from the keyboard. Emacs is a
+tool with a long history which means that it tends to conform to its own
+standards rather than those of the operating systems it works on, which
+can make it strange experience for those new to it.
+
+I (Phillip Lord) use Emacs and a few of the tools described in this
+document are Emacs-specific.
+
+\begin{enumerate}
+\item Installation
+\label{sec-6-1-1-1}
+
+Emacs can be installed with a system-specific package-manager. You will
+need at least Emacs 24. Once installed you will need to add two Emacs
+packages to get a rich Clojure environment: these are
+\url{https://github.com/clojure-emacs/cider[=cider}=] and
+\url{https://github.com/clojure-emacs/clojure-mode[=clojure-mode}=]. In
+addition, there are a set of supporting systems which add to the
+experience of using Emacs for Tawny-OWL: these include
+\url{http://github.com/magit/magit[=magit}=] for controlling
+\url{http://git-scm.org[git}];
+\url{https://github.com/bbatsov/projectile[=projectile}=] for navigating
+projects quickly; and \url{http://www.emacswiki.org/emacs/ParEdit[=paredit}=]
+which keeps parentheses in place.
+
+In addition to Emacs, \url{http://leiningen.org[leiningen}] needs to be
+installed for project management. Finally, \url{http://git-scm.org[git}] is
+used for versioning.
+
+\item Getting a project
+\label{sec-6-1-1-2}
+
+To get the take-wing project, just clone the git repository with git
+clone. Alternatively, without git download the zip file and unpack.
+Emacs does not require that the project be imported; opening a file
+inside a project is all that is needed.
+
+\begin{verbatim}
+git clone https://github.com/phillord/take-wing
+\end{verbatim}
+
+
+\item Starting a New Namespace
+\label{sec-6-1-1-3}
+
+Emacs does not need specific support for this. Simply open a new file.
+If you have installed Clojure mode and Cider correctly, Emacs will
+insert a namespace form for you. You will need to add \texttt{:use} statement
+by hand.
+
+\item Starting a REPL
+\label{sec-6-1-1-4}
+
+Emacs uses Leiningen to start a REPL so this must be installed. It is
+launched directly by cider. To do so type \texttt{M-x cider-jack-in}, which
+defaults to \texttt{C-c M-j}. It takes a short while to work (especially the
+first time, since Leiningen has to download dependencies).
+
+\item Eval a form
+\label{sec-6-1-1-5}
+
+Assuming that a REPL has been started, it is possible to evaluate forms
+in place; look for the "eval" menu items under the "Cider" menu. As well
+as individual forms and a region, whole files can be evaluated. The
+results of an the evaluaton appear in the minibuffer. It is also
+possible to interact directly with the REPL buffer which is useful for
+playing.
+\end{enumerate}
+
+\subsubsection{Eclipse}
+\label{sec-6-1-2}
+
+Eclipse is a modern IDE. This means that it is full of functionality,
+conforms to modern standards and works with lots of languages.
+Conversely, it requires lots of resources and forces you to work its
+way.
+
+\subsubsection{Vim}
+\label{sec-6-1-3}
+
+Vim, like <> is an editor with a long history. It is fast, light-weight
+and extremely functional. Also like Emacs, it can be a bit jarring at
+first. It has very good Clojure support.
+
+\subsubsection{Lighttable}
+\label{sec-6-1-4}
+
+Lighttable is a very new IDE whose purpose is to reinvent many of the
+existing idioms associated with programming. The demos are visually
+impressive.
+
+

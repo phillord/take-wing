@@ -1,3 +1,0 @@
-== Colophon
-
-This book is produced in asciidoc

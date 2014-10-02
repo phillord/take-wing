@@ -1,0 +1,72 @@
+\chapter{Chapter 1}
+
+\section{Introduction}
+\label{sec-1}
+
+This book introduces ontology building using the OWL2 ontology language, and
+the Tawny-OWL library. Ontologies are a method for representing knowledge,
+generally, but not necessarily, about the world around us. It is then possible
+to check that the representation is consistent, as well as drawing conclusions
+about new knowledge. They are generally used in complex, knowledge-rich areas
+of knowledge, including biomedicine.
+
+Many ontology development tools provide a Graphical User Interface, through
+which the ontology developer adds the various entities involved in building an
+ontology. However, many ontologies contain large and repetitive sections; for
+these, ontology development teams often fall back to generating parts of their
+ontology programmatically. Tawny-OWL takes a different approach where ontology
+development in a domain-specific language (DSL) embedded in a full programming
+language. For structurally simple parts of an ontology, the various components
+of an ontology can be specified using the default convienient and simple
+Tawny-OWL syntax; for structurally complex parts, new syntax and new patterns
+can be built, extending the environment as a core part of ontology
+development.
+
+
+This form of programmatic ontology development is still young. At the moment,
+we have used it to produce large ontologies that would have been difficult
+using any other technique. However, we also hope that we can also support
+easier integration of knowledge-rich structures into applications, so that
+ontological data structures can be come a standard part of the programmers
+toolkit.
+
+
+\subsection{Status}
+\label{sec-1-1}
+
+This manual is a work in progress and there are quite a few bits to write yet.
+Once, it is somewhat more advanced, we will mark up the individual sections
+with status markers!
+
+\section{What is an Ontology}
+\label{sec-2}
+\label{what_is_an_ontology}
+
+Ontologies are about definitions. It is, perhaps, unsurprising therefore
+that amount ontologists there are quite a few debates about what exactly
+an ontology is and is not; it is not our intention here to either cover
+these arguments, nor to give a comprehensive overview of all the uses of
+the word.
+
+What is generally agreed is that ontologies describe a set of entities,
+in terms of the relationships between these entities, using any of a
+number of different relationships. So, for example, we can describe
+entities in terms of their class relationships -- what is true of a
+superclass is also true of all subclasses. Or we can describe the
+\emph{partonomic} relationships: the finger is part of the hand, which is
+part of the foot.
+
+An ontology is also very similar to a taxonomy; however, ontologies
+place much greater emphasis on their computational properties. This
+makes ontologies much more suitable for driving applications and code,
+although this often comes at the cost of human understandability of the
+ontology. In this document, all the ontologies we talk about are
+represented using specific language, called OWL (the Ontology Web
+Language). This has very well-defined computational properties, and
+through the document we will explore the implications of these
+properties.
+
+We also use the term "ontology" to mean a specific object that you can
+manipulate in Tawny-OWL -- similar to the way we say that you are
+reading some words now.
+

@@ -19,14 +19,22 @@ gen-src:
 test: gen-src
 	lein test
 
-publish:
-	$(WING) publish
-	cp tex/clojure.sty tex/tawny.sty exports
-	# org will publish to PDF but puts it in the wrong place
-	cd exports;pdflatex take_wing.tex;pdflatex take_wing.tex
+PDFLATEX=pdflatex -interaction=nonstopmode
+
+pdf:
+	cd latex;$(PDFLATEX) take_wing.tex;$(PDFLATEX) take_wing.tex
+
+html:
+	cd latex;htlatex "take_wing" "cf" "" "" "-interaction=nonstopmode"
+
+publish: pdf html
 
 clean:
-	- rm exports/*
+	# There really has to be a better way than this!
+	- find latex -not -name "*tex" -not -name ".gitignore" \
+		-not -name "cf.cfg" -not -name "*css" -not -name "*js" \
+		-not -name "Makefile" -not -name ".dir-locals.el" \
+		-print -exec rm {} \;
 	- rm src/take/wing/*clj
 
 -include Makefile-local

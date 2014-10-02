@@ -2,7 +2,7 @@
 (require 'linked-buffer-org)
 
 
-(defun linked-buffer-wing-clj-for-org (filename)
+(defun linked-buffer-wing-clj-for-tex (filename)
   (f-join
    (f-dirname
     (f-dirname filename))
@@ -15,14 +15,16 @@
 (defvar linked-buffer-wing-file
   (locate-library "linked-buffer-wing.el"))
 
-(defun linked-buffer-wing-init()
+(defun linked-buffer-wing-init ()
   (setq linked-buffer-config
-        (linked-buffer-org-to-clojure-new))
-  ;; reset the linked-file to the right place
-  (oset linked-buffer-config
-        :linked-file (linked-buffer-wing-clj-for-org (buffer-file-name)))
-  ;; add tawny as a source tag to treat as source
-  linked-buffer-config)
+        (linked-buffer-uncommented-block-configuration
+         "lb-commented tawny latex"
+         :this-buffer (current-buffer)
+         :linked-file
+         (linked-buffer-wing-clj-for-tex (buffer-file-name))
+         :comment ";; "
+         :comment-start "\\\\end{tawny}"
+         :comment-stop "\\\\begin{tawny}")))
 
 (add-to-list 'linked-buffer-init-functions
              'linked-buffer-wing-init)
