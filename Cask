@@ -1,10 +1,6 @@
 (source gnu)
 (source melpa)
-(source org)
 
-(depends-on "org-plus-contrib")
 (depends-on "f")
 (depends-on "linked-buffer" "0.6")
 (depends-on "commander")
-(depends-on "clojure-mode")
-(depends-on "htmlize")

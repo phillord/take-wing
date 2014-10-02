@@ -34,6 +34,7 @@ clean:
 	- find latex -not -name "*tex" -not -name ".gitignore" \
 		-not -name "cf.cfg" -not -name "*css" -not -name "*js" \
 		-not -name "Makefile" -not -name ".dir-locals.el" \
+		-not -name "*org" \
 		-print -exec rm {} \;
 	- rm src/take/wing/*clj
 
