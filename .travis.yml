@@ -11,3 +11,4 @@ env:
 script:
   - emacs --version
   - make
+  - ls -lR
