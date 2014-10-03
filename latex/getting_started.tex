@@ -1,0 +1,244 @@
+\chapter{Getting Started}
+
+\section{Environment}
+\label{sec-3}
+
+Our hope is that for structurally simple ontologies, Tawny-OWL should be
+usable by non-programmers, with a simple and straight-forward syntax.
+One area where this hope is currently not fulfilled is right at the
+start -- getting a working environment is not as simple as starting an
+application such as Protege and programming. In this section, I
+introduce the core technology and the basic environment that is needed
+to make effective use of Tawny-OWL.
+
+
+\subsection{The OWL API}
+\label{sec-3-1}
+
+Tawny-OWL is built using the \url{http://owlapi.sourceforge.net/[OWL} API].
+This library is a comprehensive tool for generating, transforming and
+using OWL Ontologies. It is widely used, and is the basis for the
+Protege 4 editor. Being based on this library, Tawny-OWL is reliable and
+standard-compliant (or at least as reliable and standard-compliant as
+Protege!). It is also easy to integrate directly with other tools
+written using the OWL API.
+
+\subsection{Clojure}
+\label{sec-3-2}
+
+Tawny-OWL is a programmatic library build on top of the Clojure
+language. Tawny-OWL takes many things from Clojure. These include:
+
+\begin{itemize}
+\item the basic syntax with parentheses and with \texttt{:keywords}
+\item the ability to effectively add new syntax
+\item the ability to extend Tawny-OWL with patterns
+\item integration with other data sources
+\item the test environment
+\item the build, dependency and deployment tools
+\end{itemize}
+
+In addition, most of the tools and environment that Tawny-OWL use to
+enable development were built for Clojure and are used directly with
+little or no additions. These include:
+
+\begin{itemize}
+\item IDEs or editors used for writing Clojure
+\item the leiningen build tool
+\end{itemize}
+
+Tawny-OWL inherits a line-orientated syntax which means that it works
+well with tools written for any programming language; most notable
+amoung these are version control systems which enable highly
+collaborative working on ontologies.
+
+Clojure is treated as a programmatic library -- the user never starts or
+runs Clojure, and there is no \texttt{clojure} command. Rather confusingly,
+this role is fulilled by Leiningen, which is the next item on the list.
+
+\subsection{Leiningen}
+\label{sec-3-3}
+
+\url{http://www.leiningen.org[Leiningen}] is a tool for working with Clojure
+projects. Given a directory structure, and some source code leiningen
+will perform many project tasks including checking, testing, releasing
+and deploying the project. In addition to these, it has two critical
+functions that every Tawny-OWL project will use: first, it manages
+dependencies, which means it will download both Tawny-OWL and Clojure;
+second, it starts a REPL which is the principle means by which the user
+will directly or indirectly interact with Tawny-OWL.
+
+\subsection{REPL}
+\label{sec-3-4}
+
+Clojure provides a REPL -- Read-Eval-Print-Loop. This is the same things
+as a shell, or command line. For instance, we can the following into a
+Clojure REPL, and it will print the return value, or 2 in this case.
+
+
+\begin{tawny}
+;; returns 2 
+(+ 1 1)
+\end{tawny}
+
+The most usual way to start a REPL is to use leiningen, which then sets
+up the appropriate libraries for the local project. For example,
+\texttt{lein repl} in the source code for this document, loads a REPL with
+Tawny-OWL pre-loaded.
+
+In practice, most people use the REPL indirectly through their IDE.
+
+\subsection{IDE or Editor}
+\label{sec-3-5}
+
+Clojure is supported by a wide variety of editors, which in turn means
+that they can be used for Tawny-OWL. The choice of an editor is a very
+personal one (I use Emacs), but in practice any good editor will work.
+
+The editor has two main roles. Firstly, as the name suggests it provides
+a rich environment for writing Tawny-OWL commands. Secondly, the IDE
+will start and interact with a REPL for you. This allows you to add or
+remove new classes and other entities to an ontology interactively.
+Tawny-OWL has been designed to take advantage of an IDE environment; in
+most cases, for example, auto-completion will happen for you.
+
+\subsection{Further Information}
+\label{sec-3-6}
+
+There are many sources of further information about Clojure which will
+be listed here.
+
+
+
+\section{Getting Started}
+\label{sec-4}
+
+In this section, we will build the most ontology and start to show the
+basic capabilities of Tawny-OWL.
+
+As described in \label{/the/environment-the-environment}, Tawny-OWL can be
+used with several different toolchains. In this section, we will run
+through the building a very simple ontology. There is an <> describing
+how to achieve each of these steps with specific tool chains.
+
+\subsection{Getting a Project}
+\label{sec-4-1}
+
+For this book, we will use a pre-rolled project -- in fact the one used
+to create this book. You can access the project data from
+\url{https://github.com/phillord/take-wing[github}], either using \texttt{git} or
+through the download option. If you wish to know how to build a project
+yourself, please read <>.
+
+A leiningen project is, essentially, a directory structure with a
+project file. The \texttt{project.clj} file for this book looks like this:
+
+\begin{clojure}
+(defproject take-wing "0.1.0-SNAPSHOT"
+  :dependencies [[uk.org.russet/tawny-owl "1.1.1-SNAPSHOT"]])
+\end{clojure}
+
+This includes three critical pieces of information. Firstly \texttt{take-wing}
+which is the name of the project. Secondly, immediately after this is a
+version number such as \texttt{0.1.0}. Finally, we have a \texttt{:dependencies} which
+includes only a single dependency to \texttt{tawny-owl} itself.
+
+
+\subsection{Starting a new ontology}
+\label{sec-4-2}
+
+It is possible to build an ontology in Tawny-OWL using almost no
+functions from Clojure, the language on which it is built; the only
+necessary exception to this is the \emph{namespace declaration}.
+
+Like most programming languages, Clojure has a namespacing mechanism.
+These are declared at the start of each file, and the namespace relates
+to the file name and location. Finally, the namespace form is also used
+to import functions from other namespaces. Here, we define a namespace
+called \texttt{take.wing.getting-started} which would be defined in a file
+\texttt{take/wing/getting\_started.clj}. Secondly, we import \texttt{tawny.owl}
+namespace which contains the core functions of Tawny-OWL.
+
+\begin{tawny}
+(ns take.wing.getting-started (:use [tawny.owl]))
+\end{tawny}
+
+Tawny-OWL also uses the namespace mechanism to define the scope of an
+ontology. In general, an ontology is defined within a single namespace,
+and each namespace defines a single ontology. A new ontology is declared
+with the \texttt{defontology} form. This also introduces a new symbol, \texttt{pizza},
+which can be used latter to refer.
+
+\begin{tawny}
+(defontology pizza)
+\end{tawny}
+
+
+\subsection{Connecting to a repl}
+\label{sec-4-3}
+
+Currently, the source for the ontology has been created, but this is not
+"live" -- for this, we must start a Clojure process and connect to it
+via a REPL and then evaluate the file. With the current contents, the
+REPL should show something like the following which is the result of
+evaluating the last form, and shows that we have defined a new symbol
+footnote:[In Clojure, it is actually a var that has been created]
+
+\begin{verbatim}
+=> #'take.wing.getting-started/pizza
+\end{verbatim}
+
+The symbol \texttt{pizza} now refers to an object live in the system. If
+evalulate \texttt{pizza}, a hopefully informative string message will be
+printed.
+
+
+\begin{verbatim}
+take.wing.getting-started> pizza
+#<OWLOntologyImpl Ontology(OntologyID(OntologyIRI(<#pizza>))) [Axioms: 0 Logical Axioms: 0]>
+\end{verbatim}
+
+
+\subsection{Creating some entities}
+\label{sec-4-4}
+
+Now we create some entities for our ontology, in this case two classes
+called \texttt{Pizza} and \texttt{MargheritaPizza}, and state that \texttt{MargheritaPizza}
+is a subclass of \texttt{Pizza}. This forms implicitly place these two terms
+
+
+\begin{tawny}
+(defclass Pizza)
+(defclass MargheritaPizza :super Pizza)
+\end{tawny}
+
+Finally, we are in a position to make a useful query against this which
+we can do using the \texttt{subclasses} function.
+
+\begin{tawny}
+(subclasses Pizza)
+\end{tawny}
+
+In a REPL session, this returns a set with one element ---
+\texttt{MargheritaPizza}. If we evaluate \texttt{pizza} (the ontology) again, we also
+see that the ontology now has a number of axioms.
+
+
+\begin{verbatim}
+(subclasses Pizza)
+#{#<OWLClassImpl <#pizza#MargheritaPizza>>}
+take.wing.getting-started> pizza
+=> #<OWLOntologyImpl Ontology(OntologyID(OntologyIRI(<#pizza>))) [Axioms: 5 Logical Axioms: 1]>
+\end{verbatim}
+
+
+\subsection{Summary}
+\label{sec-4-5}
+
+In this section, we have outlined the basic tasks that are needed to
+build ontologies with Tawny-OWL: creating a project, creating an
+ontology, creating some entities. We have also started to show how to
+use and query over them. In the next section, we will build this
+ontology in full, using it to demonstrate many parts of Tawny-OWL and
+OWL ontologies in general.
+
