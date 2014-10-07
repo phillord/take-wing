@@ -29,4 +29,6 @@
 (add-to-list 'linked-buffer-init-functions
              'linked-buffer-wing-init)
 
+(add-to-list 'LaTeX-indent-environment-list
+             '("tawny" current-indentation))
 (provide 'linked-buffer-wing)
