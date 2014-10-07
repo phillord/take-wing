@@ -25,7 +25,7 @@ pdf:
 	cd latex;$(PDFLATEX) take_wing.tex;$(PDFLATEX) take_wing.tex
 
 html:
-	cd latex;htlatex "take_wing" "cf" "" "" "-interaction=nonstopmode"
+	cd latex;htlatex "take_wing" "cf,fn-in" "" "" "-interaction=nonstopmode"
 
 publish: pdf html
 
@@ -36,6 +36,8 @@ clean:
 		-not -name "Makefile" -not -name ".dir-locals.el" \
 		-not -name "*org" -not -name "*sty" \
 		-print -exec rm {} \;
+	- rm latex/_region_*
+	- rm latex/_buffer_*
 	- rm src/take/wing/*clj
 
 -include Makefile-local
