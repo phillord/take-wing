@@ -1,17 +1,20 @@
 
-\section{The Pizza Ontology}
+\chapter{The Pizza Ontology}
 \label{sec-5}
 
-\subsection{Introduction}
+\section{Introduction}
 \label{sec-5-1}
 
 In this section, we will create a Pizza ontology; we choose pizzas because
-they are simple, well-understood and compositional (see \href{http://robertdavidstevens.wordpress.com/2010/01/22/why-the-pizza-ontology-tutorial/}{here} for more).
+they are simple, well-understood and compositional (see
+\href{http://robertdavidstevens.wordpress.com/2010/01/22/why-the-pizza-ontology-tutorial/}{here}
+for more).
 
-We have described ontologies more abstractly \hyperref[what_is_an_ontology]{earlier}. More concretely, in this
-book, an ontology is a computational object, which can contain a number of
-different objects. These objects can be of several different kinds. The most
-(and least!) important of these are \emph{individuals}. We say that these are the
+We have described ontologies more abstractly
+\hyperref[what_is_an_ontology]{earlier}. More concretely, in this book, an
+ontology is a computational object, which can contain a number of different
+objects. These objects can be of several different kinds. The most (and
+least!) important of these are \emph{individuals}. We say that these are the
 most important because it is these individuals that are described and
 constrained by the other objects. We say that they are the least important
 because, in practice, many ontologies do not explicitly describe any
@@ -37,22 +40,18 @@ entities but in most cases focus on classes.
 
 
 
-\subsection{Defining Classes}
+\section{Defining Classes}
 \label{sec-5-2}
 
 We start with a namespace form. This declaration is slightly different from
-that given in \hyperref[sec-4]{Getting Started}; it includes a \verb~:use~ statement for
-\verb~tawny.english~. We 
-
-
-
-and a statement declaring a new ontology. First, consider the syntax of
-this example, because it is shared by all statements in Tawny-OWL. All
-expresions in Clojure are delimited by \verb~(~ and \verb~)~ and Tawny-OWL follows
-this rule. Next, we have a name for the object we wish to create -- in
-this case an new ontology. This starts with \verb~def~ to indicate that we
-also want to create a new symbol which we can use to refer to this
-entity later.
+that given in \hyperref[sec-4]{Getting Started}; it includes a \verb~:use~
+statement for \verb~tawny.english~ and a statement declaring a new ontology.
+First, consider the syntax of this example, because it is shared by all
+statements in Tawny-OWL. All expresions in Clojure are delimited by \verb~(~
+and \verb~)~ and Tawny-OWL follows this rule. Next, we have a name for the
+object we wish to create -- in this case an new ontology. This starts with
+\verb~def~ to indicate that we also want to create a new symbol which we can
+use to refer to this entity later.
 
 Finally, come a set of arguments, introduced with \emph{keywords}. These all
 end with a \verb~:~. In this case, \verb~:iri~ introduces the main IRI for this
@@ -62,7 +61,8 @@ the actual value of that argument.
 \begin{tawny}
 (ns take.wing.the-pizza-ontology
   (:use [tawny.owl]
-	[tawny.english])
+	[tawny.english]
+        [tawny.reasoner])
   (:refer-clojure :only []))
 
 (defontology pizza :iri "http://purl.org/ontolink/take-wing/pizza")
@@ -188,7 +188,7 @@ ontology also.
 We now have the basic classes that we need to describe a pizza.
 
 
-\subsection{Properties}
+\section{Properties}
 \label{sec-5-3}
 
 Now, we wish to describe more about \verb~Pizza~; in particular, we want to say
@@ -254,7 +254,8 @@ which we define in Tawny-OWL as follows:
 
 
 First, we consider sub-properties, which are fairly analogous to sub-classes.
-For example, if two individuals \verb~i~ and \verb~j~ are related so that \verb~i hasTopping j~, then it is also true that \verb~i hasComponent j~.
+For example, if two individuals \verb~i~ and \verb~j~ are related so that
+\verb~i hasTopping j~, then it is also true that \verb~i hasComponent j~.
 
 Domain and range constraints describe the kind of entity that be at either end
 of the property. So, for example, considering \verb~hasTopping~, we say that the
@@ -267,7 +268,7 @@ means means that there can be only one of these, so an individual has only a
 single base.
 
 
-\subsection{Populating the Ontology}
+\section{Populating the Ontology}
 \label{sec-5-4}
 
 We now have enough expressivity to describe quite a lot about pizzas. So, we
@@ -338,7 +339,7 @@ we have only put a single example.
  (defclass PepperoniTopping))
 \end{tawny}
 
-\subsection{Describing a Pizza}
+\section{Describing a Pizza}
 \label{sec-5-5}
 
 And, now finally, we have the basic concepts that we need to build a pizza.
@@ -424,7 +425,7 @@ culinary disasters which this book implies really are pizza.}.
   (some hasTopping HamTopping)
   (some hasTopping PineappleTopping)
   (only hasTopping
-	(or MozzarellaTopping TomatoTopping HamTopping PineappleTopping)))
+        (or MozzarellaTopping TomatoTopping HamTopping PineappleTopping)))
 \end{tawny}
 
 We can now check that this works as expected by using the \verb~subclass?~ and
@@ -438,7 +439,7 @@ take.wing.the-pizza-ontology> (subclasses Pizza)
   #<OWLClassImpl <http://purl.org/ontolink/take-wing/pizza#MargheritaPizza>>}
 \end{verbatim}
 
-\subsection{A simple pattern}
+\section{A simple pattern}
 \label{sec-5-6}
 
 The last definition is rather unsatisfying for two reasons. Firstly, the
@@ -455,7 +456,7 @@ number of classes. We use this feature to shorten the definition of
   :super
   Pizza
   (some hasTopping MozzarellaTopping
-	TomatoTopping PepperoniTopping)
+        TomatoTopping PepperoniTopping)
   (only hasTopping (or MozzarellaTopping TomatoTopping PepperoniTopping)))
 \end{tawny}
 
@@ -473,7 +474,7 @@ the next pizza.
   :super
   Pizza
   (some-only hasTopping MozzarellaTopping TomatoTopping
-	     PepperoniTopping ChilliPepperTopping))
+             PepperoniTopping ChilliPepperTopping))
 \end{tawny}
 
 The \verb~some-only~ function is Tawny-OWL's implementation of the \emph{closure} axiom.
@@ -484,7 +485,7 @@ we will see how to exploit the programmatic nature of Tawny-OWL to build
 arbitrary new patterns for yourself.
 
 
-\subsection{Defined Classes}
+\section{Defined Classes}
 \label{sec-5-7}
 \label{defined}
 
@@ -504,19 +505,95 @@ reasoning. Let us try a simple example:
   :equivalent
   (and Pizza
        (only hasTopping
-	     (not (or MeatTopping FishTopping)))))
+             (not (or MeatTopping FishTopping)))))
 \end{tawny}
 
-Here, we define a \verb~VegetarianPizza~ as a \verb~Pizza~ with only \verb~MeatTopping~ or
-\verb~FishTopping~.
+Here, we define a \verb~VegetarianPizza~ as a \verb~Pizza~ with only
+\verb~MeatTopping~ or \verb~FishTopping~. The two key point about this
+definition is that we have marked it as |:equivalent| rather than |:super| and
+that there is no stated relationship between |VegetarianPizza| and
+|MargheritaPizza|. We can confirm this at the shell. 
 
 
-\subsection{{\bfseries\sffamily TODO} }
-\label{sec-5-8}
+\begin{verbatim}
+(subclasses VegetarianPizza)
+=> #{}
+(subclass? VegetarianPizza MargheritaPizza)
+=> false
+\end{verbatim}
+
+However, now let us ask the same question of a reasoner. First, we choose a
+reasoner to use (in this case HermiT), and then ask the same questions of
+Tawny-OWL but now using the versions of functions prefixed with an |i| (for
+inferred). Now, we see a different result. A |MargheritaPizza| is a subclass
+of |VegetarianPizza|.
+
+\begin{verbatim}
+(reasoner-factory :hermit)
+=> #<ReasonerFactory org.semanticweb.HermiT.Reasoner$ReasonerFactory@4b8a8782>
+(isubclasses VegetarianPizza)
+=> #{#<OWLClassImpl <http://purl.org/ontolink/take-wing/pizza#MargheritaPizza>>}
+(isubclass? VegetarianPizza MargheritaPizza)
+=> true
+\end{verbatim}
+
+The reasoner can infer this using the following chain of logic:
 
 \begin{itemize}
-\item Then move onto defined classes -- also including and/or/not
-\item Then add in reasoners
-\item Then stop
+\item |MargheritaPizza| has only |MozzarellaTopping| or |TomatoTopping|
+\item |MozzarellaTopping| is a |CheeseTopping|
+\item |TomatoTopping| is a |VegetableTopping|
+\item |CheeseTopping| is disjoint from |MeatTopping| and |FishTopping|
+\item Likewise, |TomatoTopping| is not a |MeatTopping| or |FishTopping|
+\item Therefore, |MargheritaPizza| has only toppings which are not
+  |MeatTopping| or |FishTopping|.
+\item A |VegetarianPizza| is any |Pizza| which has only toppings which are not
+  |MeatTopping| or |FishTopping|.
+\item So, a |MargheritaPizza| is a |VegetarianPizza|.
+\end{itemize}
+
+Even for this example, the chain of logic that we need to draw our inference
+is quite long. The version of the pizza ontology presented here is quite
+small, so while we can follow and reproduce this inference easily by hand for
+this ontology, for a larger ontology it would be a lot harder, especially,
+when we start to make greater use of the expressivity of OWL.
+
+Many of the statements that we have made about pizza's are needed to make this
+inference. For example, if we had not added |:disjoint:| to the subclasses of
+|PizzaTopping|, we could not make this inference; even though we would know
+that, for example, a |MozzarellaTopping| was a |CheeseTopping|, by default,
+the reasoner would not assume that |CheeseTopping| was not a |MeatTopping|,
+since these two could overlap. There are also some statements in the ontology
+that we do not use to make this inference. For example, the reasoner does not
+need to know that a |MargheritaPizza| actually has a |MozzarellaTopping| (the
+statement |(some hasTopping MozzarellaTopping)|, just that if the pizza has
+toppings at all, they are only mozzarella or tomato. The semantics of OWL can
+be subtle, but allow us to draw extremely powerful conclusions.
+
+
+\section{Recap}
+
+In this chapter, we have described:
+
+\begin{itemize}
+\item The basic syntax of Tawny-OWL
+\item New ontologies are created with |defontology|
+\item Ontologies consist of classes and properties
+\item Classes describe a set of individuals
+\item Properties describe relationships between individuals
+\item Defined classes allow us to make inferences using comptutational
+  reasoning.
+\end{itemize}
+
+In addition, we have introduced the following semantic statements:
+\begin{itemize}
+\item Subclass relationships
+\item Disjoint classes
+\item Covering axioms
+\item Inverse properties
+\item Domain and range constraints
+\item Functional characteristics
+\item |some| and |only| restrictions, and the |some-only| pattern
+\item |or| and |not| restrictions
 \end{itemize}
 

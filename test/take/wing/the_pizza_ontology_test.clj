@@ -26,3 +26,10 @@
       (clojure.set/difference
        #{p/HawaiianPizza p/MargheritaPizza}
        (o/subclasses p/Pizza)))))
+
+
+(deftest marg-veggie
+  (is
+   (not
+    (o/subclass? p/VegetarianPizza p/MargheritaPizza)))
+  )
