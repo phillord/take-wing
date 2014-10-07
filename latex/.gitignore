@@ -2,6 +2,6 @@
 
 !*.tex
 !*.sty
-!tawny.css
+!prism-tawny.css
 !*.js
 !*.org
