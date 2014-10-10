@@ -1,14 +1,16 @@
 # take-wing
 
-A Clojure library designed to ... well, that part is up to you.
+This is a manual for the http://github.com/phillord/tawny-owl project.
 
-## Usage
+It is hosted at
+http://homepages.cs.ncl.ac.uk/phillip.lord/take-wing/take_wing.html.
 
-FIXME
 
-## License
 
-Copyright © 2014 FIXME
+# Building
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+To build, you need LaTeX, htlatex, Emacs, Cask and leiningen (to run the
+tests) and then run make. Probably easier to read the web page.
+
+
+
