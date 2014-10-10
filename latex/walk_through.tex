@@ -1,0 +1,234 @@
+
+\chapter{A Rapid Walk-Through}
+\label{cha:rapid-walk-through}
+
+We take a rapid walk-through an ontology to demonstrate the capabilities of
+Tawny-OWL. As with all the examples in this book, the code in this chapter is
+complete, therefore, we need to start with a preamble, defining a namespace
+and performing some imports.
+
+\begin{tawny}
+(ns take.wing.walk-through
+  (:refer-clojure :only [])
+  (:use [tawny.owl]
+        [tawny.english]
+        [tawny.reasoner]))
+\end{tawny}
+
+As we discussed in Section~\ref{what_is_an_ontology}, the word ontology has
+quite a few different meaning, but here we use it to mean a specific
+computational object; so, before, we do anything else, we start a new empty
+ontology, which we call |walk_through|; as it happens, we do not need to refer
+to this object again because it is now set as the default for the rest of this
+chapter. We also take the opportunity to set our choice of reasoner, in this
+case HermiT. We will see later how we use this.
+
+\begin{tawny}
+(defontology walk_through)
+
+(reasoner-factory :hermit)
+\end{tawny}
+
+Ontologies are all about classes, so we now define two classes one called
+|Book| and one called |TakeWing| which is a subclass of |Book|~\footnote{One
+  of the joys of ontology development is that the ontology development
+  community is rich with arguments about the correct way to model things.
+  Even, with relatively simple models it is easy to hit these arguments and,
+  in fact, we have done so here already. There is a strong argument to say
+  that \lstinline{TakeWing} is actually an instance of \lstinline{Book} rather
+  than a subclass, because there is only one of them. Or, that
+  \lstinline{TakeWing} is a class because there are many copies of \lstinline{TakeWing}.
+  Or, that it's a metaclass, because sometimes it operates like a class and
+  sometimes an individual. In this book, we try to touch on these arguments,
+  but not get weighed down by them}. Anything that is true of |Book| must also
+be true of |TakeWing|.
+
+\begin{tawny}
+(defclass Book)
+
+(defclass TakeWing
+  :super Book)
+\end{tawny}
+
+Of course, this does not tell us much about |TakeWing| as a book. There are
+many properties of books, but one of the most informative is the subject of
+the book. So, we define a new class of |Subject| and introduce a property
+|about| which we use to relate books and subjects~\footnote{Strictly, an
+  \emph{object property}, hence the ``o''. We describe these more fully
+  later}.
+
+\begin{tawny}
+(defclass Subject)
+
+(defoproperty about)
+\end{tawny}
+
+Now, we need some subject listings. Of course, there are many of these in
+existence already, and Tawny-OWL is fully capable of reusing one of these;
+however, for this simple example, it is not necessary, so we define a small
+classification of our own. We describe |Bird| and |Ontology| as subclasses of
+|Subject| and say that they are different (|:disjoint|) and do not overlap. We
+also describe |TawnyOWL| as part of the |Ontology| subject.
+
+\begin{tawny}
+(as-subclasses
+ Subject
+ :disjoint
+ (defclass Bird)
+ (defclass Ontology))
+
+(defclass TawnyOWL
+  :super Ontology)
+\end{tawny}
+
+We can now make some basic queries against the statements that we have made to
+make sure that they all make sense.
+
+
+\begin{tawny}
+(subclasses Book)
+;;=> #{#<OWLClassImpl <bc33d2c3-7ecb-413c-bb04-83af2295c465#walk_through#TakeWing>>}
+(subclass? Book TakeWing)
+;;=> true
+(subclass? Subject TawnyOWL)
+;;=> true
+\end{tawny}
+
+
+\begin{tawny}
+
+(class
+ TakeWing
+ :super
+ Book
+ (some-only about TawnyOWL))
+(defclass
+ OntologyBook
+ :equivalent
+ (and Book
+      (some about Ontology)))
+
+(defclass NonBirdBook
+  :equivalent
+  (and Book
+       (not (some about Bird))))
+
+
+(subclasses NonBirdBook)
+;;=> #{}
+
+(isubclasses OntologyBook)
+;;=> #{#<OWLClassImpl <bc33d2c3-7ecb-413c-bb04-83af2295c465#walk_through#TakeWing>>}
+
+(isubclasses NonBirdBook)
+;;=> #{#<OWLClassImpl <bc33d2c3-7ecb-413c-bb04-83af2295c465#walk_through#TakeWing>>}
+\end{tawny}
+
+
+
+\section{Environment}
+\label{sec-3}
+
+Our hope is that for structurally simple ontologies, Tawny-OWL should be
+usable by non-programmers, with a simple and straight-forward syntax.
+One area where this hope is currently not fulfilled is right at the
+start -- getting a working environment is not as simple as starting an
+application such as Protege and programming. In this section, I
+introduce the core technology and the basic environment that is needed
+to make effective use of Tawny-OWL.
+
+
+\subsection{The OWL API}
+\label{sec-3-1}
+
+Tawny-OWL is built using the \url{http://owlapi.sourceforge.net/[OWL} API].
+This library is a comprehensive tool for generating, transforming and
+using OWL Ontologies. It is widely used, and is the basis for the
+Protege 4 editor. Being based on this library, Tawny-OWL is reliable and
+standard-compliant (or at least as reliable and standard-compliant as
+Protege!). It is also easy to integrate directly with other tools
+written using the OWL API.
+
+\subsection{Clojure}
+\label{sec-3-2}
+
+Tawny-OWL is a programmatic library build on top of the Clojure
+language. Tawny-OWL takes many things from Clojure. These include:
+
+\begin{itemize}
+\item the basic syntax with parentheses and with \texttt{:keywords}
+\item the ability to effectively add new syntax
+\item the ability to extend Tawny-OWL with patterns
+\item integration with other data sources
+\item the test environment
+\item the build, dependency and deployment tools
+\end{itemize}
+
+In addition, most of the tools and environment that Tawny-OWL use to
+enable development were built for Clojure and are used directly with
+little or no additions. These include:
+
+\begin{itemize}
+\item IDEs or editors used for writing Clojure
+\item the leiningen build tool
+\end{itemize}
+
+Tawny-OWL inherits a line-orientated syntax which means that it works
+well with tools written for any programming language; most notable
+amoung these are version control systems which enable highly
+collaborative working on ontologies.
+
+Clojure is treated as a programmatic library -- the user never starts or
+runs Clojure, and there is no \texttt{clojure} command. Rather confusingly,
+this role is fulilled by Leiningen, which is the next item on the list.
+
+\subsection{Leiningen}
+\label{sec-3-3}
+
+\url{http://www.leiningen.org[Leiningen}] is a tool for working with Clojure
+projects. Given a directory structure, and some source code leiningen
+will perform many project tasks including checking, testing, releasing
+and deploying the project. In addition to these, it has two critical
+functions that every Tawny-OWL project will use: first, it manages
+dependencies, which means it will download both Tawny-OWL and Clojure;
+second, it starts a REPL which is the principle means by which the user
+will directly or indirectly interact with Tawny-OWL.
+
+\subsection{REPL}
+\label{sec-3-4}
+
+Clojure provides a REPL -- Read-Eval-Print-Loop. This is the same things
+as a shell, or command line. For instance, we can the following into a
+Clojure REPL, and it will print the return value, or 2 in this case.
+
+
+\begin{tawny}
+;; returns 2 
+(+ 1 1)
+\end{tawny}
+
+The most usual way to start a REPL is to use leiningen, which then sets
+up the appropriate libraries for the local project. For example,
+\texttt{lein repl} in the source code for this document, loads a REPL with
+Tawny-OWL pre-loaded.
+
+In practice, most people use the REPL indirectly through their IDE.
+
+\subsection{IDE or Editor}
+\label{sec-3-5}
+
+Clojure is supported by a wide variety of editors, which in turn means
+that they can be used for Tawny-OWL. The choice of an editor is a very
+personal one (I use Emacs), but in practice any good editor will work.
+
+The editor has two main roles. Firstly, as the name suggests it provides
+a rich environment for writing Tawny-OWL commands. Secondly, the IDE
+will start and interact with a REPL for you. This allows you to add or
+remove new classes and other entities to an ontology interactively.
+Tawny-OWL has been designed to take advantage of an IDE environment; in
+most cases, for example, auto-completion will happen for you.
+
+
+
+
+
