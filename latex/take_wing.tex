@@ -1,12 +1,17 @@
 \documentclass[11pt]{book}
 
-\usepackage{tawny}
+\usepackage{makeidx}
 \usepackage{hyperref}
 
 \usepackage{tawny}
 \lstnewenvironment{tawny}{\lstset{style=tawnystyle}}{}
 \lstnewenvironment{clojure}{\lstset{style=clojurestyle}}{}
 \lstMakeShortInline[style=clojurestyle]|
+%% syntax highlights the same, but does remains commented in Clojure form.
+\lstnewenvironment{tawnyexample}{\lstset{style=tawnystyle}}{}
+
+
+\makeindex
 
 \author{Phillip Lord}
 
@@ -21,13 +26,18 @@
 \include{introduction}
 \include{walk_through}
 \include{the_pizza_ontology}
+\include{amino_acid}
+\include{identifiers}
+
 
 %% Appendix
-\include{getting_started}
+%%\include{getting_started}
+%% \include{appendix}
 
-\include{appendix}
+\bibliographystyle{plain}
+\bibliography{phil_lord_refs}
 
-\include{test}
-
+%% No point having this yet
+%% \printindex
 
 \end{document}

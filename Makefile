@@ -1,6 +1,7 @@
 CASK=cask
 EMACS=emacs
-WING=$(CASK) exec emacs --debug --script script/build.el --
+CASKRUN=$(CASK) exec emacs --debug --script
+WING=$(CASKRUN) script/build.el --
 
 all: gen-src test publish
 
@@ -13,7 +14,7 @@ install:
 	$(CASK) install
 
 ## at the moment, this breaks where
-gen-src:
+gen-src: install
 	$(WING) gen-src
 
 test: gen-src
@@ -24,10 +25,15 @@ PDFLATEX=pdflatex -interaction=nonstopmode
 pdf:
 	cd latex;$(PDFLATEX) take_wing.tex;$(PDFLATEX) take_wing.tex
 
-html:
+html: gen-html
+
+gen-html:
 	cd latex;htlatex "take_wing" "cf,fn-in" "" "" "-interaction=nonstopmode"
 
-publish: pdf html
+fixup-html:
+	$(CASKRUN) script/fixup.el
+
+publish: pdf html fixup-html
 
 clean:
 	# There really has to be a better way than this!
@@ -36,6 +42,7 @@ clean:
 		-not -name "Makefile" -not -name ".dir-locals.el" \
 		-not -name "*org" -not -name "*sty" \
 		-print -exec rm {} \;
+	- rm latex/take_wing.css
 	- rm latex/_region_*
 	- rm latex/_buffer_*
 	- rm src/take/wing/*clj

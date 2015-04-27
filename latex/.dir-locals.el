@@ -1,1 +1,3 @@
-((latex-mode . ((linked-buffer-init . linked-buffer-wing-init))))
+((latex-mode . ((lentic-init . lentic-wing-init)
+                (TeX-master . "take_wing.tex")
+                )))

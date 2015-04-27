@@ -2,6 +2,9 @@
 \chapter{A Rapid Walk-Through}
 \label{cha:rapid-walk-through}
 
+\section{A Taster}
+\label{sec:taster}
+
 We take a rapid walk-through an ontology to demonstrate the capabilities of
 Tawny-OWL. As with all the examples in this book, the code in this chapter is
 complete, therefore, we need to start with a preamble, defining a namespace
@@ -24,7 +27,8 @@ chapter. We also take the opportunity to set our choice of reasoner, in this
 case HermiT. We will see later how we use this.
 
 \begin{tawny}
-(defontology walk_through)
+(defontology walk_through
+  :iri "http://purl.org/ontolink/walk_through")
 
 (reasoner-factory :hermit)
 \end{tawny}
@@ -82,75 +86,143 @@ also describe |TawnyOWL| as part of the |Ontology| subject.
 \end{tawny}
 
 We can now make some basic queries against the statements that we have made to
-make sure that they all make sense.
-
+make sure that they all make sense. So, for example, the |subclasses| function
+lists all of the subclasses of |Book|, or we can use the predicate function
+|subclass?|. On its own this functionality is enough to build a simple
+hierarchy.
 
 \begin{tawny}
 (subclasses Book)
-;;=> #{#<OWLClassImpl <bc33d2c3-7ecb-413c-bb04-83af2295c465#walk_through#TakeWing>>}
+;;=> #{#<OWLClassImpl <http://purl.org/ontolink/walk_through#TakeWing>>}
 (subclass? Book TakeWing)
 ;;=> true
 (subclass? Subject TawnyOWL)
 ;;=> true
 \end{tawny}
 
+However, the functionality of OWL allows much richer statements than this. We
+can extend the existing definition of |TakeWing| and state that it is a book
+that is about |TawnyOWL| and only about |TawnyOWL|.
 
 \begin{tawny}
-
 (class
  TakeWing
  :super
- Book
  (some-only about TawnyOWL))
+\end{tawny}
+
+Now, we can build some \emph{defined} classes. We describe an |OntologyBook|
+as a |Book| which is about |Ontology|.
+
+\begin{tawny}
 (defclass
  OntologyBook
  :equivalent
  (and Book
       (some about Ontology)))
+\end{tawny}
 
+There are two critical points about this definition. The first is that we had
+said nothing at all about the relationship between this class and |TakeWing|.
+We can confirm this by asking about the |subclasses| of |OntologyBook|, and
+showing that our ontology knows of no ontology books.
+
+\begin{tawny}
+(subclasses OntologyBook)
+;;=> #{}
+\end{tawny}
+
+However, this is not quite true. The second critical part of the definition,
+the use of |:equivalent|. This allows us to use \emph{reasoning} to infer
+other subclasses. For this we use the |isubclasses| method instead and find
+that |TakeWing| can be infered to be an |OntologyBook|.
+
+\begin{tawny}
+(isubclasses OntologyBook)
+;;=> #{#<OWLClassImpl <http://purl.org/ontolink/walk_through#TakeWing>>}
+\end{tawny}
+
+We can infer that |TakeWing| is a subclass of |OntologyBook| because we have
+said that an ontology book is one about ontologies and that this book is about
+Tawny-OWL which is sub-topic of ontologies. Even in this simple example, we
+need to put together a number of facts to draw this conclusion.
+
+In this case, though, there is some apparent similarity between the definition
+of |OntologyBook| and |TakeWing| -- both of them are look relatively similar,
+at least once we substitute |Ontology| for |TawnyOWL| in the definition of
+|TakeWing|. Our computational reasoner, however, does not work in this way,
+and can draw conclusions even when this similarity does not exist. Consider
+this example where we describe books which are not about birds.
+
+\begin{tawny}
 (defclass NonBirdBook
   :equivalent
   (and Book
        (not (some about Bird))))
 
-
 (subclasses NonBirdBook)
 ;;=> #{}
 
-(isubclasses OntologyBook)
-;;=> #{#<OWLClassImpl <bc33d2c3-7ecb-413c-bb04-83af2295c465#walk_through#TakeWing>>}
-
 (isubclasses NonBirdBook)
-;;=> #{#<OWLClassImpl <bc33d2c3-7ecb-413c-bb04-83af2295c465#walk_through#TakeWing>>}
+;;=> #{#<OWLClassImpl <http://purl.org/ontolink/walk_through#TakeWing>>}
 \end{tawny}
 
+Here too, we can classify |TakeWing|. The chain of logic in this case is that
+|TakeWing| is about |Ontology|, that |Ontology| is different from |Bird|, and
+that, therefore, |TakeWing| is not about |Bird| which makes it a |NonBirdBook|.
+
+This ability to infer new knowledge is the meat and drink of computational
+ontologies. They allow a rich description of the environment with a tightly
+defined semantics which makes that environment comptutationally accessible.
+Here, we have only touched on the expressivity of OWL -- there are many
+constructs that we have not shown yet. We have also used this for only for a
+small ontology, but as the ontologies grow larger, the value increases.
+
+For existing ontology developers, this will familiar ground. Tawny-OWL,
+however, brings something new to other mechanisms for developing ontologies;
+that is a fully programmatic environment. As well as the ability to automate
+any part of ontology development that we choose, this also brings a rich set
+of highly-developed tools that programmers have been developing and using for
+many years to develop software in a repeatable, scalable and
+highly-collaborative way. It is this which we explore next.
 
 
 \section{Environment}
-\label{sec-3}
+\label{sec:environment}
+
+Tawny-OWL takes a different approach to other ontology development
+environments. It is not an application, it is just a programmatic
+library\footnote{Sort of. In other environments, we have argued that Tawny-OWL
+  is an textual application rather than a programmatic library. In reality, it
+is a bit of both: it is a library which is designed with development rather
+than manipulation of ontologies as its primary purpose. For the latter, we
+would have done things rather differently.}. This has a
+key advantage over a more traditional ontology editor; rather than providing
+a complete environment, Tawny-OWL just recasts ontology development as a form
+of software development and borrows its entire environment from software
+development. This means we can reuse the software engineering environment; our
+experience is that the richness and maturity of software development tools far
+outweights any loss of specificity to ontology development.
 
 Our hope is that for structurally simple ontologies, Tawny-OWL should be
-usable by non-programmers, with a simple and straight-forward syntax.
-One area where this hope is currently not fulfilled is right at the
-start -- getting a working environment is not as simple as starting an
-application such as Protege and programming. In this section, I
-introduce the core technology and the basic environment that is needed
-to make effective use of Tawny-OWL.
+usable by non-programmers, with a simple and straight-forward syntax. In this
+section, we introduce the core technology and the basic environment that is
+needed to make effective use of Tawny-OWL, as well as some optional extras.
 
 
 \subsection{The OWL API}
-\label{sec-3-1}
+\label{sec:owl-api}
 
 Tawny-OWL is built using the \url{http://owlapi.sourceforge.net/[OWL} API].
-This library is a comprehensive tool for generating, transforming and
-using OWL Ontologies. It is widely used, and is the basis for the
-Protege 4 editor. Being based on this library, Tawny-OWL is reliable and
-standard-compliant (or at least as reliable and standard-compliant as
-Protege!). It is also easy to integrate directly with other tools
-written using the OWL API.
+This library is a comprehensive tool for generating, transforming and using
+OWL Ontologies. It is widely used, and is the basis for the Protege 4
+editor\cite{greycite2912}. Being based on this library, Tawny-OWL is reliable
+and standard-compliant (or at least as reliable and standard-compliant as
+Protege!). It is also easy to integrate directly with other tools written
+using the OWL API, include Protege.
 
 \subsection{Clojure}
-\label{sec-3-2}
+\label{sec:clojure}
 
 Tawny-OWL is a programmatic library build on top of the Clojure
 language. Tawny-OWL takes many things from Clojure. These include:
@@ -183,7 +255,7 @@ runs Clojure, and there is no \texttt{clojure} command. Rather confusingly,
 this role is fulilled by Leiningen, which is the next item on the list.
 
 \subsection{Leiningen}
-\label{sec-3-3}
+\label{sec:leiningen}
 
 \url{http://www.leiningen.org[Leiningen}] is a tool for working with Clojure
 projects. Given a directory structure, and some source code leiningen
@@ -195,7 +267,7 @@ second, it starts a REPL which is the principle means by which the user
 will directly or indirectly interact with Tawny-OWL.
 
 \subsection{REPL}
-\label{sec-3-4}
+\label{sec:repl}
 
 Clojure provides a REPL -- Read-Eval-Print-Loop. This is the same things
 as a shell, or command line. For instance, we can the following into a
@@ -215,7 +287,7 @@ Tawny-OWL pre-loaded.
 In practice, most people use the REPL indirectly through their IDE.
 
 \subsection{IDE or Editor}
-\label{sec-3-5}
+\label{sec:ide-or-editor}
 
 Clojure is supported by a wide variety of editors, which in turn means
 that they can be used for Tawny-OWL. The choice of an editor is a very
@@ -228,7 +300,42 @@ remove new classes and other entities to an ontology interactively.
 Tawny-OWL has been designed to take advantage of an IDE environment; in
 most cases, for example, auto-completion will happen for you.
 
+\subsection{Testing}
+\label{sec:testing}
 
+Tawny-OWL can use any of the testing enviroments that come with Clojure,
+including |clojure.test| which is the most basic environment provided with
+Clojure. This integrates well with both leiningen or an IDE both of which will
+run tests for you and report on test cases.
+
+\subsection{Version Control and Collaboration}
+\label{sec:vers-contr-coll}
+
+Most ontologies are developed by many people, so some form of collaboration
+support is needed. In general, with Tawny-OWL we achieve this in the same way
+that programmers do; rather than providing a collaborative environment where
+multiple people can edit the environment at the same time, we use version
+control where different developers use slightly different versions of the
+ontology, and then merge them together at the end. This works well with
+Tawny-OWL as it has an attractive, line-orientated syntax. The various version
+control tools can scale easily to thousands of developers which is well in
+excess of most ontology projects. For this purpose, we use |git|.
+
+\subsection{Continuous Integration}
+\label{sec:cont-integr}
+
+An ontology can be \emph{continuously integrated} with both other ontologies
+that it depends on, and with the software environment which uses it. Unlike
+other ontology continuous integration systems, Tawny-OWL is just a library --
+so anything that works with Clojure (or more abstractly a Java Virtual
+Machine) will also work with Tawny-OWL.
+
+\section{Recap}
+\label{sec:recap}
+
+In this Chapter, we have built a small basic ontology which non-the-less shows
+the computational power of OWL ontologies, while surveying the advantages that
+Tawny-OWL brings as a development environment for ontologies.
 
 
 
