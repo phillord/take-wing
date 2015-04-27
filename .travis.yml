@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get install texlive-latex-recommended tex4ht
   - cask
 env:
-  - EVM_EMACS=emacs-24.3-bin
+  - EVM_EMACS=emacs-24.4-bin
 script:
   - emacs --version
   - make
