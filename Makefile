@@ -1,6 +1,9 @@
 CASK=cask
-EMACS=emacs
-CASKRUN=$(CASK) exec emacs --debug --script
+ifdef EMACS
+EMACS_ENV=EMACS=$(EMACS)
+endif
+
+CASKRUN=$(EMACS_ENV) $(CASK) emacs --debug --script
 WING=$(CASKRUN) script/build.el --
 
 all: gen-src test publish
@@ -11,10 +14,11 @@ really-all: install all
 
 
 install:
-	$(CASK) install
+	$(EMACS_ENV) $(CASK) install
 
 ## at the moment, this breaks where
 gen-src: install
+	$(EMACS_ENV) $(CASK) emacs --version
 	$(WING) gen-src
 
 test: gen-src

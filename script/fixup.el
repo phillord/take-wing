@@ -1,9 +1,9 @@
 ;; -*- lexical-binding: t -*-
 (require 'm-buffer)
-
+(require 'dash)
 
 (defun select-stop-for-start (starts stops)
-  (-map
+  (seq-map
    (lambda (start)
      (setq stops
            (-drop-while
@@ -29,9 +29,9 @@
                           (regexp-quote "</code>"))))
         (real-stops
          (select-stop-for-start starts stops)))
-    (-map
+    (seq-map
      (lambda (replacements)
-       (-map
+       (seq-map
         (lambda (pair)
           (m-buffer-replace-match
            (m-buffer-match

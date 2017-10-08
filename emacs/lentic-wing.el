@@ -16,7 +16,7 @@
   (locate-library "lentic-wing.el"))
 
 (defun lentic-wing-init ()
-  (lentic-uncommented-block-configuration
+  (lentic-uncommented-chunk-configuration
    "lb-commented tawny latex"
    :this-buffer (current-buffer)
    :lentic-file
