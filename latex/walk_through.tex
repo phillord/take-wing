@@ -93,7 +93,7 @@ hierarchy.
 
 \begin{tawny}
 (subclasses Book)
-;;=> #{#<OWLClassImpl <http://purl.org/ontolink/walk_through#TakeWing>>}
+;; => #{#[Class 0x660b9d1 "TakeWing"@en]}
 (subclass? Book TakeWing)
 ;;=> true
 (subclass? Subject TawnyOWL)
@@ -139,7 +139,7 @@ that |TakeWing| can be infered to be an |OntologyBook|.
 
 \begin{tawny}
 (isubclasses OntologyBook)
-;;=> #{#<OWLClassImpl <http://purl.org/ontolink/walk_through#TakeWing>>}
+;; => #{#[Class 0x557ef049 "TakeWing"@en]}
 \end{tawny}
 
 We can infer that |TakeWing| is a subclass of |OntologyBook| because we have
@@ -164,7 +164,7 @@ this example where we describe books which are not about birds.
 ;;=> #{}
 
 (isubclasses NonBirdBook)
-;;=> #{#<OWLClassImpl <http://purl.org/ontolink/walk_through#TakeWing>>}
+;; => #{#[Class 0x557ef049 "TakeWing"@en]}
 \end{tawny}
 
 Here too, we can classify |TakeWing|. The chain of logic in this case is that
@@ -275,7 +275,7 @@ Clojure REPL, and it will print the return value, or 2 in this case.
 
 
 \begin{tawny}
-;; returns 2 
+;; returns 2
 (+ 1 1)
 \end{tawny}
 
