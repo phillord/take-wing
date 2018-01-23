@@ -1,4 +1,4 @@
-\chapter{Appendix: Getting Started}
+\chapter{Getting Started}
 
 In this section, we will build the most ontology and start to show the
 basic capabilities of Tawny-OWL.
@@ -8,119 +8,92 @@ used with several different toolchains. In this section, we will run
 through the building a very simple ontology. There is an section describing
 how to achieve each of these steps with specific tool chains.
 
-\subsection{Getting a Project}
-\label{sec-4-1}
+\subsection{Installing Leiningen}
 
-For this book, we will use a pre-rolled project -- in fact the one used
-to create this book. You can access the project data from
-\url{https://github.com/phillord/take-wing[github}], either using \texttt{git} or
-through the download option. If you wish to know how to build a project
-yourself, please read <>.
+To build an ontology, we need a build tool, for which we will use
+\url{https://leiningen.org}{leiningen}. This is a command line
+application and is simple to install following the instructions on
+their website.
 
-A leiningen project is, essentially, a directory structure with a
-project file. The \texttt{project.clj} file for this book looks like this:
+Installing leiningen is the only manual step involved. It is leiningen
+that is responsible for everything else; it downloads Tawny-OWL and
+all of its dependencies for you.
 
-\begin{clojure}
-(defproject take-wing "0.1.0-SNAPSHOT"
-  :dependencies [[uk.org.russet/tawny-owl "1.1.1-SNAPSHOT"]])
-\end{clojure}
+\subsection{Creating a New Project}
 
-This includes three critical pieces of information. Firstly \texttt{take-wing}
-which is the name of the project. Secondly, immediately after this is a
-version number such as \texttt{0.1.0}. Finally, we have a \texttt{:dependencies} which
-includes only a single dependency to \texttt{tawny-owl} itself.
-
-
-\subsection{Starting a new ontology}
-\label{sec-4-2}
-
-It is possible to build an ontology in Tawny-OWL using almost no
-functions from Clojure, the language on which it is built; the only
-necessary exception to this is the \emph{namespace declaration}.
-
-Like most programming languages, Clojure has a namespacing mechanism.
-These are declared at the start of each file, and the namespace relates
-to the file name and location. Finally, the namespace form is also used
-to import functions from other namespaces. Here, we define a namespace
-called \texttt{take.wing.getting-started} which would be defined in a file
-\texttt{take/wing/getting\_started.clj}. Secondly, we import \texttt{tawny.owl}
-namespace which contains the core functions of Tawny-OWL.
-
-\begin{tawny}
-(ns take.wing.getting-started (:use [tawny.owl]))
-\end{tawny}
-
-Tawny-OWL also uses the namespace mechanism to define the scope of an
-ontology. In general, an ontology is defined within a single namespace,
-and each namespace defines a single ontology. A new ontology is declared
-with the \texttt{defontology} form. This also introduces a new symbol, \texttt{pizza},
-which can be used latter to refer.
-
-\begin{tawny}
-(defontology pizza)
-\end{tawny}
-
-
-\subsection{Connecting to a repl}
-\label{sec-4-3}
-
-Currently, the source for the ontology has been created, but this is not
-"live" -- for this, we must start a Clojure process and connect to it
-via a REPL and then evaluate the file. With the current contents, the
-REPL should show something like the following which is the result of
-evaluating the last form, and shows that we have defined a new symbol
-footnote:[In Clojure, it is actually a var that has been created]
+Now, we will create a new project. Tawny-OWL makes this easy with a
+pre-defined template.
 
 \begin{verbatim}
-=> #'take.wing.getting-started/pizza
+lein new ontology helloworld
 \end{verbatim}
 
-The symbol \texttt{pizza} now refers to an object live in the system. If
-evalulate \texttt{pizza}, a hopefully informative string message will be
-printed.
+This will create a new directory called |helloworld|. If we change
+into this directory, we find that this has created a number of
+directories and files.
 
+Before we look in more detail at these files, let start by generating
+an ontology file. Simply type:
 
 \begin{verbatim}
-take.wing.getting-started> pizza
-#<OWLOntologyImpl Ontology(OntologyID(OntologyIRI(<#pizza>))) [Axioms: 0 Logical Axioms: 0]>
+lein run
 \end{verbatim}
 
+You should see that a new file has been created called
+\verb|helloworld.omn| which contains a very simple ontology with a
+single class called |HelloWorld|.
 
-\subsection{Creating some entities}
-\label{sec-4-4}
+\subsection{Editing Our Ontology}
 
-Now we create some entities for our ontology, in this case two classes
-called |Pizza| and \texttt{MargheritaPizza}, and state that \texttt{MargheritaPizza}
-is a subclass of \texttt{Pizza}. This forms implicitly place these two terms
+Tawny-OWL provides a fully programmatic development environment for
+ontologies; as such, it is possible to change or update an ontology
+with an editor or any IDE. In this section, we will use a simple,
+web-based editor that integrates tightly with leiningen.
 
-
-\begin{tawny}
-(defclass Pizza)
-(defclass MargheritaPizza :super Pizza)
-\end{tawny}
-
-Finally, we are in a position to make a useful query against this which
-we can do using the \texttt{subclasses} function.
-
-\begin{tawny}
-(subclasses Pizza)
-\end{tawny}
-
-In a REPL session, this returns a set with one element ---
-\texttt{MargheritaPizza}. If we evaluate \texttt{pizza} (the ontology) again, we also
-see that the ontology now has a number of axioms.
-
+To use this try:
 
 \begin{verbatim}
-(subclasses Pizza)
-#{#<OWLClassImpl <#pizza#MargheritaPizza>>}
-take.wing.getting-started> pizza
-=> #<OWLOntologyImpl Ontology(OntologyID(OntologyIRI(<#pizza>))) [Axioms: 5 Logical Axioms: 1]>
+lein with-profile light nightlight
 \end{verbatim}
 
+This should return something like:
+
+\begin{verbatim}
+Started Nightlight on http://localhost:4000
+\end{verbatim}
+
+Open this address in a web-browser and you should now be able to see
+the editor. This in turn will enable you to look at the Tawny-OWL files.
+
+First, we consider the file |helloworld.clj|; this looks like so:
+
+\lstinputlisting[style=tawnystyle]{../new-project/helloworld/src/helloworld/helloworld.clj}
+
+Breaking this down. We first start with by introducing the namespace
+and |use|ing Tawny-OWL. These identical statements appear at the
+beginning of every Tawny-OWL file: the namespace introduced must match
+the file name.
+
+Next, we create a new ontology called |helloworld|, with a single
+class also called (somewhat repetitively), |HelloWorld|. Tawny-OWL is
+case-sensitive, so these two things are independent from each other.
+
+The second file, |core.clj| is more programmatic in nature. It
+|require|s |helloworld|, and then defines a function called |-main|
+which saves the ontology.
+
+\lstinputlisting[style=tawnystyle]{../new-project/helloworld/src/helloworld/core.clj}
+
+The practical upshot of this all taken together is that typing
+
+\begin{verbatim}
+lein run
+\end{verbatim}
+
+at the command line will result in a new file (called
+|helloworld.omn|) with an ontology in OWL Manchester Notation (OMN).
 
 \subsection{Summary}
-\label{sec-4-5}
 
 In this section, we have outlined the basic tasks that are needed to
 build ontologies with Tawny-OWL: creating a project, creating an
