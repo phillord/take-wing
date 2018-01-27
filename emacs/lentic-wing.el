@@ -22,8 +22,8 @@
    :lentic-file
    (lentic-wing-clj-for-tex (buffer-file-name))
    :comment ";; "
-   :comment-start "\\\\end{tawny}"
-   :comment-stop "\\\\begin{tawny}"))
+   :comment-start "\\\\end{\\(tawny\\\|tawnyhidden\\)}"
+   :comment-stop "\\\\begin{\\(tawny\\\|tawnyhidden\\)}"))
 
 (add-to-list 'lentic-init-functions
              'lentic-wing-init)
@@ -35,5 +35,13 @@
 (if (boundp 'LaTeX-verbatim-environments)
     (add-to-list 'LaTeX-verbatim-environments
                  "tawny"))
+
+(if (boundp 'LaTeX-indent-environment-list)
+    (add-to-list 'LaTeX-indent-environment-list
+                 '("tawnyhidden" current-indentation)))
+
+(if (boundp 'LaTeX-verbatim-environments)
+    (add-to-list 'LaTeX-verbatim-environments
+                 "tawnyhidden"))
 
 (provide 'lentic-wing)
