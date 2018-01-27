@@ -62,6 +62,7 @@ capabilities which we will use. We also define the new ontology.
 
 \begin{tawny}
 (ns take.wing.amino-acid
+  (:import [org.semanticweb.owlapi.search EntitySearcher])
   (:require [clojure.string])
   (:use [tawny.owl]
         [tawny.pattern]
@@ -149,7 +150,7 @@ produce the same axioms as the statements above.
 
 \begin{tawny}
 (defpartition Hydrophobicity
-  [Hydrophobic Hydrophillic]
+  [Hydrophobic Hydrophilic]
   :comment "Part of the Hydrophobicity value partition"
   :super PhysicoChemicalProperty
   :domain AminoAcid)
@@ -301,7 +302,7 @@ list of lists that is returned.
 Finally, we define a macro. This does two things for us. Firstly it provides
 the convienience of using ``bear'' words: so |Alanine| instead of |"Alanine"|
 within the macro itself. A small convienience for a single amino-acid, but a
-bigger one for all twenty. The |name-tree| macro simply converts an arbitrary
+bigger one for all twenty. The |quote-tree| macro simply converts an arbitrary
 data structure containing symbols to the same structure with strings. And,
 secondly, we \emph{intern} the |Named| values turned from the |amino-acid|
 function; that is we create a new variable, identified by relevant symbol,
@@ -317,14 +318,22 @@ amino-acid does not exist.
 \begin{tawny}
 (defmacro defaminoacids
   [& definitions]
-  `(tawny.pattern/intern-owl-entities
-    (apply amino-acids
-           (tawny.util/name-tree ~definitions))))
+  (let [defs (take-nth 2 definitions)
+        props (take-nth 2 (rest definitions))
+        final-defs
+        (interleave
+         (map
+          #(mapv name %)
+          defs)
+         props)]
+    `(tawny.pattern/intern-owl-entities
+      (amino-acids ~@final-defs))))
 \end{tawny}
 
 Finally, we define all the amino-acid. These have been laid out in
 alphabetical order, and the properties arranged in a table which means that we
 can visually check that everything is correct and nothing is missing.
+
 
 \begin{tawny}
 (defaminoacids
@@ -402,6 +411,8 @@ partition values. The pattern simply involves making existential (|owl-some|)
 restrictions to all of the partition values using the appropriate object
 property. We form the name of the class from all of the partition values.
 
+
+
 \begin{tawny}
 (defn amino-acid-def [partition-values]
   (let [name
@@ -415,9 +426,7 @@ property. We form the name of the class from all of the partition values.
         exist
         (map
          (fn [val]
-           (owl-some
-            (property-for-partition val)
-            val))
+           (facet val))
          partition-values)]
 \end{tawny}
 
@@ -509,7 +518,7 @@ follows.
 
 \begin{tawny}
 (filter
- #(not (.isDefined % aao))
+ #(not (EntitySearcher/isDefined % aao))
  (isubclasses
   (owl-class "SmallAminoAcid")))
 \end{tawny}
