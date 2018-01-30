@@ -1,0 +1,132 @@
+\chapter{An Introduction to OWL}
+
+In Section\ref{sec:what-an-ontology}, we briefly touched on the issue
+of what is an ontology and noted that it's not easy. In this section,
+we will take a more pragmatic view point and describe OWL and its
+notion of an ontology.
+
+OWL2 is the second version of the Ontology Web Language; it is a W3C
+recommendation\footnote{W3C is the body that would define standards
+  for the Web, if it makes standards. Except that it does not; it just
+releases recommendations.}. As you might expect, this means that it
+embeds well with other W3C standards -- it can be serialized as XML or
+RDF, and it makes quite intensive use of URLs.
+
+It also builds on many years of Computing research; underneath each of
+the statements that we can make in OWL is a mapping to a piece of
+formal maths which gives a tightly defined \emph{semantics}. We will
+only touch of this semantics lightly in this document\footnote{Mostly
+  because if I touched on it more heavily, I'd probably get it wrong};
+the key point is that this specification makes it possible to build
+software around OWL and have it come to a clearly defined conclusions.
+
+Using the statements in OWL we can build models of the world. That is
+we can describe the real world around us using statements in OWL; as a
+result, we can use these underlying semantics of OWL to draw
+conclusions about these models. If we do this right, these conclusions
+should also be true of the real world as well.
+
+There are a number of different ways that we could build models, but
+OWL does this with three entities: individuals, classes and
+properties. In addition, to enable OWL ontologies to describe the real
+world, it also has two further entities: identifiers and annotations.
+
+
+\section{Individuals}
+\label{sec:individuals}
+
+At heart, OWL ontologies describe a set of individuals. In the real
+world, these would be the things that we want to describe. Looking
+around me now, I can see a large number of these things: a computer
+screen (obviously); a keyboard; assorted other pieces of computing
+detritus; a guitar; a door; and, finally, somewhat incongruously, a
+toilet seat. Individuals in OWL can also describe more abstract things
+such as the image on my screen, the process of me typing and so forth.
+
+Sometimes, individuals are also called instances; we do not use this
+term here, because it causes confusion with people who come
+Object-Oriented programming background where it has a related but
+subtly different meaning\footnote{Like ``object'' which also has an
+  ontological meaning.}.
+
+In OWL ontologies, individuals also have a name or an
+identifier\footnote{Although, some individuals are anonymous. We will
+  discuss more on the form of identifiers later.}. Actually, they can
+any number of names and, perhaps, unintuitively, OWL will not assume
+that they have an unique name; so, unless you tell it explicitly, OWL
+will not know whether two different identifiers describe two different
+individuals with one name each, or one individual with two names.
+
+\section{Properties}
+\label{sec:properties-1}
+
+Individuals can have relations between them. In OWL, these are called
+properties\footnote{Roughly equivalent to properties or attributes in
+  OO terminology}. So, the |I| and |typing| on my |Keyboard|. In OWL
+properties are \emph{binary} -- that is they only describe a
+relationship between two individuals\footnote{This is less restrictive
+  than it sounds.}. Properties in OWL have a number of
+characteristics, which we will describe later.
+
+It is also possible to use properties to describe a relationship
+between an individual and something \emph{concrete} -- such as a
+numeric value or a string.
+
+\section{Classes}
+\label{sec:classes}
+
+Classes in OWL are \emph{sets} on individuals. All the individuals in
+a class will share some of the same characteristics. Classes have
+relationships between themselves which turn them into a hierarchy. So,
+both my |Trackball|, |Keyboard| and |Monitor| are subclasses of
+|Peripherals|. In OWL, the meaning of the subclass relationship is
+quite specific -- if |A| is a subclass of |B|, then all individuals of
+class |A| are also individuals of class |B|.
+
+For people coming from an programming background, this looks very like
+object-orientation (OO) and its notion of instances, classes and
+subclasses. But there is subtle, but important difference. In OO,
+instances are explicitly stated to be part of a class, and inherit
+properties from this class. In OWL, it is the other way around:
+individuals have properties, and then properties that they have define
+the classes that they are in. We can see this in
+Section~\ref{sec:taster}, where we can \emph{infer} that |TakeWing| is
+an |OntologyBook|.
+
+\section{Identifiers}
+
+To make all of the logical entities in OWL useful, we need
+\emph{identifiers} which allows us to refer to them. Again, most
+programming languages have this sort of capability: variable names,
+class names and so forth. OWL is rather different here and shows its
+web heritage; it uses IRIs for identifiers\footnote{IRIs are not the
+  same thing as URIs, which are not the same thing as URLs. But the
+  differences between them are relative unimportant here.}.
+
+Identifiers in OWL, therefore, are effectively universal; a class in
+one ontology can unambiguously refer to a class in another. More over,
+it can use and share identifiers described and defined in all the
+other web technologies.
+
+\tawny maps these identifiers on to its own which inherits from its
+base language of Clojure; this largely stems from the requirements for
+identifiers which are easy to type and use.
+
+
+\section{Annotations}
+
+Those who are interested in the underlying semantics of OWL often
+describe annotations are \emph{extra-logically}. This rather
+downgrades their importance; it is annotations that allow the
+underlying logic to relate to the real world around. The underlying
+logic of OWL may provides predictable behaviour, but is the
+annotations which provide all the utility of an OWL ontology, by
+relating to the real world and to the user.
+
+OWL allows annotations on pretty much anything. Classes, individuals
+and properties can all have annotations; the axioms that assert these
+entities can have annotations; annotations can have annotations; it is
+even possible to use annotations to provide descriptions of why
+annotations have annotations. It is entirely possible that the
+designers of OWL got a little carried away with annotations, \tawny
+supports the many different forms of annotation anyway.
