@@ -8,6 +8,9 @@ WING=$(CASKRUN) script/build.el --
 
 all: gen-src test publish
 
+light-all: gen-src test
+	cd latex;$(PDFLATEX) take_wing.tex
+
 viewing: gen-src test tex
 
 really-all: install all
