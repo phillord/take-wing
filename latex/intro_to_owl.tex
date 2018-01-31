@@ -8,11 +8,11 @@ notion of an ontology.
 OWL2 is the second version of the Ontology Web Language; it is a W3C
 recommendation\footnote{W3C is the body that would define standards
   for the Web, if it makes standards. Except that it does not; it just
-releases recommendations.}. As you might expect, this means that it
+  releases recommendations.}. As you might expect, this means that it
 embeds well with other W3C standards -- it can be serialized as XML or
 RDF, and it makes quite intensive use of URLs.
 
-It also builds on many years of Computing research; underneath each of
+ It also builds on many years of Computing research; underneath each of
 the statements that we can make in OWL is a mapping to a piece of
 formal maths which gives a tightly defined \emph{semantics}. We will
 only touch of this semantics lightly in this document\footnote{Mostly
@@ -108,7 +108,7 @@ one ontology can unambiguously refer to a class in another. More over,
 it can use and share identifiers described and defined in all the
 other web technologies.
 
-\tawny maps these identifiers on to its own which inherits from its
+Tawny-OWL maps these identifiers on to its own which inherits from its
 base language of Clojure; this largely stems from the requirements for
 identifiers which are easy to type and use.
 
@@ -128,5 +128,5 @@ and properties can all have annotations; the axioms that assert these
 entities can have annotations; annotations can have annotations; it is
 even possible to use annotations to provide descriptions of why
 annotations have annotations. It is entirely possible that the
-designers of OWL got a little carried away with annotations, \tawny
+designers of OWL got a little carried away with annotations, Tawny-OWL
 supports the many different forms of annotation anyway.
