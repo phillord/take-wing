@@ -1,6 +1,6 @@
 (ns take.wing.the-pizza-ontology-test
   (:use [clojure.test])
-  (:require [take.wing.the-pizza-ontology :as p]
+  (:require [take.wing.pizza :as p]
             [tawny.owl :as o]
             [tawny.reasoner :as r]
             [tawny.fixture]))
