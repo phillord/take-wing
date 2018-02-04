@@ -1,7 +1,3 @@
-*
-
-!*.tex
-!*.sty
-!prism-tawny.css
-!*.js
-!*.org
+take_wing.*
+!take_wing.tex
+*aux
