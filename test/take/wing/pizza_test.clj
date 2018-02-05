@@ -1,4 +1,4 @@
-(ns take.wing.the-pizza-ontology-test
+(ns take.wing.pizza-test
   (:use [clojure.test])
   (:require [take.wing.pizza :as p]
             [tawny.owl :as o]
@@ -7,7 +7,7 @@
 
 (use-fixtures :once
   (tawny.fixture/namespace-and-reasoner
-   'take.wing.pizza.take-wing-pizza
+   'take.wing.pizza
    :hermit))
 
 (deftest loading []
