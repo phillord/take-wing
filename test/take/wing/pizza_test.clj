@@ -7,7 +7,7 @@
 
 (use-fixtures :once
   (tawny.fixture/namespace-and-reasoner
-   'take.wing.the-pizza-ontology
+   'take.wing.pizza.take-wing-pizza
    :hermit))
 
 (deftest loading []
