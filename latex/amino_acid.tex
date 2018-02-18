@@ -6,8 +6,14 @@ properties which occur repetitive through the ontology. Dealing with this in
 many ontology development environments is painful. Tawny-OWL is a fully
 programmatic environment, however. Patterns are dealt with by writing
 functions and passing parameters; in otherwords, the same way that we deal
-with code duplication more generally. In this chapter, we will explore how.
+with code duplication more generally.
 
+In this Chapter, we will first explore how to use patterns than
+Tawny-OWL provides explicit support for; then we will move on to show
+how to modify and extend these patterns in an ontology specific
+way. Finally, we will show how to use the fully programmatic
+capabilies of Tawny-OWL to generate a large number of classes in a way
+that is unique to one ontology.
 
 \section{Dealing with Patterns}
 \label{sec:deal-with-patt}
@@ -34,22 +40,23 @@ two syntaxes or environments -- one for ``normal'' ontological code, and one
 for patternised. It also presents a maintainence problem -- the normal and
 patternised code is intertwinned, so updating a pattern is difficult.
 
-Tawny-OWL take an alternative approach. Instead of providing an alternative
-language like OPPL, all ontological statements are written in Clojure, which
-is, itself, an full programming languages. Patterns can be built
-straight-forwardly by writing or using functions; this can be done in a
-general library for generic patterns, shared between ontologies. Or,
-alternatively, it can be done specifically for individual ontologies, in the
-same syntax, files and development environment as the normal parts. Updates
-cease to be a problem; in the worst case scenario, this requires restarting
-the clojure process. Often it does not require even that. In short, with
-Tawny-OWL patterns become an integral part of ontology development, rather
-than an external imposition.
+Tawny-OWL take an alternative approach. Instead of providing an
+alternative language like OPPL, all ontological statements are written
+in Clojure, which is, itself, an full programming languages. Patterns
+can be built straight-forwardly by writing or using functions; this
+can be done in a general library for generic patterns, shared between
+ontologies. Or, alternatively, it can be done specifically for
+individual ontologies, in the same syntax, files and development
+environment as the normal parts. Updates cease to be a problem; in the
+worst case scenario, this requires restarting the clojure
+process. Normally, it does not require even that. In short, with
+Tawny-OWL patterns become an integral part of ontology development,
+rather than an external imposition.
 
-In this chapter, we first describe how to use an pre-existing pattern provided
-by Tawny-OWL, then how to modify this slightly for the amino-acid ontology.
-Finally, we show how to create a \textit{de novo} patternised section creating
-several hundred defined classes.
+In this chapter, we first describe how to use an pre-existing pattern
+provided by Tawny-OWL, then how to modify this slightly for the
+amino-acid ontology.  Finally, we show how to create a \textit{de
+  novo} patternised section creating several hundred defined classes.
 
 \section{Creating the Amino Acid Ontology}
 \label{sec:creating-amino-acid}
@@ -63,10 +70,12 @@ capabilities which we will use. We also define the new ontology.
 \begin{tawny}
 (ns take.wing.amino-acid
   (:import [org.semanticweb.owlapi.search EntitySearcher])
-  (:require [clojure.string])
-  (:use [tawny.owl]
-        [tawny.pattern]
-        [tawny.reasoner]))
+  (:require
+    [clojure.string]
+    [tawny.owl :refer :all]
+    [tawny.pattern :as p]
+    [tawny.reasoner :as r]
+    [tawny.util :as u]))
 
 (defontology aao
   :iri "http://www.purl.org/ontolink/aao")
@@ -106,11 +115,10 @@ hydrophilic or hydrophobicic but not both.
   :range Hydrophobicity :characteristic :functional)
 \end{tawnyexample}
 
-Next we need to define the partition values. We make |Hydrophilic| disjoint
-from |Hydrophobic|. We cannot do the inverse because Tawny-OWL asks us to
-define classes before using them~\footnote{Actually, it doesn't and it can be
-  avoided just by using strings. But this opens us to spelling mistake errors,
-  and there is a better way to avoid this problem}
+Next we need to define the partition values. We make |Hydrophilic|
+disjoint from |Hydrophobic|. We do not make |Hydrophobic| disjoint
+from |Hydrophillic| because of Tawny-OWLs ``define before use''
+semantics.
 
 \begin{tawnyexample}
 (defclass Hydrophobic :super Hydrophobicity)
@@ -128,56 +136,61 @@ with |Hydrophilic| and then add a covering axioms to |Hydrophobicity|.
   :equivalent (object-or Hydrophilic Hydrophobic))
 \end{tawnyexample}
 
-The use of disjoints and covering axioms is so common that Tawny-OWL provides
-specific support for adding these, in a way which also allows us to avoid the
-necessity for refining classes after creation. This produces a much neater
+Of course, as we have already seen, the use of disjoints and covering
+axioms is so common that Tawny-OWL provides specific support for
+adding these, in a way which also allows us to avoid the necessity for
+refining classes after creation. This produces a much neater
 definition and is a simple example of the use of patterns.
 
 \begin{tawnyexample}
 (as-subclasses
-   (defclass Hydrophobicity :super PhysicoChemicalProperty)
-   :disjoint :cover
-   (defclass Hydrophobic)
-   (defclass Hydrophilic))
+    (defclass Hydrophobicity :super PhysicoChemicalProperty)
+  :disjoint :cover
+  (defclass Hydrophobic)
+  (defclass Hydrophilic))
 
 (defoproperty hasHydrophobicity :domain AminoAcid
    :range Hydrophobicity :characteristic :functional))
 \end{tawnyexample}
 
-Tawny-OWL, however, allows us to go further with the use of the |defpartition|
-macro, which allows to specific all the appropriate values at once. It will
-produce the same axioms as the statements above.
+This is, however, all still fairly long-winded and relatively easy to
+get wrong.  Tawny-OWL, however, allows us to go further with the use
+of the |defpartition| macro, which allows specification of all the
+appropriate values at once. It will produce the same axioms as the
+statements above.
 
 \begin{tawny}
-(defpartition Hydrophobicity
+(p/defpartition Hydrophobicity
   [Hydrophobic Hydrophilic]
-  :comment "Part of the Hydrophobicity value partition"
+  :comment "The tendency to associate with water."
   :super PhysicoChemicalProperty
   :domain AminoAcid)
 \end{tawny}
 
 |defpartition| is a generic pattern and is not specific at all to the
-amino-acid ontology. In general, it will serve well, but for the amino-acid
-ontology we need to define a series of further value partitions. They all have
-the same super class and domain. It would be nice to create a \emph{localised}
-pattern which hard-codes these values. As |defpartition| is a macro this is
-slightly more complex than a normal function, but not heavily so. This macro
-is unlikely to be of use in another ontology because of these hard-coded
-values, but it is valuable because it saves typing here and safe-guards us
-against future changes. Being in the same environment, it is easy to do, so we
+amino-acid ontology. It will serve well, but for the amino-acid
+ontology we need to define a series of further value partitions. They
+all have the same super class and domain. It would be nice to create a
+\emph{localised} pattern which hard-codes these values. As
+|defpartition| is a macro this is slightly more complex than a normal
+function, but not heavily so. This macro is unlikely to be of use in
+another ontology because of these hard-coded values, but it is
+valuable because it saves typing here and safe-guards us against
+future changes. Being in the same environment, it is easy to do, so we
 might as well!
 
 \begin{tawny}
 (defmacro defaapartition [& body]
-  `(defpartition
+  `(p/defpartition
      ~@body :super PhysicoChemicalProperty
      :domain AminoAcid))
 \end{tawny}
 
-The next value partition is as a result somewhat smaller, as it now longer
-needs to describe the super class and domain. The size value partition is
-self-explanatory enough; again, this could be related to a continuous physical
-measurement (such as size in Daltons), but this is not necessary here.
+The next value partition is as a result somewhat smaller, as it no
+longer needs to describe the super class and domain. The size value
+partition is self-explanatory enough; this could be described in
+relation to a continuous physical measurement (such as size in
+Daltons), but this is not necessary here.
 
 \begin{tawny}
 (defaapartition Size
@@ -199,13 +212,18 @@ Finally, we create three more value partitions describing |Charge|,
 
 (defaapartition Polarity
   [Polar NonPolar]
-  :comment "Whether there is a polarity across the amino acid.")
+  :comment "The polarity across the amino acid.")
 \end{tawny}
 
-Next, we define a set of annotation properties. Amino-acids have a long name,
+Next, we define a set of annotation properties. In the previous
+Chapter~\ref{cha:pizza-ontology}, we made some use of a few annotation
+properties: the label and the comment. But, in OWL, annotation
+properties are generic. It is possible to define new annotation
+properties. This is useful here because amino-acids have a long name,
 such as |Alanine|, and two shorter names -- a three letter abbreviation such
 as |Ala| and finally one letter abbreviation which is shorter, but harder to
-remember, in this case |A|.
+remember, in this case |A|. These abbreviations are standardized and
+widely used, so worth describing here.
 
 \begin{tawny}
 ;; annotation properties
@@ -232,31 +250,30 @@ this case, for reasons we will see soon.
 
 The main part of the amino acid pattern is defined in the next section. The
 pattern is not that complex -- we simply give an amino-acid five properties
-and three names. We haven't done much error checking to see whether properties
-are in the right order; this is because errors would be picked up by
-reasoning, and are anyway unlikely for reasons that should become obvious
-later. This is done inside a |let| block because we want to capture the return
+and three names. However, to achieve this, we use a new feature of
+Tawny-OWL: the |gem| and the |facet|.
+
+The |defpartition| macro that we introduced earlier \todo{Aslo does facets}
+
+We introduce here a new pattern function called |gem|.
+
+ This is done inside a |let| block because we want to capture the return
 value. This is not strictly necessary as the return value is used only once,
 but in this case, I think, it increases readability.
 
 \begin{tawny}
-  (let [aa (owl-class (first names)
-                      :super AminoAcid
-                      ;; we have don't test the values are correct here
-                      ;; because the code layout should make the order obvious
-                      ;; and the range constraints should protect us during
-                      ;; reasoning.
-                      (owl-some hasCharge (nth properties 0))
-                      (owl-some hasHydrophobicity (nth properties 1))
-                      (owl-some hasPolarity (nth properties 2))
-                      (owl-some hasSideChainStructure (nth properties 3))
-                      (owl-some hasSize (nth properties 4))
-                      :label (first names)
-                      :annotation
-                      (annotation hasLongName (nth names 0))
-                      (annotation hasShortName (nth names 1))
-                      (annotation hasSingleLetterName (nth names 2)))]
-
+  (let [aa (p/gem (first names)
+                :super AminoAcid
+                ;; we have don't test the values are correct here
+                ;; because the code layout should make the order obvious
+                ;; and the range constraints should protect us during
+                ;; reasoning.
+                :facet properties
+                :label (first names)
+                :annotation
+                (annotation hasLongName (nth names 0))
+                (annotation hasShortName (nth names 1))
+                (annotation hasSingleLetterName (nth names 2)))]
 \end{tawny}
 
 The last part is not part of the pattern itself. Rather it adds support for
@@ -275,7 +292,7 @@ sense here.
 
 \begin{tawny}
     ;; and return types for intern
-    (map ->Named
+    (map p/->Named
          names
          (repeat aa))))
 \end{tawny}
@@ -299,41 +316,43 @@ list of lists that is returned.
     (partition 2 definitions))))
 \end{tawny}
 
-Finally, we define a macro. This does two things for us. Firstly it provides
-the convienience of using ``bear'' words: so |Alanine| instead of |"Alanine"|
-within the macro itself. A small convienience for a single amino-acid, but a
-bigger one for all twenty. The |quote-tree| macro simply converts an arbitrary
-data structure containing symbols to the same structure with strings. And,
-secondly, we \emph{intern} the |Named| values turned from the |amino-acid|
-function; that is we create a new variable, identified by relevant symbol,
-with a value which is an OWL entity. The practical upshort of this is that
-later, we can refer to, again |Alanine| (or |Ala| or |A|) rather than having
-to use quotes. In terms of the amino-acid ontology itself, this is
-unnecessary, but it is useful for another ontology importing the amino-acid
-ontology, so it is worth doing here. In addition and probably more importantly
-than the convienience, this also provides a degree of safety: attempts, for
-instance, to refer to an amino-acid |B| will fail with an error as this
-amino-acid does not exist.
+Finally, we define a macro. This does two things for us. Firstly it
+provides the convienience of using ``bear'' words: so |Alanine|
+instead of |"Alanine"| within the macro itself. A small convienience
+for a single amino-acid, but a bigger one for all twenty. There are a
+variety of ways of achieving this -- we could use the
+|tawny.util/quote-tree| macro to covert all the symbols to
+strings. However, here, we take the slightly more complex route and
+just turn the first part of the definition into strings. The rest can
+remain symbols as they are pre-defined.  And, secondly, we
+\emph{intern} the |Named| values turned from the |amino-acid|
+function; that is we create a new variable, identified by relevant
+symbol, with a value which is an OWL entity. The practical upshort of
+this is that later, we can refer to |Alanine| (or |Ala| or |A|)
+rather than having to use quotes. In terms of the amino-acid ontology
+itself, this is unnecessary, but it is useful for another ontology
+importing the amino-acid ontology, so it is worth doing here. In
+addition and probably more importantly than the convienience, this
+also provides a degree of safety: attempts, for instance, to refer to
+an amino-acid |B| will fail with an error as this amino-acid does not
+exist.
 
 \begin{tawny}
 (defmacro defaminoacids
   [& definitions]
-  (let [defs (take-nth 2 definitions)
-        props (take-nth 2 (rest definitions))
-        final-defs
+  (let [definitions
         (interleave
          (map
           #(mapv name %)
-          defs)
-         props)]
-    `(tawny.pattern/intern-owl-entities
-      (amino-acids ~@final-defs))))
+          (take-nth 2 definitions))
+         (take-nth 2 (rest definitions)))]
+    `(p/intern-owl-entities
+      (amino-acids ~@definitions))))
 \end{tawny}
 
-Finally, we define all the amino-acid. These have been laid out in
+Then, we define all the amino-acid. These have been laid out in
 alphabetical order, and the properties arranged in a table which means that we
 can visually check that everything is correct and nothing is missing.
-
 
 \begin{tawny}
 (defaminoacids
@@ -368,11 +387,14 @@ function only needs to be run once, it makes little difference.
 (apply as-disjoint (subclasses AminoAcid))
 \end{tawny}
 
-As well as demonstrating the use of the value partition one of the motivations
-behind the amino-acid ontology is to show how we can reason over defined
-classes. For example, consider this class definition. If we create this and
-reason over it, we find ten subclasses -- all of the amino-acids we have
-described to be large above.
+\section{Defining the Amino Acids}
+\label{sec:defining-amino-acids}
+
+We saw earlier, while consider pizza, that it is possible to create
+defined classes (see Section~\ref{defined}). For the amino-acid
+ontology, this is also tremendously useful because we can effectively
+use this to query it. Consider, for example, this definition of
+|LargeAminoAcid|.
 
 \begin{tawnyexample}
 (defclass LargeAminoAcid
@@ -388,30 +410,12 @@ Of course, being fully programmatic, calculating permutations in Tawny-OWL is
 a simple enough task; so, why not build all of these defined classes
 programmatically?
 
-First, we start with a function which given a partition value returns the
-relevant property. This is rather an unsatisfying solution, as we created
-these all together; in a future version of Tawny-OWL the pattern class may
-provide some way to group the elements together.
-
-\begin{tawny}
-(defn property-for-partition [partition-value]
-  (let [partition
-        (first (direct-superclasses partition-value))
-        op
-        (.getObjectPropertiesInSignature aao)]
-    (first
-     (filter
-      #(= partition
-          (first (.getRanges % aao)))
-      op))))
-\end{tawny}
-
-Next we need a definition for a defined class; this will take a list of
-partition values. The pattern simply involves making existential (|owl-some|)
-restrictions to all of the partition values using the appropriate object
-property. We form the name of the class from all of the partition values.
-
-
+This is reasonably straight-forward; first, we need a definition for a
+defined class; this will take a list of partition values. The pattern
+simply involves making existential (|owl-some|) restrictions to all of
+the partition values using the appropriate object property; we can
+achieve this using the |facet| function that we saw earlier. We form
+the name of the class from the names of the partition values.
 
 \begin{tawny}
 (defn amino-acid-def [partition-values]
@@ -423,11 +427,7 @@ property. We form the name of the class from all of the partition values.
              (.getIRI %))
            partition-values))
          "AminoAcid")
-        exist
-        (map
-         (fn [val]
-           (facet val))
-         partition-values)]
+        exist (p/facet partition-values)]
 \end{tawny}
 
 Then finally we create the class and package it with its name. As with our
@@ -436,7 +436,7 @@ allow it to be used to intern the classes created, although we do not actually
 use that facility here.
 
 \begin{tawny}
-    (->Named
+    (p/->Named
      name
      (owl-class
       name
@@ -482,12 +482,12 @@ to use a reasoner, so first we choose a reasoner and check the consistency of
 our ontology.
 
 \begin{tawny}
-(reasoner-factory :hermit)
-(consistent?)
+(r/reasoner-factory :hermit)
+(r/consistent?)
 \end{tawny}
 
 We can also investigate the classes that we have created. None of the created classes
-should have any asserted subclasses, which we can check.
+should have any asserted subclasses, which we can check, by looking at one.
 
 \begin{tawny}
 (subclasses
@@ -498,7 +498,7 @@ However, we see a totally different picture with the reasoner. We can first
 check for inferred subclasses.
 
 \begin{tawny}
-(isubclasses
+(r/isubclasses
  (owl-class "SmallAminoAcid"))
 \end{tawny}
 
@@ -519,8 +519,11 @@ follows.
 \begin{tawny}
 (filter
  #(not (EntitySearcher/isDefined % aao))
- (isubclasses
+ (r/isubclasses
   (owl-class "SmallAminoAcid")))
+;; => (#[Class 0x6f148b89 "Valine"@en] #[Class 0x4c949f3e "Proline"@en]
+;;     #[Class 0x57f95b76 "Glutamate"@en] #[Class 0x784dcd0 "Asparagine"@en]
+;;     #[Class 0x4c07576a "Aspartate"@en] #[Class 0x24024cbb "Cysteine"@en])
 \end{tawny}
 
 And the end result? There are six small amino-acids!
@@ -550,6 +553,7 @@ In this chapter, we have described:
 \begin{itemize}
 \item The |tawny.pattern| namespace.
 \item The Value-Partition design pattern
+\item Gems and Facets
 \item A macro expanding the value-partition.
 \item An amino-acid function
 \item Intern with |intern-owl-entities|
