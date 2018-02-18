@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- fn-in,html --> 
 <meta name="src" content="take_wing.tex"> 
-<meta name="date" content="2018-02-18 21:03:00"> 
+<meta name="date" content="2018-02-18 21:21:00"> 
 <link rel="stylesheet" type="text/css" href="take_wing.css"> 
 <script src="./prism.js"></script> 
 <script src="./prism-tawny.js"></script> 
@@ -1016,36 +1016,13 @@ href="#x1-270004.0.3">4.0.3<!--tex4ht:ref: sec:editing-our-ontology --></a>, or 
 <!--l. 61--><p class="noindent" >In Chapter&#x00A0;<a 
 href="#x1-60002">2<!--tex4ht:ref: cha:rapid-walk-through --></a>, we showed the standard template for a Tawny-OWL file; and
 indeed, leiningen has created a pizza themed version for us.
-   <!--l. 65--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-32001r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">ns</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">take</span><span 
-class="cmtt-10">.</span><span 
-class="cmtt-10">wing</span><span 
-class="cmtt-10">.</span><span 
-class="cmtt-10">pizza</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-32002r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">:require</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">[</span><span 
-class="cmtt-10">tawny</span><span 
-class="cmtt-10">.</span><span 
-class="cmtt-10">owl</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:refer</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:all</span><span 
-class="cmtt-10">]))</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-32003r3"></a></span></pre>
+<!--l. 65--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(ns take.wing.pizza
+  (:require [tawny.owl :refer :all]))
+</code></pre>
 <!--l. 70--><p class="indent" >   It is not absolutely critial to understand these statements, but they are
 simple enough and worth explaining now, even though they will become much
 more relevant and start to exploit the underlying programming language of
@@ -1071,32 +1048,13 @@ complex:
 </code></pre>
 <!--l. 93--><p class="indent" >   We will see the importance of <code class="language-tawny">tawny.reasoner</code> later. Next, we have a
 <code class="language-tawny">defontology</code> form which looks like this:
-   <!--l. 96--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-32004r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defontology</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">take-wing-pizza</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-32005r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:iri</span><span 
-class="cmtt-10">&#x00A0;</span><!--l. 98--><span class="listings-nested"><span 
-class="cmtt-10">"</span><span 
-class="cmtt-10">http:</span><span 
-class="cmtt-10">//</span><span 
-class="cmtt-10">example</span><span 
-class="cmtt-10">.</span><span 
-class="cmtt-10">com</span><span 
-class="cmtt-10">/</span><span 
-class="cmtt-10">take-wing-pizza</span><span 
-class="cmtt-10">"</span></span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-32006r3"></a></span></pre>
+<!--l. 96--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defontology take-wing-pizza
+  :iri "http://example.com/take-wing-pizza")
+</code></pre>
 <!--l. 101--><p class="indent" >   The name of the function <code class="language-tawny">defontology</code> tells us something useful; as well
 as creating an ontology, we are defining a name which we can use to
 refer to the ontology. The name is <code class="language-tawny">take-wing-pizza</code> which comes next.
@@ -1104,7 +1062,7 @@ Finally, we define some parameters &#8211; in this case, the IRI. All OWL
 ontologies require IRIs (strictly the Ontology IRI) by which they can be
 refered<span class="footnote-mark"><a 
 href="#fn3x6" id="fn3x6-bk"><sup class="textsuperscript">3</sup></a></span><a 
- id="x1-32007f3"></a>.
+ id="x1-32001f3"></a>.
 Here, we invent one in the <code class="language-tawny">example.com</code> domain. You should change this to an IRI
 you control. In this case, we use one from <code class="language-tawny">purl.org</code>.
 <!--l. 113--><p class="noindent" >
@@ -1124,17 +1082,12 @@ just have not said anything about these individuals.
 <!--l. 128--><p class="noindent" >Next, we declare two classes. A class is a set of individuals with shared
 characteristics. The basic template creates an entirely useless <code class="language-tawny">HelloWorld</code> task for
 us like so:
-   <!--l. 132--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33001r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">HelloWorld</span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33002r2"></a></span></pre>
+<!--l. 132--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass HelloWorld)
+</code></pre>
 <!--l. 136--><p class="indent" >   This follows the same syntax as all forms with <code class="language-tawny">(</code> and <code class="language-tawny">)</code>, and follows the
 convention of <code class="language-tawny">defontology</code> &#8211; a class object is created as well as a name
 <code class="language-tawny">HelloWorld</code> which we can use to refer to that object. In this case, we do not add
@@ -1146,7 +1099,7 @@ this:
 
                                                                      
 <a 
- id="x1-330031"></a>
+ id="x1-330011"></a>
                                                                      
 
                                                                      
@@ -1156,7 +1109,7 @@ src="images/night-pizza.png" alt="PIC"
 >
 <br /> <div class="caption" 
 ><span class="id">Figure&#x00A0;5.1: </span><span  
-class="content">A new pizza ontology</span></div><!--tex4ht:label?: x1-330031 -->
+class="content">A new pizza ontology</span></div><!--tex4ht:label?: x1-330011 -->
                                                                      
 
                                                                      
@@ -1169,7 +1122,7 @@ nightlight, simply select &#8220;Insta-REPL&#8221; on the top-right.
 
                                                                      
 <a 
- id="x1-330042"></a>
+ id="x1-330022"></a>
                                                                      
 
                                                                      
@@ -1179,7 +1132,7 @@ src="images/night-instarepl.png" alt="PIC"
 >
 <br /> <div class="caption" 
 ><span class="id">Figure&#x00A0;5.2: </span><span  
-class="content">The Insta-REPL</span></div><!--tex4ht:label?: x1-330042 -->
+class="content">The Insta-REPL</span></div><!--tex4ht:label?: x1-330022 -->
                                                                      
 
                                                                      
@@ -1197,25 +1150,14 @@ which individuals may be members of. However, we know nothing at all
 about the relationship between an individual <code class="language-tawny">Pizza</code> and an individual
 <code class="language-tawny">PizzaComponent</code><span class="footnote-mark"><a 
 href="#fn4x6" id="fn4x6-bk"><sup class="textsuperscript">4</sup></a></span><a 
- id="x1-33005f4"></a>.
-   <!--l. 178--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33006r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Pizza</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33007r2"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaComponent</span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33008r3"></a></span></pre>
+ id="x1-33003f4"></a>.
+<!--l. 178--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Pizza)
+(defclass PizzaComponent)
+</code></pre>
 <!--l. 183--><p class="indent" >   To build an accurate ontology, we may wish to describe this relationship
 further. We might ask the question, can an individual be both a <code class="language-tawny">Pizza</code> and a
 <code class="language-tawny">PizzaComponent</code> at the same time. The answer to this is no, but currently our
@@ -1223,77 +1165,39 @@ ontology does not state this. In OWL terminology, we wish to say that these
 two classes are <span 
 class="cmti-10x-x-109">disjoint</span>. We can achieve this by adding an <code class="language-tawny">as-disjoint</code>
 statement.
-   <!--l. 190--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33009r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">as-disjoint</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Pizza</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaComponent</span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33010r2"></a></span></pre>
+<!--l. 190--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint Pizza PizzaComponent)
+</code></pre>
 <!--l. 194--><p class="indent" >   This works well, but is a little duplicative. If we add a new class which we
 wish to also be disjoint, it must be added in two places. Instead, it is possible to
 do both at once. This has the advantage of grouping the two classes together in
 the file, as well as semantically, which should make the source more future-proof;
 should we need new classes, we will automatically become disjoint as
 required.
-   <!--l. 201--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33011r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">as-disjoint</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33012r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Pizza</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33013r3"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaComponent</span><span 
-class="cmtt-10">))</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33014r4"></a></span></pre>
+<!--l. 201--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint
+ (defclass Pizza)
+ (defclass PizzaComponent))
+</code></pre>
 <!--l. 207--><p class="indent" >   If you are using Nightlight, you may find it a little hard to edit your file to
 achieve this as Nightlight uses <a 
 href="http://shaunlebron.github.io/parinfer/" >parinfer</a>. This puts the parentheses in place for
 you. To make this statement, type <code class="language-tawny">as-disjoint</code> before the other two
 forms:
-   <!--l. 213--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33015r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">as-disjoint</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33016r2"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Pizza</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33017r3"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaComponent</span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33018r4"></a></span></pre>
+<!--l. 213--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint)
+(defclass Pizza)
+(defclass PizzaComponent)
+</code></pre>
 <!--l. 219--><p class="indent" >   Now, add two spaces in front of <code class="language-tawny">defclass&#x00A0;Pizza)</code> and then
 <code class="language-tawny">(defclass&#x00A0;PizzaComponent)</code>. The parentheses should take care of themselves.
 <!--l. 222--><p class="noindent" >
@@ -1328,38 +1232,15 @@ superclass.
 include the statement that they have <code class="language-tawny">PizzaComponent</code> as a superclass. We do this
 by adding a <code class="language-tawny">:super</code> argument or <span 
 class="cmti-10x-x-109">frame </span>to our <code class="language-tawny">defclass</code> statement.
-   <!--l. 254--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33019r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaBase</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33020r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:super</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaComponent</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33021r3"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaTopping</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33022r4"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:super</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaComponent</span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33023r5"></a></span></pre>
+<!--l. 254--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass PizzaBase
+  :super PizzaComponent)
+(defclass PizzaTopping
+  :super PizzaComponent)
+</code></pre>
 <!--l. 261--><p class="indent" >   In Tawny-OWL, the frames can all be read in the same way. Read forwards,
 we can say <code class="language-tawny">PizzaBase</code> has a superclass <code class="language-tawny">PizzaComponent</code>, or backwards
 <code class="language-tawny">PizzaComponent</code> is a superclass of <code class="language-tawny">PizzaBase</code>. Earlier, we say the <code class="language-tawny">:iri</code> frame for
@@ -1370,34 +1251,15 @@ is a <code class="language-tawny">Pizza</code>. In otherwords, the disjointness 
 <!--l. 271--><p class="indent" >   As with the disjoint statement, this is little long winded; we have to name the
 <code class="language-tawny">PizzaComponent</code> superclass twice. Tawny-OWL provides a short cut for this, with
 the <code class="language-tawny">as-subclasses</code> function.
-   <!--l. 275--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33024r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">as-subclasses</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33025r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaComponent</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33026r3"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaBase</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33027r4"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PizzaTopping</span><span 
-class="cmtt-10">))</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-33028r5"></a></span></pre>
+<!--l. 275--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-subclasses
+ PizzaComponent
+ (defclass PizzaBase)
+ (defclass PizzaTopping))
+</code></pre>
 <!--l. 282--><p class="indent" >   We are still not complete; we asked the question previously, can you be both
 a <code class="language-tawny">Pizza</code> and a <code class="language-tawny">PizzaComponent</code>, to which the answer is no. We can apply the same
 question, and get the same answer to a <code class="language-tawny">PizzaBase</code> and <code class="language-tawny">PizzaTopping</code>. These two,
@@ -1407,7 +1269,7 @@ still. The only kind of <code class="language-tawny">PizzaComponent</code> that 
 class="cmti-10x-x-109">covered </span>by its two
 subclasses<span class="footnote-mark"><a 
 href="#fn5x6" id="fn5x6-bk"><sup class="textsuperscript">5</sup></a></span><a 
- id="x1-33029f5"></a>.
+ id="x1-33004f5"></a>.
 We can add both of these statements to the ontology also.
 <!--l. 296--><p class="noindent" >
                                                                      
@@ -1886,10 +1748,6 @@ conclusions.
                                                                      
 
                                                                      
-<!--l. 1--><p class="indent" >
-                                                                     
-
-                                                                     
    <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;6</span><br /><a 
  id="x1-400006"></a>Highly Patterned Ontologies</h2>
 <!--l. 4--><p class="noindent" >Many ontologies contain patterns&#8212;that is collections of classes and properties
@@ -1994,197 +1852,55 @@ hydrophobicic and hydrophilic.
 First, we define a root class and an object property, with an appropriate domain
 and range, and declared functional, as one object can be hydrophilic or
 hydrophobicic but not both.
-   <!--l. 111--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42001r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:super</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PhysicoChemicalProperty</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42002r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42003r3"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defoproperty</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">hasHydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:domain</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">AminoAcid</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42004r4"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:range</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:characteristic</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:functional</span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42005r5"></a></span></pre>
+<!--l. 111--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Hydrophobicity :super PhysicoChemicalProperty)
+
+(defoproperty hasHydrophobicity :domain AminoAcid
+  :range Hydrophobicity :characteristic :functional)
+</code></pre>
 <!--l. 118--><p class="indent" >   Next we need to define the partition values. We make <code class="language-tawny">Hydrophilic</code> disjoint
 from <code class="language-tawny">Hydrophobic</code>. We do not make <code class="language-tawny">Hydrophobic</code> disjoint from <code class="language-tawny">Hydrophillic</code>
 because of Tawny-OWLs &#8220;define before use&#8221; semantics.
-   <!--l. 123--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42006r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobic</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:super</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobicity</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42007r2"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophilic</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:super</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:disjoint</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobic</span><span 
-class="cmtt-10">)</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42008r3"></a></span></pre>
+<!--l. 123--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Hydrophobic :super Hydrophobicity)
+(defclass Hydrophilic :super Hydrophobicity :disjoint Hydrophobic)
+</code></pre>
 <!--l. 128--><p class="indent" >   Finally, we <code class="language-tawny">refine</code> the first partition <code class="language-tawny">Hydrophobic</code> to also be disjoint with
 <code class="language-tawny">Hydrophilic</code> and then add a covering axioms to <code class="language-tawny">Hydrophobicity</code>.
-   <!--l. 131--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42009r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">refine</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobic</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42010r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:disjoint</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophilic</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42011r3"></a></span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42012r4"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">refine</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42013r5"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:equivalent</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">object-or</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophilic</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobic</span><span 
-class="cmtt-10">))</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42014r6"></a></span></pre>
+<!--l. 131--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(refine Hydrophobic
+  :disjoint Hydrophilic)
+
+(refine Hydrophobicity
+  :equivalent (object-or Hydrophilic Hydrophobic))
+</code></pre>
 <!--l. 139--><p class="indent" >   Of course, as we have already seen, the use of disjoints and covering axioms is
 so common that Tawny-OWL provides specific support for adding these, in a way
 which also allows us to avoid the necessity for refining classes after creation. This
 produces a much neater definition and is a simple example of the use of
 patterns.
-   <!--l. 145--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42015r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">as-subclasses</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42016r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:super</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">PhysicoChemicalProperty</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42017r3"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:disjoint</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:cover</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42018r4"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobic</span><span 
-class="cmtt-10">)</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42019r5"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophilic</span><span 
-class="cmtt-10">))</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42020r6"></a></span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42021r7"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defoproperty</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">hasHydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:domain</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">AminoAcid</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42022r8"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:range</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Hydrophobicity</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:characteristic</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:functional</span><span 
-class="cmtt-10">))</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-42023r9"></a></span></pre>
+<!--l. 145--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-subclasses
+    (defclass Hydrophobicity :super PhysicoChemicalProperty)
+  :disjoint :cover
+  (defclass Hydrophobic)
+  (defclass Hydrophilic))
+
+(defoproperty hasHydrophobicity :domain AminoAcid
+   :range Hydrophobicity :characteristic :functional))
+</code></pre>
 <!--l. 156--><p class="indent" >   This is, however, all still fairly long-winded and relatively easy to get wrong.
 Tawny-OWL, however, allows us to go further with the use of the <code class="language-tawny">defpartition</code>
 macro, which allows specification of all the appropriate values at once. It will
@@ -2434,29 +2150,13 @@ only needs to be run once, it makes little difference.
 href="#x1-380005.9">5.9<!--tex4ht:ref: defined --></a>). For the amino-acid ontology, this is also tremendously useful
 because we can effectively use this to query it. Consider, for example, this
 definition of <code class="language-tawny">LargeAminoAcid</code>.
-   <!--l. 399--><pre class="listings"><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-43001r1"></a></span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">defclass</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">LargeAminoAcid</span><span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-43002r2"></a></span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">:equivalent</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">(</span><span 
-class="cmtt-10">owl-some</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">hasSize</span><span 
-class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">Large</span><span 
-class="cmtt-10">))</span>
-   <span 
-class="cmtt-10">&#x00A0;</span><br /><span class="label"><a 
- id="x1-43003r3"></a></span></pre>
+<!--l. 399--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass LargeAminoAcid
+  :equivalent (owl-some hasSize Large))
+</code></pre>
 <!--l. 404--><p class="indent" >   This is fine, of course, but is also very slow, as there are a lot of potential
 classes that we could create. As well as one for each of the twelve values in our
 five value partitions, we also need all of the permutations of these, which makes
