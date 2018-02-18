@@ -198,11 +198,11 @@ grouping the two classes together in the file, as well as semantically,
 which should make the source more future-proof; should we need new
 classes, we will automatically become disjoint as required.
 
-\begin{tawny}
+\begin{tawnyexample}
 (as-disjoint
  (defclass Pizza)
  (defclass PizzaComponent))
-\end{tawny}
+\end{tawnyexample}
 
 If you are using Nightlight, you may find it a little hard to edit
 your file to achieve this as Nightlight uses
@@ -219,11 +219,25 @@ parentheses in place for you. To make this statement, type
 Now, add two spaces in front of \lstinline|defclass Pizza)| and then
 \lstinline|(defclass PizzaComponent)|. The parentheses should take care of themselves.
 
+\begin{tawny}
+(as-disjoint
+ (defclass Pizza
+   :label "Pizza"
+   :comment "A type of prepared food, originating from Italy, consisting of a
+flatbread with any of a large variety of other foods on top.")
+ (defclass PizzaComponent
+   :label "Pizza Component"
+   :comment "Food that is part of a pizza."))
+\end{tawny}
+
 The semantics of these statements are that our ontology may have any
 number of individuals, some of which may be |Pizza|, some of which may
 be |PizzaComponent|, but none of which can be both |Pizza| and
 |PizzaComponent| at the same time. Before we added the |as-disjoints|
-statement, we would have assumed that it was possible to be both.
+statement, we would have assumed that it was possible to be both. We
+also add to this two \emph{annotations} that can be used to provide
+more contextualized information about the pizza -- in this case a
+label and a comment.
 
 As well as describing that two classes are different, we may also wish
 to describe that they are closely related, or that they are
