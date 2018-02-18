@@ -28,20 +28,16 @@
 (add-to-list 'lentic-init-functions
              'lentic-wing-init)
 
-(if (boundp 'LaTeX-indent-environment-list)
-    (add-to-list 'LaTeX-indent-environment-list
-                 '("tawny" current-indentation)))
+(mapcar
+ (lambda (env)
+   (if (boundp 'LaTeX-indent-environment-list)
+       (add-to-list 'LaTeX-indent-environment-list
+                    `(,env current-indentation)))
 
-(if (boundp 'LaTeX-verbatim-environments)
-    (add-to-list 'LaTeX-verbatim-environments
-                 "tawny"))
+   (if (boundp 'LaTeX-verbatim-environments)
+       (add-to-list 'LaTeX-verbatim-environments
+                    "env")))
+ '("tawny" "tawnyhidden" "tawnyexample"))
 
-(if (boundp 'LaTeX-indent-environment-list)
-    (add-to-list 'LaTeX-indent-environment-list
-                 '("tawnyhidden" current-indentation)))
-
-(if (boundp 'LaTeX-verbatim-environments)
-    (add-to-list 'LaTeX-verbatim-environments
-                 "tawnyhidden"))
 
 (provide 'lentic-wing)
