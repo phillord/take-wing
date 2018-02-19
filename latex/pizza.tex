@@ -588,9 +588,11 @@ multiple uses of |(owl-some hasTopping)| and secondly because the toppings are
 duplicated between the universal and existential restrictions. Two features of
 Tawny-OWL enable us to work around these problems. 
 
-Firstly, the |owl-some| function is \emph{variadic} and take a single property but any
-number of classes. We use this feature to shorten the definition of
-|AmericanPizza|. 
+Firstly, the |owl-some| function has a special property -- it
+\emph{broadcasts}. This means it can take a single property but any
+number of classes; this is equivalent to multiple calls to the
+|owl-some| with a single class. We use this feature to shorten the
+definition of |AmericanPizza|.
 
 \begin{tawny}
 (defclass AmericanPizza
@@ -721,7 +723,7 @@ toppings at all, they are only mozzarella or tomato. The semantics of OWL can
 be subtle, but allow us to draw extremely powerful conclusions.
 
 \section{Recap}
-\label{sec:recap-1}
+\label{sec:recap-pizza}
 
 In this chapter, we have described:
 

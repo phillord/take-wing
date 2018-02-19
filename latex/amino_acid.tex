@@ -253,21 +253,61 @@ pattern is not that complex -- we simply give an amino-acid five properties
 and three names. However, to achieve this, we use a new feature of
 Tawny-OWL: the |gem| and the |facet|.
 
-The |defpartition| macro that we introduced earlier \todo{Aslo does facets}
+The |defpartition| macro that we saw earlier creates a large number of
+different classes and a property associated with them. In addition to
+these logical statements it also defines a \emph{facet} which
+comprises the \emph{facet values} (i.e. the classes) and the
+\emph{facet property}; this knowledge is stored in the ontology as
+annotations and states that the facet values should normally be
+associated with this property.
 
-We introduce here a new pattern function called |gem|.
+This allows us to use the |facet| function which returns much the same
+as |owl-some|.
 
- This is done inside a |let| block because we want to capture the return
-value. This is not strictly necessary as the return value is used only once,
-but in this case, I think, it increases readability.
+\begin{tawnyexample}
+(=
+  (owl-some hasSideChainStructure Aliphatic)
+  (facet Aliphatic))
+\end{tawnyexample}
+
+This is a minor convienience, of course, when lots of facet values are
+being used at once is a big advantage. As with |owl-some|, the |facet|
+function broadcasts -- we can call it with as many arguments as we
+choose.
+
+\begin{tawnyexample}
+(=
+  (list
+    (owl-some hasCharge Neutral)
+    (owl-some hasHydrophobicity Hydrophobic)
+    (owl-some hasPolarity NonPolar)
+    (owl-some hasSideChainStructure Aliphatic)
+    (owl-some hasSize Small))     
+  (facet Neutral Hydrophobic NonPolar Aliphatic Small))
+\end{tawnyexample}
+
+Not only has the hassle of typing been reduced but so has the risk of
+error. It is no longer possible to use the wrong property with the
+wrong class.
+
+The |gem| functions build on top of this idea; these are similar the
+|class| or |defclass| functions described earlier, but add a new
+frame, that of the facet. For example, we could define the amino-acid
+|Valine| as follows:
+
+\begin{tawnyexample}
+(defgem Valine
+  :facet Neutral Hydrophobic NonPolar Aliphatic Small)
+\end{tawnyexample}
+
+In the case of the |amino-acid| function, instead we use the |gem|
+function and capture its return value as part of a |let| block. This
+is not strictly necessary as the return value is used only once, but
+in this case, I think, it increases readability.
 
 \begin{tawny}
   (let [aa (p/gem (first names)
                 :super AminoAcid
-                ;; we have don't test the values are correct here
-                ;; because the code layout should make the order obvious
-                ;; and the range constraints should protect us during
-                ;; reasoning.
                 :facet properties
                 :label (first names)
                 :annotation
@@ -333,7 +373,7 @@ rather than having to use quotes. In terms of the amino-acid ontology
 itself, this is unnecessary, but it is useful for another ontology
 importing the amino-acid ontology, so it is worth doing here. In
 addition and probably more importantly than the convienience, this
-also provides a degree of safety: attempts, for instance, to refer to
+also provides a degree of safety: attempts, for instance, refering to
 an amino-acid |B| will fail with an error as this amino-acid does not
 exist.
 
@@ -546,7 +586,7 @@ repetition becomes the task of the computer and not the task of the human,
 which is as it should be.
 
 \section{Recap}
-\label{sec:recap-2}
+\label{sec:recap-amino-acid}
 
 In this chapter, we have described:
 
