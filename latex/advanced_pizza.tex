@@ -1,0 +1,229 @@
+
+\chapter{More on Pizza}
+\label{cha:more-pizza}
+
+Now that we have considered patterns in the context of amino-acids, we
+can look again at Pizza. Our original version of the pizza ontology
+used few patterns. Let's try again. First we create the namespace and
+ontology.
+
+\begin{tawny}
+(ns take.wing.advanced-pizza
+  (:require [tawny.owl :refer :all]
+            [tawny.pattern :as p]
+            [tawny.util :as u]))
+
+(defontology pizza
+  :iri "http://purl.org/ontolink/advanced-pizza")
+\end{tawny}
+
+Next we create the classes that we need to describe the pizza
+structure.
+
+\begin{tawny}
+(as-disjoint
+ (defclass Pizza)
+ (defclass PizzaComponent))
+
+(as-subclasses
+ PizzaComponent
+ :disjoint :cover
+ (defclass PizzaTopping)
+ (defclass PizzaBase))
+\end{tawny}
+
+And the relationships to link them together.
+
+\begin{tawny}
+(defoproperty hasComponent)
+(defoproperty hasBase
+  :super hasComponent
+  :domain Pizza
+  :range PizzaTopping)
+
+(defoproperty hasTopping
+  :super hasComponent
+  :domain Pizza
+  :range PizzaTopping)
+\end{tawny}
+
+And, finally, we extend the definition of |Pizza| to include the base
+and topping.
+
+\begin{tawny}
+(owl-class Pizza
+  :super (owl-some hasTopping PizzaTopping)
+         (owl-some hasBase PizzaBase))
+\end{tawny}
+
+Previously, we started to define our toppings at this point, but let's
+revisit this. In terms of their structure, pizza toppings look rather
+like the properties we saw with amino-acids. However, they are not
+really a value-partition, since toppings are not a continuous
+range. Tawny-OWL provides a pattern for this purpose which is called
+the \emph{tier}. The tier is actually a generalization of the value
+partition pattern with more options.
+
+We could use the tier like so:
+
+\begin{tawnyexample}
+(deftier VegetableTopping
+  [Artichoke Asparagus Olive]
+  :function false :cover false :domain Pizza :suffix :Topping
+  :superproperty hasTopping)
+\end{tawnyexample}
+
+This would create three classes |ArtichokeTopping|, |AsparagusTopping|
+and |OliveTopping|, as well as a property
+|hasVegetableTopping|. Unlike the value partition, we do not want this
+property to be functional, since having more than one vegetable
+topping on a pizza is a reasonable thing to do. Similarly, we do not
+want to add a covering axiom; there are clearly more vegetable
+toppings in the world than the three that we have named.
+
+Now, typing all of this for every type of topping would be
+painful. So, let's create a macro to do it for us. Macros of this
+form are relatively easy to create. We start off with the macro name
+and parameters.
+
+\begin{tawnyexample}
+(defmacro deftoppings
+   [name values])
+\end{tawnyexample}
+
+Next we add the pattern that we want this to expand to.
+
+\begin{tawnyexample}
+(defmacro deftoppings
+   [name values]
+  (p/deftier VegetableTopping
+    [Artichoke Asparagus Olive]
+    :function false :cover false :domain Pizza :suffix :Topping
+    :superproperty hasTopping))
+\end{tawnyexample}
+
+Now we put a backtick |`| in front of this form and replace the bits
+that we want to parameterize with variables prefixed with |~|.
+
+\begin{tawny}
+(defmacro deftoppings
+  [name values]
+  `(p/deftier ~name ~values
+     :suffix :Topping
+     :functional false
+     :domain Pizza
+     :cover false
+     :superproperty hasTopping))
+\end{tawny}
+
+Now we can use this to define all of our topping types.
+
+\begin{tawny}
+(deftoppings PizzaTopping
+  [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable])
+\end{tawny}
+
+We can check that this actually does what we expect in a number of
+ways; but let's use the |macroexpand-1| function to see what this will
+expand to.
+
+\begin{tawnyexample}
+take.wing.advanced-pizza> (macroexpand-1 '(deftoppings PizzaTopping [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable]));; take.wing.advanced-pizza> (macroexpand-1 '(deftoppings PizzaTopping [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable]))
+(tawny.pattern/deftier PizzaTopping [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable] :suffix :Topping :functional false :domain take.wing.advanced-pizza/Pizza :superproperty take.wing.advanced-pizza/hasTopping)
+\end{tawnyexample}
+
+Slightly harder to read, but you should be able to convince yourself
+that this is the same as the |deftier| form that we started
+with\footnote{Many IDEs have mechanisms for running \lstinline{macroexpand-1}
+  and printing the output nicely.}. We can now define all our toppings
+efficiently.
+
+\begin{tawny}
+(deftoppings CheeseTopping
+  [GoatsCheese Gorgonzola Mozzarella Parmesan])
+
+(deftoppings VegetableTopping
+  [Pepper Garlic PetitPois Asparagus Tomato ChilliPepper Onion
+   Peperonata TobascoPepperSauce Caper Olive Rocket])
+
+(deftoppings MeatTopping
+  [Ham Pepperoni])
+
+(deftoppings FruitTopping
+  [Pineapple Pear])
+
+(deftoppings FishTopping
+  [Anchovies Prawn])
+\end{tawny}
+
+We move on now to create our ``named pizza'' with specific
+ingredients. First we create the top-level class.
+
+\begin{tawny}
+(defclass NamedPizza
+  :super Pizza)
+\end{tawny}
+
+We could create a similar macro to |deftoppings| which we would use
+multiple times for each pizza. This might look something like this
+perhaps:
+
+\begin{tawnyexample}
+(defpizza MargheritaPizza [MozzarellaTopping TomatoTopping])
+\end{tawnyexample}
+
+However, we will go a different route, rather like |defaminoacid| from
+Chapter~\ref{cha:highly-patt-ontol}. We will create a single macro
+which allows us to create many pizza at once.
+
+To achieve this, we need to create a variable number of |defclass|
+forms. The macro to achiev this looks like this:
+
+\begin{tawny}
+(defmacro defpizza [& body]
+  `(do
+    ~@(map
+       (fn [[h & r]]
+         `(defclass ~h :super
+            (owl-some hasTopping ~@r)))
+       body)))
+\end{tawny}
+
+This uses a number of features of Clojure: |& body| makes this a
+variadic function taking any number of parameters; the |map| function
+operates over the list of parameters and calls the |fn| on them which
+takes a list also, breaking it into |h & r| or head and rest.  We call
+this macro like so.
+
+\begin{tawny}
+(defpizza
+ [MargheritaPizza MozzarellaTopping TomatoTopping]
+
+ [CajunPizza MozzarellaTopping OnionTopping PeperonataTopping
+  PrawnTopping TobascoPepperSauceTopping TomatoTopping]
+
+ [CapricciosaPizza AnchoviesTopping MozzarellaTopping
+  TomatoTopping PeperonataTopping HamTopping CaperTopping
+  OliveTopping]
+
+ [ParmensePizza AsparagusTopping
+  HamTopping
+  MozzarellaTopping
+  ParmesanTopping
+  TomatoTopping]
+
+ [SohoPizza OliveTopping RocketTopping TomatoTopping ParmesanTopping
+  GarlicTopping])
+\end{tawny}
+
+\section{Recap}
+\label{sec:recap-advanced-pizza}
+
+
+In this short chapter, we have described:
+
+\begin{itemize}
+\item The |deftier| macro
+\item Two macros in detail that we can use for the pizza ontology
+\end{itemize}
+
