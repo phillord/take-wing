@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- fn-in,html --> 
 <meta name="src" content="take_wing.tex"> 
-<meta name="date" content="2018-02-19 22:11:00"> 
+<meta name="date" content="2018-02-24 23:07:00"> 
 <link rel="stylesheet" type="text/css" href="take_wing.css"> 
 <script src="./prism.js"></script> 
 <script src="./prism-tawny.js"></script> 
@@ -29,7 +29,7 @@
 <div class="author" ><span 
 class="cmr-12">Phillip Lord</span></div><br />
 <div class="date" ><span 
-class="cmr-12">February 19, 2018</span></div>
+class="cmr-12">February 24, 2018</span></div>
                                                                      
 
                                                                      
@@ -125,6 +125,10 @@ href="#x1-420006.2" id="QQ2-1-46">Creating the Amino Acid Ontology</a></span>
 href="#x1-430006.3" id="QQ2-1-47">Defining the Amino Acids</a></span>
 <br />   &#x00A0;<span class="sectionToc" >6.4 <a 
 href="#x1-440006.4" id="QQ2-1-48">Recap</a></span>
+<br />   <span class="chapterToc" >7 <a 
+href="#x1-450007" id="QQ2-1-49">More on Pizza</a></span>
+<br />   &#x00A0;<span class="sectionToc" >7.1 <a 
+href="#x1-460007.1" id="QQ2-1-50">Recap</a></span>
    </div>
                                                                      
 
@@ -961,10 +965,10 @@ general.
  id="x1-290005"></a>The Pizza Ontology</h2>
    <h3 class="sectionHead"><span class="titlemark">5.1   </span> <a 
  id="x1-300005.1"></a>Introduction</h3>
-<!--l. 8--><p class="noindent" >In this section, we will create a Pizza ontology; we choose pizzas because they are
+<!--l. 7--><p class="noindent" >In this section, we will create a Pizza ontology; we choose pizzas because they are
 simple, well-understood and compositional (see <a 
 href="http://robertdavidstevens.wordpress.com/2010/01/22/why-the-pizza-ontology-tutorial/" >here</a> for more).
-<!--l. 13--><p class="indent" >   As we described in a previous Chapter&#x00A0;<a 
+<!--l. 12--><p class="indent" >   As we described in a previous Chapter&#x00A0;<a 
 href="#x1-180003">3<!--tex4ht:ref: cha:an-introduction-owl --></a>, we consider the different
 types of entities present in an OWL ontology. The most (and least!)
 important of these are <span 
@@ -973,8 +977,8 @@ because it is these individuals that are described and constrained by
 the other objects. We say that they are the least important because, in
 practice, many ontologies do not explicitly describe any individuals at
 all.
-<!--l. 22--><p class="indent" >   If this seems perverse, consider a menu in a pizza shop. We might see an item
-saying &#8221;Margherita&#x2026;.5.50&#8221;. The menu makes no statements at all about an
+<!--l. 21--><p class="indent" >   If this seems perverse, consider a menu in a pizza shop. We might see an item
+saying &#8221;Margherita&hellip;.5.50&#8221;. The menu makes no statements at all about an
 individual pizza. It is saying that any margherita pizza produced in this resturant
 is going to (or already has) cost 5.50. From the menu, we have no idea how many
 margherita pizzas have been produced or have been consumed. But, menu is still
@@ -990,10 +994,10 @@ href="#fn1x6" id="fn1x6-bk"><sup class="textsuperscript">1</sup></a></span><a
 OWL Ontologies built with Tawny-OWL <span 
 class="cmti-10x-x-109">can </span>describe either or both of these
 entities but in most cases focus on classes.
-<!--l. 41--><p class="noindent" >
+<!--l. 40--><p class="noindent" >
    <h3 class="sectionHead"><span class="titlemark">5.2   </span> <a 
  id="x1-310005.2"></a>Creating the Skeleton</h3>
-<!--l. 43--><p class="noindent" >As we discussed in Section&#x00A0;<a 
+<!--l. 42--><p class="noindent" >As we discussed in Section&#x00A0;<a 
 href="#x1-260004.0.2">4.0.2<!--tex4ht:ref: sec:creating-new-project --></a>, it is possible to use leiningen to create a new
 ontology project. We will do this now:
                                                                      
@@ -1002,32 +1006,32 @@ ontology project. We will do this now:
    <div class="verbatim" id="verbatim-6">
 lein&#x00A0;new&#x00A0;ontology&#x00A0;take-wing-pizza
 </div>
-<!--l. 49--><p class="nopar" >
-<!--l. 51--><p class="indent" >   This will create a directory called
+<!--l. 48--><p class="nopar" >
+<!--l. 50--><p class="indent" >   This will create a directory called
 <code class="language-tawny">take-wing-pizza</code><span class="footnote-mark"><a 
 href="#fn2x6" id="fn2x6-bk"><sup class="textsuperscript">2</sup></a></span><a 
  id="x1-31001f2"></a>.
 We can now edit the files in this directory, starting with <code class="language-tawny">take/wing/pizza.clj</code>
 using either nightlight as described in Section&#x00A0;<a 
 href="#x1-270004.0.3">4.0.3<!--tex4ht:ref: sec:editing-our-ontology --></a>, or any other IDE.
-<!--l. 58--><p class="noindent" >
+<!--l. 57--><p class="noindent" >
    <h3 class="sectionHead"><span class="titlemark">5.3   </span> <a 
  id="x1-320005.3"></a>Preamble</h3>
-<!--l. 61--><p class="noindent" >In Chapter&#x00A0;<a 
+<!--l. 60--><p class="noindent" >In Chapter&#x00A0;<a 
 href="#x1-60002">2<!--tex4ht:ref: cha:rapid-walk-through --></a>, we showed the standard template for a Tawny-OWL file; and
 indeed, leiningen has created a pizza themed version for us.
-<!--l. 65--><p class="noindent" >
+<!--l. 64--><p class="noindent" >
                                                                      
 
                                                                      
 <pre><code class="language-tawny">(ns take.wing.pizza
   (:require [tawny.owl :refer :all]))
 </code></pre>
-<!--l. 70--><p class="indent" >   It is not absolutely critial to understand these statements, but they are
+<!--l. 69--><p class="indent" >   It is not absolutely critial to understand these statements, but they are
 simple enough and worth explaining now, even though they will become much
 more relevant and start to exploit the underlying programming language of
 Tawny-OWL, that is Clojure.
-<!--l. 75--><p class="indent" >   Statements in Clojure are also known as &#8220;forms&#8221;. Pretty much all Clojure
+<!--l. 74--><p class="indent" >   Statements in Clojure are also known as &#8220;forms&#8221;. Pretty much all Clojure
 forms have the same structure; that is they are delimited by <code class="language-tawny">(</code> and <code class="language-tawny">)</code>. Forms
 are usually named after the first letters that appear in them, which is
 the name of the function they will call; so in this case, we have a <code class="language-tawny">ns</code> or
@@ -1038,7 +1042,7 @@ functions available for use. The colon in <code class="language-tawny">:require<
 class="cmti-10x-x-109">keyword</span>. Tawny-OWL uses these in many places to define parameters,
 as we see next. Before we go any further, let&#8217;s make this slightly more
 complex:
-<!--l. 87--><p class="noindent" >
+<!--l. 86--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1046,16 +1050,16 @@ complex:
   (:require [tawny.owl :refer :all]
              [tawny.reasoner :as r]))
 </code></pre>
-<!--l. 93--><p class="indent" >   We will see the importance of <code class="language-tawny">tawny.reasoner</code> later. Next, we have a
+<!--l. 92--><p class="indent" >   We will see the importance of <code class="language-tawny">tawny.reasoner</code> later. Next, we have a
 <code class="language-tawny">defontology</code> form which looks like this:
-<!--l. 96--><p class="noindent" >
+<!--l. 95--><p class="noindent" >
                                                                      
 
                                                                      
 <pre><code class="language-tawny">(defontology take-wing-pizza
   :iri "http://example.com/take-wing-pizza")
 </code></pre>
-<!--l. 101--><p class="indent" >   The name of the function <code class="language-tawny">defontology</code> tells us something useful; as well
+<!--l. 100--><p class="indent" >   The name of the function <code class="language-tawny">defontology</code> tells us something useful; as well
 as creating an ontology, we are defining a name which we can use to
 refer to the ontology. The name is <code class="language-tawny">take-wing-pizza</code> which comes next.
 Finally, we define some parameters &#8211; in this case, the IRI. All OWL
@@ -1065,35 +1069,35 @@ href="#fn3x6" id="fn3x6-bk"><sup class="textsuperscript">3</sup></a></span><a
  id="x1-32001f3"></a>.
 Here, we invent one in the <code class="language-tawny">example.com</code> domain. You should change this to an IRI
 you control. In this case, we use one from <code class="language-tawny">purl.org</code>.
-<!--l. 113--><p class="noindent" >
+<!--l. 112--><p class="noindent" >
                                                                      
 
                                                                      
 <pre><code class="language-tawny">(defontology take-wing-pizza
   :iri "http://purl.org/ontolink/take-wing/pizza")
 </code></pre>
-<!--l. 118--><p class="indent" >   The semantics of this statement are quite interesting. If we had created a new
+<!--l. 117--><p class="indent" >   The semantics of this statement are quite interesting. If we had created a new
 database, by default, the database would be considered to be empty &#8211; that is
 there would be no individuals in it. With an ontology, the opposite is true. By
 default, we assume that there could be any number of individuals. As of yet, we
 just have not said anything about these individuals.
    <h3 class="sectionHead"><span class="titlemark">5.4   </span> <a 
  id="x1-330005.4"></a>Defining Classes</h3>
-<!--l. 128--><p class="noindent" >Next, we declare two classes. A class is a set of individuals with shared
+<!--l. 127--><p class="noindent" >Next, we declare two classes. A class is a set of individuals with shared
 characteristics. The basic template creates an entirely useless <code class="language-tawny">HelloWorld</code> task for
 us like so:
-<!--l. 132--><p class="noindent" >
+<!--l. 131--><p class="noindent" >
                                                                      
 
                                                                      
 <pre><code class="language-tawny">(defclass HelloWorld)
 </code></pre>
-<!--l. 136--><p class="indent" >   This follows the same syntax as all forms with <code class="language-tawny">(</code> and <code class="language-tawny">)</code>, and follows the
+<!--l. 135--><p class="indent" >   This follows the same syntax as all forms with <code class="language-tawny">(</code> and <code class="language-tawny">)</code>, and follows the
 convention of <code class="language-tawny">defontology</code> &#8211; a class object is created as well as a name
 <code class="language-tawny">HelloWorld</code> which we can use to refer to that object. In this case, we do not add
 any arguments nor do we need to. If you are using nightlight, it should look like
 this:
-<!--l. 142--><p class="indent" >   <hr class="figure"><div class="figure" 
+<!--l. 141--><p class="indent" >   <hr class="figure"><div class="figure" 
 >
                                                                      
 
@@ -1104,7 +1108,7 @@ this:
 
                                                                      
 
-<!--l. 144--><p class="noindent" ><img 
+<!--l. 143--><p class="noindent" ><img 
 src="images/night-pizza.png" alt="PIC"  
 >
 <br /> <div class="caption" 
@@ -1113,10 +1117,10 @@ class="content">A new pizza ontology</span></div><!--tex4ht:label?: x1-330011 --
                                                                      
 
                                                                      
-<!--l. 147--><p class="indent" >   </div><hr class="endfigure">
-<!--l. 149--><p class="indent" >   It is possible to run, or evaluate, Tawny-OWL files as well. To see this in
+<!--l. 146--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 148--><p class="indent" >   It is possible to run, or evaluate, Tawny-OWL files as well. To see this in
 nightlight, simply select &#8220;Insta-REPL&#8221; on the top-right.
-<!--l. 152--><p class="indent" >   <hr class="figure"><div class="figure" 
+<!--l. 151--><p class="indent" >   <hr class="figure"><div class="figure" 
 >
                                                                      
 
@@ -1127,7 +1131,7 @@ nightlight, simply select &#8220;Insta-REPL&#8221; on the top-right.
 
                                                                      
 
-<!--l. 154--><p class="noindent" ><img 
+<!--l. 153--><p class="noindent" ><img 
 src="images/night-instarepl.png" alt="PIC"  
 >
 <br /> <div class="caption" 
@@ -1136,11 +1140,11 @@ class="content">The Insta-REPL</span></div><!--tex4ht:label?: x1-330022 -->
                                                                      
 
                                                                      
-<!--l. 157--><p class="indent" >   </div><hr class="endfigure">
-<!--l. 159--><p class="indent" >   On the left, we can see the results of this evaluation. The actual values are
+<!--l. 156--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 158--><p class="indent" >   On the left, we can see the results of this evaluation. The actual values are
 not that useful in Tawny-OWL, but the that they are green shows that they are
 valid.
-<!--l. 163--><p class="indent" >   Clearly, as this is supposed to be an ontology of pizza rather than classic
+<!--l. 162--><p class="indent" >   Clearly, as this is supposed to be an ontology of pizza rather than classic
 computer programs, we will need to change this. So, first we replace
 <code class="language-tawny">HelloWorld</code> with <code class="language-tawny">Pizza</code> and add a new class called <code class="language-tawny">PizzaComponent</code>. As
 with our <code class="language-tawny">defontology</code> form, have a <code class="language-tawny">def</code> form; however, in this case, we
@@ -1151,33 +1155,33 @@ about the relationship between an individual <code class="language-tawny">Pizza<
 <code class="language-tawny">PizzaComponent</code><span class="footnote-mark"><a 
 href="#fn4x6" id="fn4x6-bk"><sup class="textsuperscript">4</sup></a></span><a 
  id="x1-33003f4"></a>.
-<!--l. 178--><p class="noindent" >
+<!--l. 177--><p class="noindent" >
                                                                      
 
                                                                      
 <pre><code class="language-tawny">(defclass Pizza)
 (defclass PizzaComponent)
 </code></pre>
-<!--l. 183--><p class="indent" >   To build an accurate ontology, we may wish to describe this relationship
+<!--l. 182--><p class="indent" >   To build an accurate ontology, we may wish to describe this relationship
 further. We might ask the question, can an individual be both a <code class="language-tawny">Pizza</code> and a
 <code class="language-tawny">PizzaComponent</code> at the same time. The answer to this is no, but currently our
 ontology does not state this. In OWL terminology, we wish to say that these
 two classes are <span 
 class="cmti-10x-x-109">disjoint</span>. We can achieve this by adding an <code class="language-tawny">as-disjoint</code>
 statement.
-<!--l. 190--><p class="noindent" >
+<!--l. 189--><p class="noindent" >
                                                                      
 
                                                                      
 <pre><code class="language-tawny">(as-disjoint Pizza PizzaComponent)
 </code></pre>
-<!--l. 194--><p class="indent" >   This works well, but is a little duplicative. If we add a new class which we
+<!--l. 193--><p class="indent" >   This works well, but is a little duplicative. If we add a new class which we
 wish to also be disjoint, it must be added in two places. Instead, it is possible to
 do both at once. This has the advantage of grouping the two classes together in
 the file, as well as semantically, which should make the source more future-proof;
 should we need new classes, we will automatically become disjoint as
 required.
-<!--l. 201--><p class="noindent" >
+<!--l. 200--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1185,12 +1189,12 @@ required.
  (defclass Pizza)
  (defclass PizzaComponent))
 </code></pre>
-<!--l. 207--><p class="indent" >   If you are using Nightlight, you may find it a little hard to edit your file to
+<!--l. 206--><p class="indent" >   If you are using Nightlight, you may find it a little hard to edit your file to
 achieve this as Nightlight uses <a 
 href="http://shaunlebron.github.io/parinfer/" >parinfer</a>. This puts the parentheses in place for
 you. To make this statement, type <code class="language-tawny">as-disjoint</code> before the other two
 forms:
-<!--l. 213--><p class="noindent" >
+<!--l. 212--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1198,9 +1202,9 @@ forms:
 (defclass Pizza)
 (defclass PizzaComponent)
 </code></pre>
-<!--l. 219--><p class="indent" >   Now, add two spaces in front of <code class="language-tawny">defclass&#x00A0;Pizza)</code> and then
+<!--l. 218--><p class="indent" >   Now, add two spaces in front of <code class="language-tawny">defclass&#x00A0;Pizza)</code> and then
 <code class="language-tawny">(defclass&#x00A0;PizzaComponent)</code>. The parentheses should take care of themselves.
-<!--l. 222--><p class="noindent" >
+<!--l. 221--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1213,7 +1217,7 @@ flatbread with any of a large variety of other foods on top.")
    :label "Pizza Component"
    :comment "Food that is part of a pizza."))
 </code></pre>
-<!--l. 233--><p class="indent" >   The semantics of these statements are that our ontology may have any
+<!--l. 232--><p class="indent" >   The semantics of these statements are that our ontology may have any
 number of individuals, some of which may be <code class="language-tawny">Pizza</code>, some of which may be
 <code class="language-tawny">PizzaComponent</code>, but none of which can be both <code class="language-tawny">Pizza</code> and <code class="language-tawny">PizzaComponent</code> at the
 same time. Before we added the <code class="language-tawny">as-disjoints</code> statement, we would have assumed
@@ -1221,18 +1225,18 @@ that it was possible to be both. We also add to this two <span
 class="cmti-10x-x-109">annotations </span>that can be
 used to provide more contextualized information about the pizza &#8211; in this case a
 label and a comment.
-<!--l. 242--><p class="indent" >   As well as describing that two classes are different, we may also wish
+<!--l. 241--><p class="indent" >   As well as describing that two classes are different, we may also wish
 to describe that they are closely related, or that they are <span 
 class="cmti-10x-x-109">subclasses</span>.
 Where one class is a subclass of another, we are saying that everything
 that is true of the superclass is also true of the subclass. Or, in terms of
 individuals, that every individual of the subclass is also an individual of the
 superclass.
-<!--l. 249--><p class="indent" >   Next, we add two more classes, in this case classes for base and toppings. We
+<!--l. 248--><p class="indent" >   Next, we add two more classes, in this case classes for base and toppings. We
 include the statement that they have <code class="language-tawny">PizzaComponent</code> as a superclass. We do this
 by adding a <code class="language-tawny">:super</code> argument or <span 
 class="cmti-10x-x-109">frame </span>to our <code class="language-tawny">defclass</code> statement.
-<!--l. 254--><p class="noindent" >
+<!--l. 253--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1241,17 +1245,17 @@ class="cmti-10x-x-109">frame </span>to our <code class="language-tawny">defclass
 (defclass PizzaTopping
   :super PizzaComponent)
 </code></pre>
-<!--l. 261--><p class="indent" >   In Tawny-OWL, the frames can all be read in the same way. Read forwards,
+<!--l. 260--><p class="indent" >   In Tawny-OWL, the frames can all be read in the same way. Read forwards,
 we can say <code class="language-tawny">PizzaBase</code> has a superclass <code class="language-tawny">PizzaComponent</code>, or backwards
 <code class="language-tawny">PizzaComponent</code> is a superclass of <code class="language-tawny">PizzaBase</code>. Earlier, we say the <code class="language-tawny">:iri</code> frame for
 <code class="language-tawny">defontology</code> which is read similarly &#8211; <code class="language-tawny">pizza</code> has the given IRI.
-<!--l. 267--><p class="indent" >   As every individual of, for example, <code class="language-tawny">PizzaBase</code> is <code class="language-tawny">PizzaComponent</code>, and no
+<!--l. 266--><p class="indent" >   As every individual of, for example, <code class="language-tawny">PizzaBase</code> is <code class="language-tawny">PizzaComponent</code>, and no
 <code class="language-tawny">PizzaComponent</code> individual can also be a <code class="language-tawny">Pizza</code> this also implies that no <code class="language-tawny">PizzaBase</code>
 is a <code class="language-tawny">Pizza</code>. In otherwords, the disjointness is inherited.
-<!--l. 271--><p class="indent" >   As with the disjoint statement, this is little long winded; we have to name the
+<!--l. 270--><p class="indent" >   As with the disjoint statement, this is little long winded; we have to name the
 <code class="language-tawny">PizzaComponent</code> superclass twice. Tawny-OWL provides a short cut for this, with
 the <code class="language-tawny">as-subclasses</code> function.
-<!--l. 275--><p class="noindent" >
+<!--l. 274--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1260,7 +1264,7 @@ the <code class="language-tawny">as-subclasses</code> function.
  (defclass PizzaBase)
  (defclass PizzaTopping))
 </code></pre>
-<!--l. 282--><p class="indent" >   We are still not complete; we asked the question previously, can you be both
+<!--l. 281--><p class="indent" >   We are still not complete; we asked the question previously, can you be both
 a <code class="language-tawny">Pizza</code> and a <code class="language-tawny">PizzaComponent</code>, to which the answer is no. We can apply the same
 question, and get the same answer to a <code class="language-tawny">PizzaBase</code> and <code class="language-tawny">PizzaTopping</code>. These two,
 therefore, should also be disjoint. However, we can make a stronger statement
@@ -1271,7 +1275,7 @@ subclasses<span class="footnote-mark"><a
 href="#fn5x6" id="fn5x6-bk"><sup class="textsuperscript">5</sup></a></span><a 
  id="x1-33004f5"></a>.
 We can add both of these statements to the ontology also.
-<!--l. 296--><p class="noindent" >
+<!--l. 295--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1281,10 +1285,10 @@ We can add both of these statements to the ontology also.
  (defclass PizzaBase)
  (defclass PizzaTopping))
 </code></pre>
-<!--l. 304--><p class="indent" >   We now have the basic classes that we need to describe a pizza.
+<!--l. 303--><p class="indent" >   We now have the basic classes that we need to describe a pizza.
    <h3 class="sectionHead"><span class="titlemark">5.5   </span> <a 
  id="x1-340005.5"></a>Properties</h3>
-<!--l. 309--><p class="noindent" >Now, we wish to describe more about <code class="language-tawny">Pizza</code>; in particular, we want to say more
+<!--l. 308--><p class="noindent" >Now, we wish to describe more about <code class="language-tawny">Pizza</code>; in particular, we want to say more
 about the relationship between <code class="language-tawny">Pizza</code> and two <code class="language-tawny">PizzaComponent</code> classes. OWL
 provides a rich mechanism for describing relationships between individuals and,
 in turn, how individuals of classes are related to each other. As well as there
@@ -1293,18 +1297,18 @@ relationships. It is the relationships to other classes or individuals that allo
 to describe classes, and it is for this reason that the different types of
 relationships are called <span 
 class="cmti-10x-x-109">properties</span>.
-<!--l. 318--><p class="indent" >   A <code class="language-tawny">Pizza</code> is built from one or more <code class="language-tawny">PizzaComponent</code> individuals; we first define two
+<!--l. 317--><p class="indent" >   A <code class="language-tawny">Pizza</code> is built from one or more <code class="language-tawny">PizzaComponent</code> individuals; we first define two
 properties <span class="footnote-mark"><a 
 href="#fn6x6" id="fn6x6-bk"><sup class="textsuperscript">6</sup></a></span><a 
  id="x1-34001f6"></a>
 to relate these two together, which we call <code class="language-tawny">hasComponent</code> and <code class="language-tawny">isComponentOf</code>. The
 semantics of this statement is to say that we now have two properties that we
 can use between individuals.
-<!--l. 330--><p class="indent" >   As with classes, there is more that we can say about these properties. In this
+<!--l. 329--><p class="indent" >   As with classes, there is more that we can say about these properties. In this
 case, the properties are natual opposites or inverses of each other. The semantics
 of this statement is that for an individual <code class="language-tawny">i</code> which <code class="language-tawny">hasComponent</code> <code class="language-tawny">j</code>, we can say
 that <code class="language-tawny">j</code> <code class="language-tawny">isComponentOf</code> <code class="language-tawny">i</code> also.
-<!--l. 335--><p class="noindent" >
+<!--l. 334--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1312,7 +1316,7 @@ that <code class="language-tawny">j</code> <code class="language-tawny">isCompon
  (defoproperty hasComponent)
  (defoproperty isComponentOf))
 </code></pre>
-<!--l. 341--><p class="indent" >   The semantics here are actually between individuals, rather than classes. This
+<!--l. 340--><p class="indent" >   The semantics here are actually between individuals, rather than classes. This
 has an important consequence with the inverses. We might make the statement
 that <code class="language-tawny">Pizza</code> <code class="language-tawny">hasComponent</code> <code class="language-tawny">PizzaComponent</code>, but this does not allow us to infer that
 <code class="language-tawny">PizzaComponent</code> <code class="language-tawny">isComponentOf</code> <code class="language-tawny">Pizza</code>. The way that we have named our classes
@@ -1325,11 +1329,11 @@ statements made in OWL are saying less than most people would assume
 <span class="footnote-mark"><a 
 href="#fn7x6" id="fn7x6-bk"><sup class="textsuperscript">7</sup></a></span><a 
  id="x1-34002f7"></a>.
-<!--l. 355--><p class="indent" >   We now move on to describe the relationships between <code class="language-tawny">Pizza</code> and both of
+<!--l. 354--><p class="indent" >   We now move on to describe the relationships between <code class="language-tawny">Pizza</code> and both of
 <code class="language-tawny">PizzaBase</code> and <code class="language-tawny">PizzaTopping</code>. For this, we will introduce three new parts of OWL:
 subproperties, domain and range constraints and property characteristics, which
 we define in Tawny-OWL as follows:
-<!--l. 360--><p class="noindent" >
+<!--l. 359--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1344,15 +1348,15 @@ we define in Tawny-OWL as follows:
   :range PizzaBase
   :domain Pizza)
 </code></pre>
-<!--l. 373--><p class="indent" >   First, we consider sub-properties, which are fairly analogous to sub-classes.
+<!--l. 372--><p class="indent" >   First, we consider sub-properties, which are fairly analogous to sub-classes.
 For example, if two individuals <code class="language-tawny">i</code> and <code class="language-tawny">j</code> are related so that <code class="language-tawny">i&#x00A0;hasTopping&#x00A0;j</code>, then
 it is also true that <code class="language-tawny">i&#x00A0;hasComponent&#x00A0;j</code>.
-<!--l. 377--><p class="indent" >   Domain and range constraints describe the kind of entity that be at either
+<!--l. 376--><p class="indent" >   Domain and range constraints describe the kind of entity that be at either
 end of the property. So, for example, considering <code class="language-tawny">hasTopping</code>, we say that the
 domain is <code class="language-tawny">Pizza</code>, so only instances of <code class="language-tawny">Pizza</code> can have a topping, while
 the range is <code class="language-tawny">PizzaTopping</code> so only instances of <code class="language-tawny">PizzaTopping</code> can be a
 topping.
-<!--l. 382--><p class="indent" >   Finally, we introduce a <span 
+<!--l. 381--><p class="indent" >   Finally, we introduce a <span 
 class="cmti-10x-x-109">characteristic</span>. OWL has quite a few different
 characteristics which will introduce over time; in this case <span 
 class="cmti-10x-x-109">functional </span>means
@@ -1362,7 +1366,7 @@ default, OWL will assume that you can have any number of toppings on a
 pizza.
    <h3 class="sectionHead"><span class="titlemark">5.6   </span> <a 
  id="x1-350005.6"></a>Populating the Ontology</h3>
-<!--l. 392--><p class="noindent" >We now have enough expressivity to describe quite a lot about pizzas. So, we can
+<!--l. 391--><p class="noindent" >We now have enough expressivity to describe quite a lot about pizzas. So, we can
 now set about creating a larger set of toppings for our pizzas. First, we
 describe some top level categories of types of topping. As before, we use
 <code class="language-tawny">as-subclasses</code> function and state further that all of these classes are disjoint.
@@ -1372,7 +1376,7 @@ we might have; there might be toppings which fall into none of these
 categories<span class="footnote-mark"><a 
 href="#fn8x6" id="fn8x6-bk"><sup class="textsuperscript">8</sup></a></span><a 
  id="x1-35001f8"></a>.
-<!--l. 404--><p class="noindent" >
+<!--l. 403--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1388,12 +1392,12 @@ href="#fn8x6" id="fn8x6-bk"><sup class="textsuperscript">8</sup></a></span><a
  (defclass SauceTopping)
  (defclass VegetableTopping))
 </code></pre>
-<!--l. 418--><p class="indent" >   When defining a large number of classes at once, Tawny-OWL also offers a
+<!--l. 417--><p class="indent" >   When defining a large number of classes at once, Tawny-OWL also offers a
 shortcut, which is <code class="language-tawny">declare-classes</code>. While this can be useful in a few specific
 circumstances, these are quite limited because it does not allow addition of any
 other attributes at the same time, and in particular labels which most classes will
 need. It is quite useful in tutorial document.
-<!--l. 425--><p class="noindent" >
+<!--l. 424--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1407,9 +1411,9 @@ need. It is quite useful in tutorial document.
   MozzarellaTopping
   ParmesanTopping))
 </code></pre>
-<!--l. 437--><p class="indent" >   A similar, if slightly longer-winded, way of defining many classes at once is
+<!--l. 436--><p class="indent" >   A similar, if slightly longer-winded, way of defining many classes at once is
 <code class="language-tawny">defclassn</code>. We use this to define vegetables.
-<!--l. 440--><p class="noindent" >
+<!--l. 439--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1427,8 +1431,8 @@ need. It is quite useful in tutorial document.
   [TomatoTopping]
   [ChilliPepperTopping]))
 </code></pre>
-<!--l. 456--><p class="indent" >   We add classes describing meat.
-<!--l. 458--><p class="noindent" >
+<!--l. 455--><p class="indent" >   We add classes describing meat.
+<!--l. 457--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1438,8 +1442,8 @@ need. It is quite useful in tutorial document.
  (defclass HamTopping)
  (defclass PepperoniTopping))
 </code></pre>
-<!--l. 466--><p class="indent" >   And, finally, fruit.
-<!--l. 468--><p class="noindent" >
+<!--l. 465--><p class="indent" >   And, finally, fruit.
+<!--l. 467--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1447,18 +1451,18 @@ need. It is quite useful in tutorial document.
  FruitTopping
  (defclass PineappleTopping))
 </code></pre>
-<!--l. 474--><p class="indent" >   In this case, we have only a single entity, that is <code class="language-tawny">PineappleTopping</code>, so we have
+<!--l. 473--><p class="indent" >   In this case, we have only a single entity, that is <code class="language-tawny">PineappleTopping</code>, so we have
 not made this disjoint. In fact, Tawny-OWL would treat this as an error, since
 having a single disjoint class does not really make sense, and it is mostly likely it
 is wrong. This does mean that we need to remember to add this <code class="language-tawny">:disjoint</code>
 statement, if another <code class="language-tawny">FruitTopping</code> is added.
    <h3 class="sectionHead"><span class="titlemark">5.7   </span> <a 
  id="x1-360005.7"></a>Describing a Pizza</h3>
-<!--l. 484--><p class="noindent" >And, now finally, we have the basic concepts that we need to build a pizza. First,
+<!--l. 483--><p class="noindent" >And, now finally, we have the basic concepts that we need to build a pizza. First,
 we start off with a generic description of a pizza; we have already defined the
 class above, so we want to extend the definition rather than create a new one. We
 can achieve this using the <code class="language-tawny">class</code> function:
-<!--l. 489--><p class="noindent" >
+<!--l. 488--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1467,7 +1471,7 @@ can achieve this using the <code class="language-tawny">class</code> function:
             (owl-some hasTopping PizzaTopping)
             (owl-some hasBase PizzaBase))
 </code></pre>
-<!--l. 496--><p class="indent" >   This introduces several new features of Tawny-OWL:
+<!--l. 495--><p class="indent" >   This introduces several new features of Tawny-OWL:
      <ul class="itemize1">
      <li class="itemize">this use of <code class="language-tawny">class</code> requires that <code class="language-tawny">Pizza</code> already be defined. In other words,
      we are extending an existing definition. If <code class="language-tawny">Pizza</code> is not defined, this
@@ -1478,7 +1482,7 @@ can achieve this using the <code class="language-tawny">class</code> function:
      <li class="itemize">we create out first <span 
 class="cmti-10x-x-109">unnamed </span>classes from a class expression &#8211; in this
      case <code class="language-tawny">(owl-some&#x00A0;hasTopping&#x00A0;PizzaTopping)</code>.</li></ul>
-<!--l. 506--><p class="indent" >   The semantics of the last two of these are a little complex. Like a named class
+<!--l. 505--><p class="indent" >   The semantics of the last two of these are a little complex. Like a named class
 (all of those we have seen up to now), an unnamed class defines a set of
 individuals, but it does so by combining other parts of the ontology. The
 <code class="language-tawny">owl-some</code> restriction describes a class of individuals with at least one relationship
@@ -1490,14 +1494,14 @@ for this reason that this form of class is also known as an <span
 class="cmti-10x-x-109">existential</span>
 <span 
 class="cmti-10x-x-109">restriction</span>.
-<!--l. 518--><p class="indent" >   We combine the two statements to say that a <code class="language-tawny">Pizza</code> must have at least one
+<!--l. 517--><p class="indent" >   We combine the two statements to say that a <code class="language-tawny">Pizza</code> must have at least one
 base and at least one topping. Actually, we earlier defined <code class="language-tawny">hasBase</code> with the
 <code class="language-tawny">:functional</code> characteristic, so together this says that a <code class="language-tawny">Pizza</code> must have exactly
 one base.
-<!--l. 523--><p class="indent" >   Finally, we can build a specific pizza, and we start with one of the simplest
+<!--l. 522--><p class="indent" >   Finally, we can build a specific pizza, and we start with one of the simplest
 pizza, that is the margherita. This has two toppings, mozzarella and tomato. The
 definition for this is as follows:
-<!--l. 527--><p class="noindent" >
+<!--l. 526--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1508,7 +1512,7 @@ definition for this is as follows:
   (owl-some hasTopping TomatoTopping)
   (only hasTopping (owl-or MozzarellaTopping TomatoTopping)))
 </code></pre>
-<!--l. 536--><p class="indent" >   The first part of this definition is similar to <code class="language-tawny">Pizza</code>. It says that a
+<!--l. 535--><p class="indent" >   The first part of this definition is similar to <code class="language-tawny">Pizza</code>. It says that a
 <code class="language-tawny">MargheritaPizza</code> is a <code class="language-tawny">Pizza</code> with two toppings, mozzarella and tomato. The
 second part of the definition adds two new features of Tawny-OWL:
      <ul class="itemize1">
@@ -1517,7 +1521,7 @@ class="cmti-10x-x-109">universal restriction</span>
      </li>
      <li class="itemize"><code class="language-tawny">owl-or</code> which returns a <span 
 class="cmti-10x-x-109">union restriction</span></li></ul>
-<!--l. 545--><p class="indent" >   The <code class="language-tawny">owl-or</code> statement defines the set of individuals that is either
+<!--l. 544--><p class="indent" >   The <code class="language-tawny">owl-or</code> statement defines the set of individuals that is either
 <code class="language-tawny">MozzarellaTopping</code> or <code class="language-tawny">TomatoTopping</code>. The <code class="language-tawny">only</code> statement defines the set of
 individuals whose toppings are either <code class="language-tawny">MozzarellaTopping</code> or <code class="language-tawny">TomatoTopping</code>. One
 important sting in the tail of <code class="language-tawny">only</code> is that it does <span 
@@ -1528,11 +1532,11 @@ which are not <code class="language-tawny">Pizza</code> at all. Logically, this 
 <span class="footnote-mark"><a 
 href="#fn9x6" id="fn9x6-bk"><sup class="textsuperscript">9</sup></a></span><a 
  id="x1-36001f9"></a>.
-<!--l. 556--><p class="indent" >   For completeness, we also define <code class="language-tawny">HawaiianPizza</code>
+<!--l. 555--><p class="indent" >   For completeness, we also define <code class="language-tawny">HawaiianPizza</code>
 <span class="footnote-mark"><a 
 href="#fn10x6" id="fn10x6-bk"><sup class="textsuperscript">10</sup></a></span><a 
  id="x1-36002f10"></a>.
-<!--l. 561--><p class="noindent" >
+<!--l. 560--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1546,7 +1550,7 @@ href="#fn10x6" id="fn10x6-bk"><sup class="textsuperscript">10</sup></a></span><a
   (only hasTopping
          (owl-or MozzarellaTopping TomatoTopping HamTopping PineappleTopping)))
 </code></pre>
-<!--l. 573--><p class="indent" >   We can now check that this works as expected by using the <code class="language-tawny">subclass?</code> and
+<!--l. 572--><p class="indent" >   We can now check that this works as expected by using the <code class="language-tawny">subclass?</code> and
 <code class="language-tawny">subclasses</code> functions at the REPL.
                                                                      
 
@@ -1557,19 +1561,19 @@ take.wing.pizza&#x003E;&#x00A0;(subclass?&#x00A0;Pizza&#x00A0;MargheritaPizza)
 &#x00A0;<br />take.wing.pizza&#x003E;&#x00A0;(subclasses&#x00A0;Pizza)
 &#x00A0;<br />#{#[Class&#x00A0;0x74c8b756&#x00A0;"HawaiianPizza"@en]&#x00A0;#[Class&#x00A0;0x4f1495bd&#x00A0;"MargheritaPizza"@en]}
 </div>
-<!--l. 581--><p class="nopar" >
+<!--l. 580--><p class="nopar" >
    <h3 class="sectionHead"><span class="titlemark">5.8   </span> <a 
  id="x1-370005.8"></a>A simple pattern</h3>
-<!--l. 586--><p class="noindent" >The last definition is rather unsatisfying for two reasons. Firstly, the multiple
+<!--l. 585--><p class="noindent" >The last definition is rather unsatisfying for two reasons. Firstly, the multiple
 uses of <code class="language-tawny">(owl-some&#x00A0;hasTopping)</code> and secondly because the toppings are duplicated
 between the universal and existential restrictions. Two features of Tawny-OWL
 enable us to work around these problems.
-<!--l. 591--><p class="indent" >   Firstly, the <code class="language-tawny">owl-some</code> function has a special property &#8211; it <span 
+<!--l. 590--><p class="indent" >   Firstly, the <code class="language-tawny">owl-some</code> function has a special property &#8211; it <span 
 class="cmti-10x-x-109">broadcasts</span>. This
 means it can take a single property but any number of classes; this is equivalent
 to multiple calls to the <code class="language-tawny">owl-some</code> with a single class. We use this feature to
 shorten the definition of <code class="language-tawny">AmericanPizza</code>.
-<!--l. 597--><p class="noindent" >
+<!--l. 596--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1580,14 +1584,14 @@ shorten the definition of <code class="language-tawny">AmericanPizza</code>.
              TomatoTopping PepperoniTopping)
   (only hasTopping (owl-or MozzarellaTopping TomatoTopping PepperoniTopping)))
 </code></pre>
-<!--l. 606--><p class="indent" >   The single <code class="language-tawny">owl-some</code> function call here expands to three existential
+<!--l. 605--><p class="indent" >   The single <code class="language-tawny">owl-some</code> function call here expands to three existential
 restrictions, each of which becomes a super class of <code class="language-tawny">AmericanPizza</code> &#8211; mirroring
 the definition of <code class="language-tawny">HawaiianPizza</code>.
-<!--l. 610--><p class="indent" >   This definition, however, still leaves the duplication between the two sets of
+<!--l. 609--><p class="indent" >   This definition, however, still leaves the duplication between the two sets of
 restrictions. This pattern is frequent enough that Tawny-OWL provides special
 support for it in the form of the <code class="language-tawny">some-only</code> function, which we use to define the
 next pizza.
-<!--l. 615--><p class="noindent" >
+<!--l. 614--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1597,7 +1601,7 @@ next pizza.
   (some-only hasTopping MozzarellaTopping TomatoTopping
               PepperoniTopping ChilliPepperTopping))
 </code></pre>
-<!--l. 623--><p class="indent" >   The <code class="language-tawny">some-only</code> function is Tawny-OWL&#8217;s implementation of the <span 
+<!--l. 622--><p class="indent" >   The <code class="language-tawny">some-only</code> function is Tawny-OWL&#8217;s implementation of the <span 
 class="cmti-10x-x-109">closure</span>
 axiom. Similarly, the use of <code class="language-tawny">:cover</code> described earlier implements the <span 
 class="cmti-10x-x-109">covering</span>
@@ -1607,7 +1611,7 @@ see how to exploit the programmatic nature of Tawny-OWL to build arbitrary
 new patterns for yourself.
    <h3 class="sectionHead"><span class="titlemark">5.9   </span> <a 
  id="x1-380005.9"></a>Defined Classes</h3>
-<!--l. 633--><p class="noindent" >So far all of the classes that we have written are <span 
+<!--l. 632--><p class="noindent" >So far all of the classes that we have written are <span 
 class="cmti-10x-x-109">primitive</span>. This is not a
 statement about their complexity. It means that as they stand, they cannot
 be used to infer new facts. So, for example, we know that a individual
@@ -1616,9 +1620,9 @@ an arbitrary pizza we cannot determine whether it is a margherita. Or,
 mozzarella and tomato toppings are <span 
 class="cmti-10x-x-109">necessary </span>for a margherita, but they are not
 sufficient.
-<!--l. 642--><p class="indent" >   Defined classes allow us to take advantage of the power of computational
+<!--l. 641--><p class="indent" >   Defined classes allow us to take advantage of the power of computational
 reasoning. Let us try a simple example:
-<!--l. 645--><p class="noindent" >
+<!--l. 644--><p class="noindent" >
                                                                      
 
                                                                      
@@ -1628,7 +1632,7 @@ reasoning. Let us try a simple example:
             (only hasTopping
                    (owl-not (owl-or MeatTopping FishTopping)))))
 </code></pre>
-<!--l. 653--><p class="indent" >   Here, we define a <code class="language-tawny">VegetarianPizza</code> as a <code class="language-tawny">Pizza</code> with only <code class="language-tawny">MeatTopping</code> or
+<!--l. 652--><p class="indent" >   Here, we define a <code class="language-tawny">VegetarianPizza</code> as a <code class="language-tawny">Pizza</code> with only <code class="language-tawny">MeatTopping</code> or
 <code class="language-tawny">FishTopping</code>. The two key point about this definition is that we have marked it as
 <code class="language-tawny">:equivalent</code> rather than <code class="language-tawny">:super</code> and that there is no stated relationship
 between <code class="language-tawny">VegetarianPizza</code> and <code class="language-tawny">MargheritaPizza</code>. We can confirm this at the
@@ -1642,8 +1646,8 @@ shell.
 &#x00A0;<br />(subclass?&#x00A0;VegetarianPizza&#x00A0;MargheritaPizza)
 &#x00A0;<br />=&#x003E;&#x00A0;false
 </div>
-<!--l. 665--><p class="nopar" >
-<!--l. 667--><p class="indent" >   However, now let us ask the same question of a reasoner. You may remember
+<!--l. 664--><p class="nopar" >
+<!--l. 666--><p class="indent" >   However, now let us ask the same question of a reasoner. You may remember
 that earlier we added <code class="language-tawny">tawny.reasoner</code> to our namespace form. This now allows us
 to perform computational reasoning. First, we choose a reasoner to use (in this
 case HermiT); we do this by calling the <code class="language-tawny">reasoner-factory</code> function; this is in the
@@ -1656,8 +1660,8 @@ case HermiT); we do this by calling the <code class="language-tawny">reasoner-fa
 (r/reasoner-factory&#x00A0;:hermit)
 &#x00A0;<br />=&#x003E;&#x00A0;#object[org.semanticweb.HermiT.Reasoner$ReasonerFactory&#x00A0;0x7d56d721&#x00A0;"org.semanticweb.HermiT.Reasoner$ReasonerFactory@7d56d721"]
 </div>
-<!--l. 677--><p class="nopar" >
-<!--l. 679--><p class="indent" >   Then ask the same questions of Tawny-OWL but now using the versions of
+<!--l. 676--><p class="nopar" >
+<!--l. 678--><p class="indent" >   Then ask the same questions of Tawny-OWL but now using the versions of
 functions prefixed with an <code class="language-tawny">i</code> (for inferred).
                                                                      
 
@@ -1668,8 +1672,8 @@ functions prefixed with an <code class="language-tawny">i</code> (for inferred).
 &#x00A0;<br />(r/isubclass?&#x00A0;VegetarianPizza&#x00A0;MargheritaPizza)
 &#x00A0;<br />=&#x003E;&#x00A0;true
 </div>
-<!--l. 687--><p class="nopar" >
-<!--l. 689--><p class="indent" >   Now, we see a different result. A <code class="language-tawny">MargheritaPizza</code> is a subclass of
+<!--l. 686--><p class="nopar" >
+<!--l. 688--><p class="indent" >   Now, we see a different result. A <code class="language-tawny">MargheritaPizza</code> is a subclass of
 <code class="language-tawny">VegetarianPizza</code>, even those we have never stated this explicitly. The reasoner
 can infer this using the following chain of logic:
      <ul class="itemize1">
@@ -1690,12 +1694,12 @@ can infer this using the following chain of logic:
      <code class="language-tawny">MeatTopping</code> or <code class="language-tawny">FishTopping</code>.
      </li>
      <li class="itemize">So, a <code class="language-tawny">MargheritaPizza</code> is a <code class="language-tawny">VegetarianPizza</code>.</li></ul>
-<!--l. 706--><p class="indent" >   Even for this example, the chain of logic that we need to draw our inference is
+<!--l. 705--><p class="indent" >   Even for this example, the chain of logic that we need to draw our inference is
 quite long. The version of the pizza ontology presented here is quite small, so
 while we can follow and reproduce this inference easily by hand. For a larger
 ontology it would be a lot harder, especially, when we start to make greater use
 of the expressivity of OWL.
-<!--l. 713--><p class="indent" >   Many of the statements that we have made about pizza are needed to make
+<!--l. 712--><p class="indent" >   Many of the statements that we have made about pizza are needed to make
 this inference. For example, if we had not added <code class="language-tawny">:disjoint:</code> to the subclasses of
 <code class="language-tawny">PizzaTopping</code>, we could not make this inference; even though we would know
 that, for example, a <code class="language-tawny">MozzarellaTopping</code> was a <code class="language-tawny">CheeseTopping</code>; by default, the
@@ -1709,7 +1713,7 @@ semantics of OWL can be subtle, but allow us to draw extremely powerful
 conclusions.
    <h3 class="sectionHead"><span class="titlemark">5.10   </span> <a 
  id="x1-390005.10"></a>Recap</h3>
-<!--l. 728--><p class="noindent" >In this chapter, we have described:
+<!--l. 727--><p class="noindent" >In this chapter, we have described:
      <ul class="itemize1">
      <li class="itemize">The basic syntax of Tawny-OWL
      </li>
@@ -1723,7 +1727,7 @@ conclusions.
      </li>
      <li class="itemize">Defined  classes  allow  us  to  make  inferences  using  comptutational
      reasoning.</li></ul>
-<!--l. 740--><p class="indent" >   In addition, we have introduced the following semantic statements:
+<!--l. 739--><p class="indent" >   In addition, we have introduced the following semantic statements:
      <ul class="itemize1">
      <li class="itemize">Subclass relationships
      </li>
@@ -1740,12 +1744,6 @@ conclusions.
      <li class="itemize"><code class="language-tawny">some</code> and <code class="language-tawny">only</code> restrictions, and the <code class="language-tawny">some-only</code> pattern
      </li>
      <li class="itemize"><code class="language-tawny">or</code> and <code class="language-tawny">not</code> restrictions</li></ul>
-                                                                     
-
-                                                                     
-                                                                     
-
-                                                                     
                                                                      
 
                                                                      
@@ -2365,6 +2363,245 @@ be.
                                                                      
 
                                                                      
+                                                                     
+
+                                                                     
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;7</span><br /><a 
+ id="x1-450007"></a>More on Pizza</h2>
+<!--l. 5--><p class="noindent" >Now that we have considered patterns in the context of amino-acids,
+we can look again at Pizza. Our original version of the pizza ontology
+used few patterns. Let&#8217;s try again. First we create the namespace and
+ontology.
+<!--l. 10--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(ns take.wing.advanced-pizza
+  (:require [tawny.owl :refer :all]
+             [tawny.pattern :as p]
+             [tawny.util :as u]))
+
+(defontology pizza
+  :iri "http://purl.org/ontolink/advanced-pizza")
+</code></pre>
+<!--l. 20--><p class="indent" >   Next we create the classes that we need to describe the pizza structure.
+<!--l. 23--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint
+ (defclass Pizza)
+ (defclass PizzaComponent))
+
+(as-subclasses
+ PizzaComponent
+ :disjoint :cover
+ (defclass PizzaTopping)
+ (defclass PizzaBase))
+</code></pre>
+<!--l. 35--><p class="indent" >   And the relationships to link them together.
+<!--l. 37--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasComponent)
+(defoproperty hasBase
+  :super hasComponent
+  :domain Pizza
+  :range PizzaTopping)
+
+(defoproperty hasTopping
+  :super hasComponent
+  :domain Pizza
+  :range PizzaTopping)
+</code></pre>
+<!--l. 50--><p class="indent" >   And, finally, we extend the definition of <code class="language-tawny">Pizza</code> to include the base and
+topping.
+<!--l. 53--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(owl-class Pizza
+  :super (owl-some hasTopping PizzaTopping)
+          (owl-some hasBase PizzaBase))
+</code></pre>
+<!--l. 59--><p class="indent" >   Previously, we started to define our toppings at this point, but let&#8217;s revisit
+this. In terms of their structure, pizza toppings look rather like the properties we
+saw with amino-acids. However, they are not really a value-partition, since
+toppings are not a continuous range. Tawny-OWL provides a pattern for this
+purpose which is called the <span 
+class="cmti-10x-x-109">tier</span>. The tier is actually a generalization of the value
+partition pattern with more options.
+<!--l. 67--><p class="indent" >   We could use the tier like so:
+<!--l. 69--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(deftier VegetableTopping
+  [Artichoke Asparagus Olive]
+  :function false :cover false :domain Pizza :suffix :Topping
+  :superproperty hasTopping)
+</code></pre>
+<!--l. 76--><p class="indent" >   This would create three classes <code class="language-tawny">ArtichokeTopping</code>, <code class="language-tawny">AsparagusTopping</code> and
+<code class="language-tawny">OliveTopping</code>, as well as a property <code class="language-tawny">hasVegetableTopping</code>. Unlike the value
+partition, we do not want this property to be functional, since having more than
+one vegetable topping on a pizza is a reasonable thing to do. Similarly, we do not
+want to add a covering axiom; there are clearly more vegetable toppings in the
+world than the three that we have named.
+<!--l. 84--><p class="indent" >   Now, typing all of this for every type of topping would be painful. So, let&#8217;s
+create a macro to do it for us. Macros of this form are relatively easy to create.
+We start off with the macro name and parameters.
+<!--l. 89--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defmacro deftoppings
+   [name values])
+</code></pre>
+<!--l. 94--><p class="indent" >   Next we add the pattern that we want this to expand to.
+<!--l. 96--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defmacro deftoppings
+   [name values]
+  (p/deftier VegetableTopping
+    [Artichoke Asparagus Olive]
+    :function false :cover false :domain Pizza :suffix :Topping
+    :superproperty hasTopping))
+</code></pre>
+<!--l. 105--><p class="indent" >   Now we put a backtick <code class="language-tawny">&#8216;</code> in front of this form and replace the bits that we
+want to parameterize with variables prefixed with <code class="language-tawny">~</code>.
+<!--l. 108--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defmacro deftoppings
+  [name values]
+  `(p/deftier ~name ~values
+     :suffix :Topping
+     :functional false
+     :domain Pizza
+     :cover false
+     :superproperty hasTopping))
+</code></pre>
+<!--l. 119--><p class="indent" >   Now we can use this to define all of our topping types.
+<!--l. 121--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(deftoppings PizzaTopping
+  [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable])
+</code></pre>
+<!--l. 126--><p class="indent" >   We can check that this actually does what we expect in a number of ways;
+but let&#8217;s use the <code class="language-tawny">macroexpand-1</code> function to see what this will expand
+to.
+<!--l. 130--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">take.wing.advanced-pizza&gt; (macroexpand-1 '(deftoppings PizzaTopping [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable]));; take.wing.advanced-pizza&gt; (macroexpand-1 '(deftoppings PizzaTopping [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable]))
+(tawny.pattern/deftier PizzaTopping [Cheese Fish Fruit HerbSpice Meat Nut Sauce Vegetable] :suffix :Topping :functional false :domain take.wing.advanced-pizza/Pizza :superproperty take.wing.advanced-pizza/hasTopping)
+</code></pre>
+<!--l. 135--><p class="indent" >   Slightly harder to read, but you should be able to convince
+yourself that this is the same as the <code class="language-tawny">deftier</code> form that we started
+with<span class="footnote-mark"><a 
+href="#fn1x8" id="fn1x8-bk"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x1-45001f1"></a>.
+We can now define all our toppings efficiently.
+<!--l. 141--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(deftoppings CheeseTopping
+  [GoatsCheese Gorgonzola Mozzarella Parmesan])
+
+(deftoppings VegetableTopping
+  [Pepper Garlic PetitPois Asparagus Tomato ChilliPepper Onion
+   Peperonata TobascoPepperSauce Caper Olive Rocket])
+
+(deftoppings MeatTopping
+  [Ham Pepperoni])
+
+(deftoppings FruitTopping
+  [Pineapple Pear])
+
+(deftoppings FishTopping
+  [Anchovies Prawn])
+</code></pre>
+<!--l. 159--><p class="indent" >   We move on now to create our &#8220;named pizza&#8221; with specific ingredients. First
+we create the top-level class.
+<!--l. 162--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass NamedPizza
+  :super Pizza)
+</code></pre>
+<!--l. 167--><p class="indent" >   We could create a similar macro to <code class="language-tawny">deftoppings</code> which we would use multiple
+times for each pizza. This might look something like this perhaps:
+<!--l. 171--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defpizza MargheritaPizza [MozzarellaTopping TomatoTopping])
+</code></pre>
+<!--l. 175--><p class="indent" >   However, we will go a different route, rather like <code class="language-tawny">defaminoacid</code> from
+Chapter&#x00A0;<a 
+href="#x1-400006">6<!--tex4ht:ref: cha:highly-patt-ontol --></a>. We will create a single macro which allows us to create many pizza at
+once.
+<!--l. 179--><p class="indent" >   To achieve this, we need to create a variable number of <code class="language-tawny">defclass</code> forms. The
+macro to achiev this looks like this:
+<!--l. 182--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defmacro defpizza [& body]
+  `(do
+    ~@(map
+        (fn [[h & r]]
+          `(defclass ~h :super
+             (owl-some hasTopping ~@r)))
+        body)))
+</code></pre>
+<!--l. 192--><p class="indent" >   This uses a number of features of Clojure: <code class="language-tawny">&amp;&#x00A0;body</code> makes this a variadic
+function taking any number of parameters; the <code class="language-tawny">map</code> function operates
+over the list of parameters and calls the <code class="language-tawny">fn</code> on them which takes a list
+also, breaking it into <code class="language-tawny">h&#x00A0;&amp;&#x00A0;r</code> or head and rest. We call this macro like
+so.
+<!--l. 198--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defpizza
+ [MargheritaPizza MozzarellaTopping TomatoTopping]
+
+ [CajunPizza MozzarellaTopping OnionTopping PeperonataTopping
+  PrawnTopping TobascoPepperSauceTopping TomatoTopping]
+
+ [CapricciosaPizza AnchoviesTopping MozzarellaTopping
+  TomatoTopping PeperonataTopping HamTopping CaperTopping
+  OliveTopping]
+
+ [ParmensePizza AsparagusTopping
+  HamTopping
+  MozzarellaTopping
+  ParmesanTopping
+  TomatoTopping]
+
+ [SohoPizza OliveTopping RocketTopping TomatoTopping ParmesanTopping
+  GarlicTopping])
+</code></pre>
+   <h3 class="sectionHead"><span class="titlemark">7.1   </span> <a 
+ id="x1-460007.1"></a>Recap</h3>
+<!--l. 223--><p class="noindent" >In this short chapter, we have described:
+     <ul class="itemize1">
+     <li class="itemize">The <code class="language-tawny">deftier</code> macro
+     </li>
+     <li class="itemize">Two macros in detail that we can use for the pizza ontology</li></ul>
+                                                                     
+
+                                                                     
    <div class="footnotes"><!--l. 47--><p class="indent" >     <span class="footnote-mark"><a 
 href="#fn1x3-bk" id="fn1x3"><sup class="textsuperscript">1</sup></a></span><span 
 class="cmr-9">One of the joys of ontology development is that the ontology development community is</span>
@@ -2423,7 +2660,7 @@ href="#fn7x4-bk" id="fn7x4"><sup class="textsuperscript">7</sup></a></span><span
 class="cmr-9">IRIs are not the same thing as URIs,which are not the same thing as URLs. But the</span>
 <span 
 class="cmr-9">differences between them are relative unimportant here.</span>
-<!--l. 37--><p class="indent" >      <span class="footnote-mark"><a 
+<!--l. 36--><p class="indent" >      <span class="footnote-mark"><a 
 href="#fn1x6-bk" id="fn1x6"><sup class="textsuperscript">1</sup></a></span><span 
 class="cmr-9">The analogy between a pizza menu and an ontology is not perfect. With</span>
 <span 
@@ -2431,18 +2668,18 @@ class="cmr-9">pizza, people are generally happy with the classes (i.e. the menu)
 <span 
 class="cmr-9">once about the individuals (i.e. the bill); with ontologies it tends to be the other way</span>
 <span 
-class="cmr-9">around</span><!--l. 53--><p class="indent" > <span class="footnote-mark"><a 
+class="cmr-9">around</span><!--l. 52--><p class="indent" > <span class="footnote-mark"><a 
 href="#fn2x6-bk" id="fn2x6"><sup class="textsuperscript">2</sup></a></span><span 
 class="cmr-9">The name of this directory is not functional important and be changed at</span>
 <span 
-class="cmr-9">will</span><!--l. 109--><p class="indent" > <span class="footnote-mark"><a 
+class="cmr-9">will</span><!--l. 108--><p class="indent" > <span class="footnote-mark"><a 
 href="#fn3x6-bk" id="fn3x6"><sup class="textsuperscript">3</sup></a></span><span 
 class="cmr-9">In Tawny-OWL, this requirement is weakened &#8211; if you do not put an IRI, Tawny-OWL</span>
 <span 
 class="cmr-9">invents one for you. This is okay if you are experiments, but should be changed when you</span>
 <span 
 class="cmr-9">publish an ontology.</span>
-<!--l. 176--><p class="indent" >      <span class="footnote-mark"><a 
+<!--l. 175--><p class="indent" >      <span class="footnote-mark"><a 
 href="#fn4x6-bk" id="fn4x6"><sup class="textsuperscript">4</sup></a></span><span 
 class="cmr-9">In this ontology, we use a naming scheme using CamelCase, upper case names for</span>
 <span 
@@ -2451,7 +2688,7 @@ class="cmr-9">classes and, later, lower case properties. As with many parts of o
 class="cmr-9">differ as to whether this is good. With Tawny-OWL it has the fortuitous advantage that it</span>
 <span 
 class="cmr-9">syntax highlights nicely, because it looks like Java class names.</span>
-<!--l. 293--><p class="indent" >      <span class="footnote-mark"><a 
+<!--l. 292--><p class="indent" >      <span class="footnote-mark"><a 
 href="#fn5x6-bk" id="fn5x6"><sup class="textsuperscript">5</sup></a></span><span 
 class="cmr-9">For those from an OWL background, you may have noticed that &#8220;covering&#8221; is not part</span>
 <span 
@@ -2459,7 +2696,7 @@ class="cmr-9">of the OWL standard; in fact, it&#8217;s a pattern that is frequen
 <code class="language-tawny">PizzaComponent</code> <span 
 class="cmr-9">is equivalent to </span><code class="language-tawny">PizzaBase</code> <span 
 class="cmr-9">or </span><code class="language-tawny">PizzaTopping</code>
-<!--l. 321--><p class="indent" >      <span class="footnote-mark"><a 
+<!--l. 320--><p class="indent" >      <span class="footnote-mark"><a 
 href="#fn6x6-bk" id="fn6x6"><sup class="textsuperscript">6</sup></a></span><span 
 class="cmr-9">Actually, two </span><span 
 class="cmti-9">object </span><span 
@@ -2468,28 +2705,34 @@ class="cmr-9">. We can also define </span><span
 class="cmti-9">data </span><span 
 class="cmr-9">properties,</span>
 <span 
-class="cmr-9">which we will see later</span><!--l. 353--><p class="indent" > <span class="footnote-mark"><a 
+class="cmr-9">which we will see later</span><!--l. 352--><p class="indent" > <span class="footnote-mark"><a 
 href="#fn7x6-bk" id="fn7x6"><sup class="textsuperscript">7</sup></a></span><span 
 class="cmr-9">We will see examples of the opposite also &#8212; statements which are stronger in OWL</span>
 <span 
 class="cmr-9">than the intuitive interpretation</span>
-<!--l. 402--><p class="indent" >      <span class="footnote-mark"><a 
+<!--l. 401--><p class="indent" >      <span class="footnote-mark"><a 
 href="#fn8x6-bk" id="fn8x6"><sup class="textsuperscript">8</sup></a></span><span 
 class="cmr-9">For example, we leave open the option of a pizza base with nutella on it; it&#8217;s not clear</span>
 <span 
 class="cmr-9">whether this is a pizza or not, but if we did decide one way or another, it would be possible to</span>
 <span 
 class="cmr-9">describe this clearly and explicitly in OWL.</span>
-<!--l. 554--><p class="indent" >      <span class="footnote-mark"><a 
+<!--l. 553--><p class="indent" >      <span class="footnote-mark"><a 
 href="#fn9x6-bk" id="fn9x6"><sup class="textsuperscript">9</sup></a></span><span 
 class="cmr-9">Except to logicians, obviously, to whom it all makes perfect sense.</span>
-<!--l. 559--><p class="indent" >      <span class="footnote-mark"><a 
+<!--l. 558--><p class="indent" >      <span class="footnote-mark"><a 
 href="#fn10x6-bk" id="fn10x6"><sup class="textsuperscript">10</sup></a></span><span 
 class="cmr-9">Pizza names are, sadly, not standardized between countries or resturants, so I&#8217;ve picked</span>
 <span 
 class="cmr-9">on which is quite widely known. Apologies to any Italian readers for this and any other culinary</span>
 <span 
-class="cmr-9">disasters which this book implies really are pizza.</span>                                                    </div>
+class="cmr-9">disasters which this book implies really are pizza.</span>
+<!--l. 138--><p class="indent" >      <span class="footnote-mark"><a 
+href="#fn1x8-bk" id="fn1x8"><sup class="textsuperscript">1</sup></a></span><span 
+class="cmr-9">Many IDEs have mechanisms for running </span><code class="language-tawny">macroexpand&minus;1</code> <span 
+class="cmr-9">and printing the output</span>
+<span 
+class="cmr-9">nicely.</span>                                                                                                             </div>
  
 </body></html> 
 
