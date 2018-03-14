@@ -1,0 +1,594 @@
+\chapter{Keeping it in the Family}
+\label{cha:keeping-it-family}
+
+\subsection{Introduction}
+\label{sec:introduction-family}
+
+In this Chapter, we will work through an ontology describing a family.
+This ontology is freely borrowed from the
+\href{https://www.w3.org/TR/owl2-primer/}{OWL Primer}, but turned into
+Tawny-OWL syntax. The point of this ontology is not to build a good
+model, but to use pretty much every feature of OWL, so that they can
+be described.  By the time that we have finished this Chapter, we will
+have worked through everything that OWL can do. Later chapters will be
+on Tawny-OWL functionality alone.
+
+
+\section{The Ontology}
+\label{sec:ontology}
+
+We start with a namespace declaration. As normal, we require
+|tawny.owl|. However, the rest of the form is a bit different. The
+first is that we also require |tawny.english|. This package is a
+little unusual in that it brings no new functionality; it does,
+however, bring some new names. As we have seen, |tawny.owl| contains
+quite a few names that start with the string ``owl'' -- so,
+|owl-class|, |owl-not| and so forth. The reason for this is that the
+simpler names ``class'' and ``not'' are already used by Clojure to do
+something else, with a different set of functions. |tawny.english|
+provides these shorter names. But this comes with a slight cost; we
+much make sure that the Clojure functions no longer use these names,
+or Clojure will complain. In this case, we take the simple route and
+just remove all the default Clojure functions with |refer-clojure| --
+this allows us to say exactly which Clojure functions we wish to
+support -- in this case |:only []| or only the empty list,
+i\.e\. nothing.
+
+\begin{tawny}
+(ns take.wing.family
+  (:refer-clojure :only [])
+  (:require [tawny.owl :refer :all]
+            [tawny.english :refer :all]))
+\end{tawny}
+
+Next, we define the |family| ontology. This ontology is slightly
+different from the ones that we have created before in that the IRI
+ends with a |/|. Tawny-OWL copes with this straight-forwardly; the
+IRIs of all entities will be formed after the slash.
+
+\begin{tawny}
+(defontology family
+  :iri "http://example.com/owl/family/")
+\end{tawny}
+
+We start off with something new. Previously, we introduced
+\emph{object} properties (see Section~\ref{sec:properties}). These
+properties describe a relationship between two individuals; but OWL
+also supports another form of property which is the \emph{data
+  property}. This draws a relationship between an individual and some
+piece of data -- a string, a number or so on. At first sight, it looks
+a bit similar to an annotation such as a label or a comment, but it is
+different because we can reason about it. In this case, we define a
+new property the for the National Insurance number\footnote{The OWL
+  Primer from which I borrowed this ontology has a data property
+  called hasSSN or social security number. But I don't have one of
+  these which reflects the dangers of over-generalisation in ontology
+  building}.
+
+\begin{tawny}
+(defdproperty hasNIN
+  :comment "A National Insurance Number")
+\end{tawny}
+
+We next define two classes: |Human| and |Person|. We define these as
+equivalent. They are the same set of individuals and to be a |Person|
+is to be a |Human|. We can look at these two as being synonyms,
+although there are, perhaps, better ways of defining synonyms using
+annotations which we investigate later.
+
+The |Person| class has two other additions. It uses an annotation
+frame, with two annotations -- one a comment and the other a label
+with a language specified (Italian -- which probably we should have
+added to Pizza!). Finally, |Person| has a |:haskey| frame. This states
+that the national insurance number uniquely identifies a person.
+
+\begin{tawny}
+(as-equivalent
+ (defclass Human)
+
+ (defclass Person
+   :annotation (comment "Represents the set of all people.")
+   (label "Personna" "it")
+   :haskey hasNIN))
+\end{tawny}
+
+
+Next we move to another datatype property. As with object properties
+it is possible to add a domain and range to the property. In the case
+of domain, this states that the individual with a |hasAge| property
+must be a |Person|. As this is a datatype property the range is not an
+individual but a value which in this case must be a non-negative
+integer. Finally, you can have only one age, hence the property is
+functional.
+
+\begin{tawny}
+(defdproperty hasAge
+  :domain Person
+  :range :XSD_NON_NEGATIVE_INTEGER
+  :characteristic :functional)
+\end{tawny}
+
+Next, we define two classes, |Man| and |Woman| both of which are
+subclasses of |Person|. These do not cover the superclasses (as there
+are many people who are neither a man nor a woman). Additionally,
+though, we add a new type of annotation; we want to annotate the
+statement that a |Woman| is a |Person|. This is neither a comment on
+|Woman| nor on |Person| but strictly on the relationship between the
+two -- or in OWL terms we are annotating the axiom. We achieve this
+using the |annotate| function.
+
+\begin{tawny}
+(as-disjoint
+ (defclass Man
+   :super
+   (annotate Person
+             (comment "States that every man is a person")))
+ (defclass Woman
+   :super
+   (annotate Person
+             (comment "States that every woman in a person"))))
+\end{tawny}
+
+We next define a set of properties that demonstrate two new
+characteristics that is |:symmetric| and |:asymmetric|. The
+|hasSpouse| property is declare symmetric because it can be declared
+in either direction: if |a| is the spouse of |b| then |b| is also the
+spouse of |a|. This is distinctly not true of |hasChild| -- in fact,
+it can never be true, so we declare this property asymmetric.
+
+\begin{tawny}
+(as-inverse
+ (defoproperty hasParent)
+ (defoproperty hasChild
+   :characteristic :asymmetric))
+
+(defoproperty hasSpouse
+  :characteristic :symmetric
+  :disjoint hasParent)
+\end{tawny}
+
+The OWL Primer next defines |hasWife| with the following domain and
+range constraints.
+
+\begin{tawnyexample}
+(defoproperty hasWife
+  :super hasSpouse
+  :domain Man :range Woman)
+\end{tawnyexample}
+
+Interestingly, in the relatively short time since the OWL primer
+ontology was first developed, this statement is now a poor reflection
+of the real world, so we make this, more limited, statement instead.
+
+\begin{tawny}
+(defoproperty hasWife
+  :super hasSpouse
+  :range Woman)
+\end{tawny}
+
+Next, we model |hasHusband| slightly differently, but stating both
+that it and its inverse are |:functional|. This does not require that
+we explictly define the inverse -- whether it is or not, it will now
+be functional. Again, there are some limitations to this modelling; by
+declaring |hasHusband| function we limit this ontology to describing
+only a point in time rather than a period of time. This is not
+unreasonable, since OWL lacks the ability to express ``one at a
+time''; also, the ontology makes the same assumption elsewhere (with
+|hasAge| for instance).
+
+\begin{tawny}
+(defoproperty hasHusband
+  :super hasSpouse
+  :range Man
+  :characteristic :functional
+  :inversefunctional)
+\end{tawny}
+
+The |hasRelative| property has yet another characteristic which is
+reflexivity -- if you are my relative, then I am your relative. Again,
+this is not and cannot be true of |parentOf|, so we declare this
+|:irreflexive|.
+
+\begin{tawny}
+(defoproperty hasRelative
+  :characteristic :reflexive)
+
+(defoproperty parentOf
+  :characteristic :irreflexive)
+\end{tawny}
+
+And, finally, we move onto the last characteristic which is
+transitivity. Your ancestors ancestor is your ancestor also.
+
+\begin{tawny}
+(defoproperty hasAncestor
+  :characteristic :transitive)
+\end{tawny}
+
+The next two properties are nice and simple, expressiving father and
+brotherhood.
+
+\begin{tawny}
+(defoproperty hasFather
+  :super hasParent)
+
+(defoproperty hasBrother)
+\end{tawny}
+
+We can also define subchain properties. In this case, this says that a
+property is the subproperty of two other links. So, for example, the
+parent of a parent is also the grandparent. In this case, both
+properties are the same, but we can also express more complex notions
+such as |hasUncle| with is the brother of my father. A subchain can
+contain any number of properties not just the two given here. We also
+show two different syntaxes: the first is simpler, while the second
+encloses the subchain in |[]|. The advantage of the second syntax is
+that it allows more than one subchain to be expressed.
+
+\begin{tawny}
+(defoproperty hasGrandparent
+  :subchain hasParent hasParent)
+
+(defoproperty hasUncle
+  :subchain [hasFather hasBrother])
+\end{tawny}
+
+Next we define a few more properties that we will use later on, and
+make them disjoint.
+
+\begin{tawny}
+(as-disjoint
+ (defoproperty hasDaughter
+    :super hasChild)
+ (defoproperty hasSon
+    :super hasChild))
+\end{tawny}
+
+We now start to add more detail to some classes. |Parent| is simple
+enough to define as someone with a child. Actually, we are less
+specific than this and just say ``something'' with a child.
+
+\begin{tawny}
+(defclass Parent
+  :equivalent (some hasChild Person))
+\end{tawny}
+
+Now, we split the world of people up a bit further. The OWL Primer
+does this is in a slightly erratic way. First it defines three classes
+|YoungChild|, |Father| and |Mother| as disjoint. This is a strange way
+to model things for a couple of reasons. Firstly, it does not define
+what young means but it is possible to be a parent at an age that most
+people would describe as a young child. Secondly, being a young child
+is a developmental stage, while being a father or mother stems from an
+action in the past; so while mother and child might happen to be
+disjoint, they are not naturally so; rather their superclasses should
+be declared disjoint. Consider a simpler example: elephants and cars
+are also disjoint, but if we build an ontology it would be better to
+say that animate and inanimate things are disjoint, and have elephants
+and cars inherit this property. This form of ontology building is
+known as ontology \emph{normalisation}~\cite{rector_2002}.
+
+The second issue is the strange asymmetry between the definitions for
+|Father| and |Mother|.
+
+\begin{tawnyexample}
+(as-disjoint
+ (defclass YoungChild)
+
+ (defclass Father :super
+   (and Man Parent))
+
+ (defclass Mother
+   :super Woman
+   :equivalent (and Woman Parent)))
+\end{tawnyexample}
+
+Rather than replicate this, in this version of the ontology, we
+instead make |YoungChild| disjoint with |Woman| and |Man|, make the
+definition of |Father| and |Mother| symmetrical and covering.
+
+\begin{tawny}
+(as-disjoint
+ Woman Man
+ (defclass YoungChild))
+
+(as-subclasses
+ Parent
+ :cover :disjoint
+
+ (defclass Mother
+   :equivalent (and Woman Parent))
+
+ (defclass Father
+   :equivalent (and Man Parent)))
+\end{tawny}
+
+One thing that is often confusing with OWL is that it copes well with
+missing knowledge: we need to say the truth, and nothing but the
+truth; the whole truth, however, is not so important.
+
+So consider this definition of |Grandfather|; a man who is a
+parent. This definition looks strangely like the definition for
+|Father|. The difference here is that we are using the |:super| frame
+not |:equivalent|; it is necessarily true that every |Grandfather| is
+a parent (or, if we substitute in the definition of |Parent|, that
+every |Grandfather| has a |Child|). But, while being a |Man| with a
+|Child| is sufficient to conclude they are a |Father|, they may well
+not be a |Grandfather|.
+
+\begin{tawny}
+(defclass Grandfather
+  :super (and Man Parent))
+\end{tawny}
+
+The next definition makes use of two new pieces of semantics; we
+define |ChildlessPerson| to be equivalent to |not Parent|. At the same
+time, we state much the same thing, but using an |inverse| statement;
+this returns a property which is the inverse of the argument; in this
+case, the property would be equivalent to |hasChild| but there does
+not need to be a named inverse for this to work. 
+
+\begin{tawny}
+(defclass ChildlessPerson
+  :equivalent (and Person (not Parent))
+  :super (and Person
+                 (not
+                  (some
+                   (inverse hasParent)
+                   (thing)))))
+\end{tawny}
+
+Next, we wish to define a |HappyPerson| as someone with only happy
+children. Because Tawny-OWL has a define before use semantics, we have
+to do this in two goes; first, with a |defclass| statement, and then
+using |refine|.
+
+\begin{tawny}
+(defclass HappyPerson)
+(refine HappyPerson
+        :equivalent (only hasChild HappyPerson))
+\end{tawny}
+
+This looks like an odd thing to say; this would mean that a happy
+person would have a happy child. But then the happy child would have
+to have a happy child also, and their happy child would have to have a
+happy child. There are circumstances when this kind of statement would
+be fine, but it does not work with children. Actually, though, we have
+not say you must have a happy child to be happy; that would look like
+this:
+
+\begin{tawnyexample}
+(refine HappyPerson
+        :equivalent (and (only hasChild HappyPerson)
+                         (some hasChild HappyPerson)))
+\end{tawnyexample}
+
+Instead, we have said, if you have children, they must be happy. Or
+looked at another way, children can make you miserable, but they
+cannot make you happy\footnote{I never claimed that this ontology was
+  a good reflection of the real world}.
+
+Next we move onto annotation properties. We have already seen the
+built-in properties, like comment and label. In
+Chapter~\ref{cha:highly-patt-ontol}, we used annotations to represent
+one and three letter abbreviations for the amino-acids. We do likewise
+here, and create a property called |shortname| and another called
+|nickname|. For the latter, we also use the |annotator| function to
+create a new function creating annotations with this property; this is
+a fairly convienient way of using annotations.
+
+\begin{tawny}
+(defaproperty shortname
+  :super label-property)
+
+(defaproperty nickname
+  :super label-property)
+
+(def nick (annotator nickname))
+\end{tawny}
+
+Next we add some individuals -- each in this case a person. We create
+three individuals. |Mary| is asserted to be |Person| and a |Woman|,
+while |MaryBrown| is asserted to be the same as |Mary|. We do not know
+anything about |Susan|.
+
+\begin{tawny}
+(defindividual Mary
+  :type Person Woman)
+
+(defindividual MaryBrown
+  :same Mary)
+
+(defindividual Susan)
+\end{tawny}
+
+With |James| we take a slight different approach and define two labels
+-- one ``James'' and one a specialism label which is the short name.
+
+\begin{tawny}
+(defindividual James
+  :label "James"
+  :annotation (annotation shortname "Jim"))
+\end{tawny}
+
+For |William| we want to say a little more -- we add the constraints
+that over who his wife and daughter are not.
+
+\begin{tawny}
+(defindividual William
+  :annotation (annotation shortname "Bill")
+  :fact
+  (not hasWife Mary)
+  (not hasDaughter Susan))
+\end{tawny}
+
+Early, we asserted that |Father| is a class, but we might also want to
+make it an individual -- in this case, of |SocialRole|. The trick,
+called \emph{punning} to doing this in OWL is to create two entities
+with the same name, or IRI. We achieve this in Tawny-OWL by passing an
+IRI in place of the name; if we want to be able to refer to this
+entity later, we also need to assign it to variable.
+
+\begin{tawny}
+(defclass SocialRole)
+(def iFather
+  (individual (.getIRI Father)
+              :type SocialRole))
+\end{tawny}
+
+We have little positive to say about |Jack| -- but several negative
+things. He is not a parent nor 53 years old. However, we do use the
+|nick| annotator function that we created earlier to give him the
+unfortunate nick name ``The Cat''.
+
+\begin{tawny}
+(defindividual Jack
+  :annotation (nick "The Cat")
+  :type Person (not Parent)
+  :fact (not hasAge (literal 53)))
+\end{tawny}
+
+|John| on the other hand, we have some useful things to say; in fact,
+we say lots of things about his children. We say that he at least 2
+children who are parents, at most 4 children who are parents and
+exactly 3 children who are parents -- all a bit duplicative, but it
+showns the range of \emph{cardinality} constraints that it is possible
+to make. In addition, we say that he has 5 children in total, so we
+would assume this means 2 who are not parents. He is not the same as
+|William|, has a wife |Mary| and is 51.
+
+\begin{tawny}
+(defindividual John
+  :type Father
+  (at-least 2 hasChild Parent)
+  (exactly 3 hasChild Parent)
+  (exactly 5 hasChild)
+  (at-most 4 hasChild Parent)
+  :different William
+  :fact
+  (is hasWife Mary)
+  (is hasAge 51))
+\end{tawny}
+
+Mostly, in OWL, classes are defined in terms of classes, but it is
+possible to define a class in terms of an individual with the
+|has-value| constructor, in this case, |JohnsChildren|.
+
+\begin{tawny}
+(defclass JohnsChildren
+  :equivalent (has-value hasParent John))
+\end{tawny}
+
+There is also a specialised relationship to describe tthe relationship
+an individuals of a class have with themselves using |has-self|. This
+definition of |NarcisiticPerson| is not the same as either
+\lstinline|some loves Person| nor \lstinline|(only loves Person)| --
+since this would be a person who loves a person, which could be
+themselves, but does not have to be.
+
+\begin{tawny}
+(defoproperty loves)
+
+(defclass NarcisticPerson
+  :equivalent (has-self loves))
+\end{tawny}
+
+Our next definition, of |Orphan| makes use of an unnamed inverse of
+|hasChild|. This is semantically equivalent to using |hasParent|,
+although the named inverse property does not need to exist as here.
+
+\begin{tawny}
+(defclass Dead)
+(defclass Orphan
+  :equivalent (only (inverse hasChild) Dead))
+\end{tawny}
+
+We touched earlier of datatype properties which describe a
+relationship between an individual and a piece of data; it is also
+possible to be restrictions on what that data can be. OWL has a large
+number of built-in data types, but it is possible to define arbitrary
+new ones. Tawny-OWL provides several syntaxes for going this -- we use
+the long hand syntax first, to define |personAge| which is, rather
+arbitrarily, an integer between 0 and 150.
+
+\begin{tawny}
+(defdatatype personAge
+  :equivalent (min-max-inc 0 150))
+\end{tawny}
+
+The |span| macro provides a syntactic variant of |min-mix-inc| and other
+related functions. We use this to define the age of a child as between
+0 and 17, while we define the age of an adult using |and| and
+|not|. These functions are the same functions we used earlier for
+defining logic restrictions, but they work with datatypes too.
+
+\begin{tawny}
+(defdatatype childAge
+  :equivalent (span >=< 0 17))
+
+(defdatatype adultAge
+  :equivalent (and personAge (not minorAge)))
+\end{tawny}
+
+We can define |toddlerAge| just by describing all the possibilities as
+there are only two of them.
+
+\begin{tawny}
+(defdatatype toddlerAge
+  :equivalent (oneof 1 2))
+\end{tawny}
+
+Again, |oneof| is overloaded and can be used either with datatype
+properties, data values (such as 1 and 2) or, as here, with
+individuals.
+
+\begin{tawny}
+(defclass MyBirthdayGuests
+  :equivalent (oneof William John Mary))
+\end{tawny}
+
+We define a teenage as having an age between 13 and 19. We could also have
+defined |teenAge| as a datatype and then used it here. Instead of either
+|min-max| or the |span| syntax, here we have used the |><| syntax which is
+found in |tawny.english|; this is the simplest syntax however some
+of the datatype functions (|<| and |>|) also have equivalents in
+|clojure.core|; in this case we have explicitly excluded the
+|clojure.core| functions, otherwise, we would have a nameclash.
+
+\begin{tawny}
+(defclass Teenager
+  :super (some hasAge (>< 13 19)))
+\end{tawny}
+
+Finally, we define a class and individual.
+
+\begin{tawny}
+(defclass Female)
+(defindividual Meg :type Female)
+\end{tawny}
+
+We define a \href{GCI}{http://ontogenesis.knowledgeblog.org/1288} or
+General Concept Inclusion, which defines a general rule relating two
+different class expressions. This allows us to draw a relationship
+between two unnamed classes. In this case, we are saying that one of
+|Mary|, |William| or |Meg| is a parent with at most one daughter.
+
+Despite the name ``General'', GCIs have a relatively limited range of
+applications; most ontologies do not make use of them and can use the
+other features of OWL. But they are supported by OWL and, therefore,
+also supported by Tawny-OWL.
+
+\begin{tawny}
+(gci
+ (and Parent
+      (at-most 1 hasChild)
+      (only hasChild Female))
+ (and (oneof Mary, William, Meg) Female))
+\end{tawny}
+
+
+\section{Recap}
+\label{sec:recap-family}
+
+In this chapter, we have described the Family ontology and with it
+used to describe every construct that the OWL language provides.
