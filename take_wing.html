@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- fn-in,html --> 
 <meta name="src" content="take_wing.tex"> 
-<meta name="date" content="2018-02-24 23:07:00"> 
+<meta name="date" content="2018-03-14 13:49:00"> 
 <link rel="stylesheet" type="text/css" href="take_wing.css"> 
 <script src="./prism.js"></script> 
 <script src="./prism-tawny.js"></script> 
@@ -29,7 +29,7 @@
 <div class="author" ><span 
 class="cmr-12">Phillip Lord</span></div><br />
 <div class="date" ><span 
-class="cmr-12">February 24, 2018</span></div>
+class="cmr-12">March 14, 2018</span></div>
                                                                      
 
                                                                      
@@ -129,6 +129,14 @@ href="#x1-440006.4" id="QQ2-1-48">Recap</a></span>
 href="#x1-450007" id="QQ2-1-49">More on Pizza</a></span>
 <br />   &#x00A0;<span class="sectionToc" >7.1 <a 
 href="#x1-460007.1" id="QQ2-1-50">Recap</a></span>
+<br />   <span class="chapterToc" >8 <a 
+href="#x1-470008" id="QQ2-1-51">Keeping it in the Family</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsectionToc" >8.0.1 <a 
+href="#x1-480008.0.1" id="QQ2-1-52">Introduction</a></span>
+<br />   &#x00A0;<span class="sectionToc" >8.1 <a 
+href="#x1-490008.1" id="QQ2-1-53">The Ontology</a></span>
+<br />   &#x00A0;<span class="sectionToc" >8.2 <a 
+href="#x1-500008.2" id="QQ2-1-54">Recap</a></span>
    </div>
                                                                      
 
@@ -445,8 +453,8 @@ extras.
 href="http://owlapi.sourceforge.net/[OWL" class="url" ><span 
 class="cmtt-10x-x-109">http://owlapi.sourceforge.net/[OWL</span></a> API].
 This library is a comprehensive tool for generating, transforming and using OWL
-Ontologies. It is widely used, and is the basis for the Protege 4 editor<span class="cite">[<span 
-class="cmbx-10x-x-109">?</span>]</span>. Being
+Ontologies. It is widely used, and is the basis for the Protege 4 editor<span class="cite">[<a 
+href="#Xgreycite2912">3</a>]</span>. Being
 based on this library, Tawny-OWL is reliable and standard-compliant (or at
 least as reliable and standard-compliant as Protege!). It is also easy to
 integrate directly with other tools written using the OWL API, include
@@ -1771,13 +1779,13 @@ same properties.
 <!--l. 28--><p class="indent" >   Graphical tools can provide a partial solution to this problem, by supporting
 the building of these patterns. For instance, Protege had &#8220;wizards&#8221; to build
 various patterns. In fact, the first version of the amino-acid ontology was built to
-demonstrate one of these patterns <span class="cite">[<span 
-class="cmbx-10x-x-109">?</span>]</span>. This requires extension of the editor
+demonstrate one of these patterns <span class="cite">[<a 
+href="#Xtodo">2</a>]</span>. This requires extension of the editor
 for every new pattern, which is acceptable for some generic patterns
 which can be widely reused, but works badly for patterns with a narrow
 scope.
-<!--l. 36--><p class="indent" >   An alternative is to use a language like OPPL&#x00A0;<span class="cite">[<span 
-class="cmbx-10x-x-109">?</span>]</span>, which can directly specify
+<!--l. 36--><p class="indent" >   An alternative is to use a language like OPPL&#x00A0;<span class="cite">[<a 
+href="#Xaranguren_Stevens_Antezana_2009">1</a>]</span>, which can directly specify
 patterns and transformations to ontologies. However, this requires the use
 of two syntaxes or environments &#8211; one for &#8220;normal&#8221; ontological code,
 and one for patternised. It also presents a maintainence problem &#8211; the
@@ -2602,6 +2610,660 @@ so.
                                                                      
 
                                                                      
+                                                                     
+
+                                                                     
+                                                                     
+
+                                                                     
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;8</span><br /><a 
+ id="x1-470008"></a>Keeping it in the Family</h2>
+   <h4 class="subsectionHead"><span class="titlemark">8.0.1   </span> <a 
+ id="x1-480008.0.1"></a>Introduction</h4>
+<!--l. 7--><p class="noindent" >In this Chapter, we will work through an ontology describing a family. This
+ontology is freely borrowed from the <a 
+href="https://www.w3.org/TR/owl2-primer/" >OWL Primer</a>, but turned into Tawny-OWL
+syntax. The point of this ontology is not to build a good model, but to use pretty
+much every feature of OWL, so that they can be described. By the time that
+we have finished this Chapter, we will have worked through everything
+that OWL can do. Later chapters will be on Tawny-OWL functionality
+alone.
+<!--l. 17--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">8.1   </span> <a 
+ id="x1-490008.1"></a>The Ontology</h3>
+<!--l. 20--><p class="noindent" >We start with a namespace declaration. As normal, we require <code class="language-tawny">tawny.owl</code>.
+However, the rest of the form is a bit different. The first is that we also require
+<code class="language-tawny">tawny.english</code>. This package is a little unusual in that it brings no new
+functionality; it does, however, bring some new names. As we have seen,
+<code class="language-tawny">tawny.owl</code> contains quite a few names that start with the string &#8220;owl&#8221; &#8211; so,
+<code class="language-tawny">owl-class</code>, <code class="language-tawny">owl-not</code> and so forth. The reason for this is that the simpler names
+&#8220;class&#8221; and &#8220;not&#8221; are already used by Clojure to do something else, with a
+different set of functions. <code class="language-tawny">tawny.english</code> provides these shorter names.
+But this comes with a slight cost; we much make sure that the Clojure
+functions no longer use these names, or Clojure will complain. In this
+case, we take the simple route and just remove all the default Clojure
+functions with <code class="language-tawny">refer-clojure</code> &#8211; this allows us to say exactly which Clojure
+functions we wish to support &#8211; in this case <code class="language-tawny">:only&#x00A0;[]</code> or only the empty list,
+i&#x0117;&#x1E45;othing.
+<!--l. 37--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(ns take.wing.family
+  (:refer-clojure :only [])
+  (:require [tawny.owl :refer :all]
+             [tawny.english :refer :all]))
+</code></pre>
+<!--l. 44--><p class="indent" >   Next, we define the <code class="language-tawny">family</code> ontology. This ontology is slightly different from
+the ones that we have created before in that the IRI ends with a <code class="language-tawny">/</code>. Tawny-OWL
+copes with this straight-forwardly; the IRIs of all entities will be formed after the
+slash.
+<!--l. 49--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defontology family
+  :iri "http://example.com/owl/family/")
+</code></pre>
+<!--l. 54--><p class="indent" >   We start off with something new. Previously, we introduced <span 
+class="cmti-10x-x-109">object </span>properties
+(see Section&#x00A0;<a 
+href="#x1-340005.5">5.5<!--tex4ht:ref: sec:properties --></a>). These properties describe a relationship between two individuals;
+but OWL also supports another form of property which is the <span 
+class="cmti-10x-x-109">data property</span>. This
+draws a relationship between an individual and some piece of data &#8211; a string, a
+number or so on. At first sight, it looks a bit similar to an annotation such as a
+label or a comment, but it is different because we can reason about it.
+In this case, we define a new property the for the National Insurance
+number<span class="footnote-mark"><a 
+href="#fn1x9" id="fn1x9-bk"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x1-49001f1"></a>.
+<!--l. 68--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defdproperty hasNIN
+  :comment "A National Insurance Number")
+</code></pre>
+<!--l. 73--><p class="indent" >   We next define two classes: <code class="language-tawny">Human</code> and <code class="language-tawny">Person</code>. We define these as equivalent.
+They are the same set of individuals and to be a <code class="language-tawny">Person</code> is to be a <code class="language-tawny">Human</code>. We
+can look at these two as being synonyms, although there are, perhaps,
+better ways of defining synonyms using annotations which we investigate
+later.
+<!--l. 79--><p class="indent" >   The <code class="language-tawny">Person</code> class has two other additions. It uses an annotation frame, with
+two annotations &#8211; one a comment and the other a label with a language specified
+(Italian &#8211; which probably we should have added to Pizza!). Finally, <code class="language-tawny">Person</code> has a
+<code class="language-tawny">:haskey</code> frame. This states that the national insurance number uniquely identifies
+a person.
+<!--l. 85--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-equivalent
+ (defclass Human)
+
+ (defclass Person
+   :annotation (comment "Represents the set of all people.")
+   (label "Personna" "it")
+   :haskey hasNIN))
+</code></pre>
+<!--l. 96--><p class="indent" >   Next we move to another datatype property. As with object properties it is
+possible to add a domain and range to the property. In the case of domain, this
+states that the individual with a <code class="language-tawny">hasAge</code> property must be a <code class="language-tawny">Person</code>. As this is a
+datatype property the range is not an individual but a value which in this case
+must be a non-negative integer. Finally, you can have only one age, hence the
+property is functional.
+<!--l. 104--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defdproperty hasAge
+  :domain Person
+  :range :XSD_NON_NEGATIVE_INTEGER
+  :characteristic :functional)
+</code></pre>
+<!--l. 111--><p class="indent" >   Next, we define two classes, <code class="language-tawny">Man</code> and <code class="language-tawny">Woman</code> both of which are subclasses of
+<code class="language-tawny">Person</code>. These do not cover the superclasses (as there are many people who are
+neither a man nor a woman). Additionally, though, we add a new type of
+annotation; we want to annotate the statement that a <code class="language-tawny">Woman</code> is a <code class="language-tawny">Person</code>. This is
+neither a comment on <code class="language-tawny">Woman</code> nor on <code class="language-tawny">Person</code> but strictly on the relationship
+between the two &#8211; or in OWL terms we are annotating the axiom. We achieve
+this using the <code class="language-tawny">annotate</code> function.
+<!--l. 120--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint
+ (defclass Man
+   :super
+   (annotate Person
+              (comment "States that every man is a person")))
+ (defclass Woman
+   :super
+   (annotate Person
+              (comment "States that every woman in a person"))))
+</code></pre>
+<!--l. 132--><p class="indent" >   We next define a set of properties that demonstrate two new characteristics
+that is <code class="language-tawny">:symmetric</code> and <code class="language-tawny">:asymmetric</code>. The <code class="language-tawny">hasSpouse</code> property is declare symmetric
+because it can be declared in either direction: if <code class="language-tawny">a</code> is the spouse of <code class="language-tawny">b</code> then <code class="language-tawny">b</code> is also
+the spouse of <code class="language-tawny">a</code>. This is distinctly not true of <code class="language-tawny">hasChild</code> &#8211; in fact, it can never be
+true, so we declare this property asymmetric.
+<!--l. 139--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-inverse
+ (defoproperty hasParent)
+ (defoproperty hasChild
+   :characteristic :asymmetric))
+
+(defoproperty hasSpouse
+  :characteristic :symmetric
+  :disjoint hasParent)
+</code></pre>
+<!--l. 150--><p class="indent" >   The OWL Primer next defines <code class="language-tawny">hasWife</code> with the following domain and range
+constraints.
+<!--l. 153--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasWife
+  :super hasSpouse
+  :domain Man :range Woman)
+</code></pre>
+<!--l. 159--><p class="indent" >   Interestingly, in the relatively short time since the OWL primer ontology was
+first developed, this statement is now a poor reflection of the real world, so we
+make this, more limited, statement instead.
+<!--l. 163--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasWife
+  :super hasSpouse
+  :range Woman)
+</code></pre>
+<!--l. 169--><p class="indent" >   Next, we model <code class="language-tawny">hasHusband</code> slightly differently, but stating both that it and
+its inverse are <code class="language-tawny">:functional</code>. This does not require that we explictly define the
+inverse &#8211; whether it is or not, it will now be functional. Again, there are some
+limitations to this modelling; by declaring <code class="language-tawny">hasHusband</code> function we limit this
+ontology to describing only a point in time rather than a period of time. This is
+not unreasonable, since OWL lacks the ability to express &#8220;one at a time&#8221;; also,
+the ontology makes the same assumption elsewhere (with <code class="language-tawny">hasAge</code> for
+instance).
+<!--l. 179--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasHusband
+  :super hasSpouse
+  :range Man
+  :characteristic :functional
+  :inversefunctional)
+</code></pre>
+<!--l. 187--><p class="indent" >   The <code class="language-tawny">hasRelative</code> property has yet another characteristic which is reflexivity &#8211;
+if you are my relative, then I am your relative. Again, this is not and cannot be
+true of <code class="language-tawny">parentOf</code>, so we declare this <code class="language-tawny">:irreflexive</code>.
+<!--l. 192--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasRelative
+  :characteristic :reflexive)
+
+(defoproperty parentOf
+  :characteristic :irreflexive)
+</code></pre>
+<!--l. 200--><p class="indent" >   And, finally, we move onto the last characteristic which is transitivity. Your
+ancestors ancestor is your ancestor also.
+<!--l. 203--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasAncestor
+  :characteristic :transitive)
+</code></pre>
+<!--l. 208--><p class="indent" >   The next two properties are nice and simple, expressiving father and
+brotherhood.
+<!--l. 211--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasFather
+  :super hasParent)
+
+(defoproperty hasBrother)
+</code></pre>
+<!--l. 218--><p class="indent" >   We can also define subchain properties. In this case, this says that a
+property is the subproperty of two other links. So, for example, the parent of
+a parent is also the grandparent. In this case, both properties are the
+same, but we can also express more complex notions such as <code class="language-tawny">hasUncle</code>
+with is the brother of my father. A subchain can contain any number of
+properties not just the two given here. We also show two different syntaxes:
+the first is simpler, while the second encloses the subchain in <code class="language-tawny">[]</code>. The
+advantage of the second syntax is that it allows more than one subchain to be
+expressed.
+<!--l. 228--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty hasGrandparent
+  :subchain hasParent hasParent)
+
+(defoproperty hasUncle
+  :subchain [hasFather hasBrother])
+</code></pre>
+<!--l. 236--><p class="indent" >   Next we define a few more properties that we will use later on, and make
+them disjoint.
+<!--l. 239--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint
+ (defoproperty hasDaughter
+    :super hasChild)
+ (defoproperty hasSon
+    :super hasChild))
+</code></pre>
+<!--l. 247--><p class="indent" >   We now start to add more detail to some classes. <code class="language-tawny">Parent</code> is simple enough to
+define as someone with a child. Actually, we are less specific than this and just
+say &#8220;something&#8221; with a child.
+<!--l. 251--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Parent
+  :equivalent (some hasChild Person))
+</code></pre>
+<!--l. 256--><p class="indent" >   Now, we split the world of people up a bit further. The OWL Primer does
+this is in a slightly erratic way. First it defines three classes <code class="language-tawny">YoungChild</code>, <code class="language-tawny">Father</code>
+and <code class="language-tawny">Mother</code> as disjoint. This is a strange way to model things for a couple of
+reasons. Firstly, it does not define what young means but it is possible to be a
+parent at an age that most people would describe as a young child. Secondly,
+being a young child is a developmental stage, while being a father or mother
+stems from an action in the past; so while mother and child might happen to be
+disjoint, they are not naturally so; rather their superclasses should be
+declared disjoint. Consider a simpler example: elephants and cars are
+also disjoint, but if we build an ontology it would be better to say that
+animate and inanimate things are disjoint, and have elephants and cars
+inherit this property. This form of ontology building is known as ontology
+<span 
+class="cmti-10x-x-109">normalisation</span>&#x00A0;<span class="cite">[<span 
+class="cmbx-10x-x-109">?</span>]</span>.
+<!--l. 271--><p class="indent" >   The second issue is the strange asymmetry between the definitions for <code class="language-tawny">Father</code>
+and <code class="language-tawny">Mother</code>.
+<!--l. 274--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint
+ (defclass YoungChild)
+
+ (defclass Father :super
+   (and Man Parent))
+
+ (defclass Mother
+   :super Woman
+   :equivalent (and Woman Parent)))
+</code></pre>
+<!--l. 286--><p class="indent" >   Rather than replicate this, in this version of the ontology, we instead make
+<code class="language-tawny">YoungChild</code> disjoint with <code class="language-tawny">Woman</code> and <code class="language-tawny">Man</code>, make the definition of <code class="language-tawny">Father</code> and <code class="language-tawny">Mother</code>
+symmetrical and covering.
+<!--l. 290--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(as-disjoint
+ Woman Man
+ (defclass YoungChild))
+
+(as-subclasses
+ Parent
+ :cover :disjoint
+
+ (defclass Mother
+   :equivalent (and Woman Parent))
+
+ (defclass Father
+   :equivalent (and Man Parent)))
+</code></pre>
+<!--l. 306--><p class="indent" >   One thing that is often confusing with OWL is that it copes well with missing
+knowledge: we need to say the truth, and nothing but the truth; the whole truth,
+however, is not so important.
+<!--l. 310--><p class="indent" >   So consider this definition of <code class="language-tawny">Grandfather</code>; a man who is a parent. This
+definition looks strangely like the definition for <code class="language-tawny">Father</code>. The difference here is that
+we are using the <code class="language-tawny">:super</code> frame not <code class="language-tawny">:equivalent</code>; it is necessarily true that
+every <code class="language-tawny">Grandfather</code> is a parent (or, if we substitute in the definition of
+<code class="language-tawny">Parent</code>, that every <code class="language-tawny">Grandfather</code> has a <code class="language-tawny">Child</code>). But, while being a <code class="language-tawny">Man</code> with a
+<code class="language-tawny">Child</code> is sufficient to conclude they are a <code class="language-tawny">Father</code>, they may well not be a
+<code class="language-tawny">Grandfather</code>.
+<!--l. 319--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Grandfather
+  :super (and Man Parent))
+</code></pre>
+<!--l. 324--><p class="indent" >   The next definition makes use of two new pieces of semantics; we define
+<code class="language-tawny">ChildlessPerson</code> to be equivalent to <code class="language-tawny">not&#x00A0;Parent</code>. At the same time, we state
+much the same thing, but using an <code class="language-tawny">inverse</code> statement; this returns a property
+which is the inverse of the argument; in this case, the property would be
+equivalent to <code class="language-tawny">hasChild</code> but there does not need to be a named inverse for this to
+work.
+<!--l. 331--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass ChildlessPerson
+  :equivalent (and Person (not Parent))
+  :super (and Person
+                   (not
+                    (some
+                     (inverse hasParent)
+                     (thing)))))
+</code></pre>
+<!--l. 341--><p class="indent" >   Next, we wish to define a <code class="language-tawny">HappyPerson</code> as someone with only happy
+children. Because Tawny-OWL has a define before use semantics, we have to
+do this in two goes; first, with a <code class="language-tawny">defclass</code> statement, and then using
+<code class="language-tawny">refine</code>.
+<!--l. 346--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass HappyPerson)
+(refine HappyPerson
+         :equivalent (only hasChild HappyPerson))
+</code></pre>
+<!--l. 352--><p class="indent" >   This looks like an odd thing to say; this would mean that a happy
+person would have a happy child. But then the happy child would have to
+have a happy child also, and their happy child would have to have a
+happy child. There are circumstances when this kind of statement would
+be fine, but it does not work with children. Actually, though, we have
+not say you must have a happy child to be happy; that would look like
+this:
+<!--l. 360--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(refine HappyPerson
+         :equivalent (and (only hasChild HappyPerson)
+                           (some hasChild HappyPerson)))
+</code></pre>
+<!--l. 366--><p class="indent" >   Instead, we have said, if you have children, they must be happy. Or looked at
+another way, children can make you miserable, but they cannot make you
+happy<span class="footnote-mark"><a 
+href="#fn2x9" id="fn2x9-bk"><sup class="textsuperscript">2</sup></a></span><a 
+ id="x1-49002f2"></a>.
+<!--l. 371--><p class="indent" >   Next we move onto annotation properties. We have already seen the built-in
+properties, like comment and label. In Chapter&#x00A0;<a 
+href="#x1-400006">6<!--tex4ht:ref: cha:highly-patt-ontol --></a>, we used annotations to
+represent one and three letter abbreviations for the amino-acids. We do likewise
+here, and create a property called <code class="language-tawny">shortname</code> and another called <code class="language-tawny">nickname</code>. For the
+latter, we also use the <code class="language-tawny">annotator</code> function to create a new function creating
+annotations with this property; this is a fairly convienient way of using
+annotations.
+<!--l. 380--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defaproperty shortname
+  :super label-property)
+
+(defaproperty nickname
+  :super label-property)
+
+(def nick (annotator nickname))
+</code></pre>
+<!--l. 390--><p class="indent" >   Next we add some individuals &#8211; each in this case a person. We create three
+individuals. <code class="language-tawny">Mary</code> is asserted to be <code class="language-tawny">Person</code> and a <code class="language-tawny">Woman</code>, while <code class="language-tawny">MaryBrown</code> is asserted
+to be the same as <code class="language-tawny">Mary</code>. We do not know anything about <code class="language-tawny">Susan</code>.
+<!--l. 395--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defindividual Mary
+  :type Person Woman)
+
+(defindividual MaryBrown
+  :same Mary)
+
+(defindividual Susan)
+</code></pre>
+<!--l. 405--><p class="indent" >   With <code class="language-tawny">James</code> we take a slight different approach and define two labels &#8211; one
+&#8220;James&#8221; and one a specialism label which is the short name.
+<!--l. 408--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defindividual James
+  :label "James"
+  :annotation (annotation shortname "Jim"))
+</code></pre>
+<!--l. 414--><p class="indent" >   For <code class="language-tawny">William</code> we want to say a little more &#8211; we add the constraints that over
+who his wife and daughter are not.
+<!--l. 417--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defindividual William
+  :annotation (annotation shortname "Bill")
+  :fact
+  (not hasWife Mary)
+  (not hasDaughter Susan))
+</code></pre>
+<!--l. 425--><p class="indent" >   Early, we asserted that <code class="language-tawny">Father</code> is a class, but we might also want to make it
+an individual &#8211; in this case, of <code class="language-tawny">SocialRole</code>. The trick, called <span 
+class="cmti-10x-x-109">punning </span>to doing
+this in OWL is to create two entities with the same name, or IRI. We
+achieve this in Tawny-OWL by passing an IRI in place of the name; if we
+want to be able to refer to this entity later, we also need to assign it to
+variable.
+<!--l. 432--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass SocialRole)
+(def iFather
+  (individual (.getIRI Father)
+               :type SocialRole))
+</code></pre>
+<!--l. 439--><p class="indent" >   We have little positive to say about <code class="language-tawny">Jack</code> &#8211; but several negative things. He is
+not a parent nor 53 years old. However, we do use the <code class="language-tawny">nick</code> annotator
+function that we created earlier to give him the unfortunate nick name &#8220;The
+Cat&#8221;.
+<!--l. 444--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defindividual Jack
+  :annotation (nick "The Cat")
+  :type Person (not Parent)
+  :fact (not hasAge (literal 53)))
+</code></pre>
+<!--l. 451--><p class="indent" >   <code class="language-tawny">John</code> on the other hand, we have some useful things to say; in fact, we say lots
+of things about his children. We say that he at least 2 children who are parents,
+at most 4 children who are parents and exactly 3 children who are parents &#8211; all a
+bit duplicative, but it showns the range of <span 
+class="cmti-10x-x-109">cardinality </span>constraints that it is
+possible to make. In addition, we say that he has 5 children in total, so we would
+assume this means 2 who are not parents. He is not the same as <code class="language-tawny">William</code>, has a
+wife <code class="language-tawny">Mary</code> and is 51.
+<!--l. 460--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defindividual John
+  :type Father
+  (at-least 2 hasChild Parent)
+  (exactly 3 hasChild Parent)
+  (exactly 5 hasChild)
+  (at-most 4 hasChild Parent)
+  :different William
+  :fact
+  (is hasWife Mary)
+  (is hasAge 51))
+</code></pre>
+<!--l. 473--><p class="indent" >   Mostly, in OWL, classes are defined in terms of classes, but it is possible to
+define a class in terms of an individual with the <code class="language-tawny">has-value</code> constructor, in this
+case, <code class="language-tawny">JohnsChildren</code>.
+<!--l. 477--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass JohnsChildren
+  :equivalent (has-value hasParent John))
+</code></pre>
+<!--l. 482--><p class="indent" >   There is also a specialised relationship to describe tthe relationship an
+individuals of a class have with themselves using <code class="language-tawny">has-self</code>. This definition
+of <code class="language-tawny">NarcisiticPerson</code> is not the same as either <code class="language-tawny">some&#x00A0;loves&#x00A0;Person</code> nor
+<code class="language-tawny">(only&#x00A0;loves&#x00A0;Person)</code> &#8211; since this would be a person who loves a person, which
+could be themselves, but does not have to be.
+<!--l. 489--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defoproperty loves)
+
+(defclass NarcisticPerson
+  :equivalent (has-self loves))
+</code></pre>
+<!--l. 496--><p class="indent" >   Our next definition, of <code class="language-tawny">Orphan</code> makes use of an unnamed inverse of <code class="language-tawny">hasChild</code>.
+This is semantically equivalent to using <code class="language-tawny">hasParent</code>, although the named inverse
+property does not need to exist as here.
+<!--l. 500--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Dead)
+(defclass Orphan
+  :equivalent (only (inverse hasChild) Dead))
+</code></pre>
+<!--l. 506--><p class="indent" >   We touched earlier of datatype properties which describe a relationship
+between an individual and a piece of data; it is also possible to be restrictions on
+what that data can be. OWL has a large number of built-in data types,
+but it is possible to define arbitrary new ones. Tawny-OWL provides
+several syntaxes for going this &#8211; we use the long hand syntax first, to
+define <code class="language-tawny">personAge</code> which is, rather arbitrarily, an integer between 0 and
+150.
+<!--l. 514--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defdatatype personAge
+  :equivalent (min-max-inc 0 150))
+</code></pre>
+<!--l. 519--><p class="indent" >   The <code class="language-tawny">span</code> macro provides a syntactic variant of <code class="language-tawny">min-mix-inc</code> and other related
+functions. We use this to define the age of a child as between 0 and 17, while we
+define the age of an adult using <code class="language-tawny">and</code> and <code class="language-tawny">not</code>. These functions are the same
+functions we used earlier for defining logic restrictions, but they work with
+datatypes too.
+<!--l. 525--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defdatatype childAge
+  :equivalent (span &gt;=&lt; 0 17))
+
+(defdatatype adultAge
+  :equivalent (and personAge (not minorAge)))
+</code></pre>
+<!--l. 533--><p class="indent" >   We can define <code class="language-tawny">toddlerAge</code> just by describing all the possibilities as there are
+only two of them.
+<!--l. 536--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defdatatype toddlerAge
+  :equivalent (oneof 1 2))
+</code></pre>
+<!--l. 541--><p class="indent" >   Again, <code class="language-tawny">oneof</code> is overloaded and can be used either with datatype properties,
+data values (such as 1 and 2) or, as here, with individuals.
+<!--l. 545--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass MyBirthdayGuests
+  :equivalent (oneof William John Mary))
+</code></pre>
+<!--l. 550--><p class="indent" >   We define a teenage as having an age between 13 and 19. We could also have
+defined <code class="language-tawny">teenAge</code> as a datatype and then used it here. Instead of either <code class="language-tawny">min-max</code>
+or the <code class="language-tawny">span</code> syntax, here we have used the <code class="language-tawny">&#x003E;&#x003C;</code> syntax which is found in
+<code class="language-tawny">tawny.english</code>; this is the simplest syntax however some of the datatype
+functions (<code class="language-tawny">&#x003C;</code> and <code class="language-tawny">&#x003E;</code>) also have equivalents in <code class="language-tawny">clojure.core</code>; in this case we have
+explicitly excluded the <code class="language-tawny">clojure.core</code> functions, otherwise, we would have a
+nameclash.
+<!--l. 558--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Teenager
+  :super (some hasAge (&gt;&lt; 13 19)))
+</code></pre>
+<!--l. 563--><p class="indent" >   Finally, we define a class and individual.
+<!--l. 565--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(defclass Female)
+(defindividual Meg :type Female)
+</code></pre>
+<!--l. 570--><p class="indent" >   We define a <a 
+href="GCI" >http://ontogenesis.knowledgeblog.org/1288</a> or General Concept
+Inclusion, which defines a general rule relating two different class expressions.
+This allows us to draw a relationship between two unnamed classes. In this case,
+we are saying that one of <code class="language-tawny">Mary</code>, <code class="language-tawny">William</code> or <code class="language-tawny">Meg</code> is a parent with at most one
+daughter.
+<!--l. 576--><p class="indent" >   Despite the name &#8220;General&#8221;, GCIs have a relatively limited range of
+applications; most ontologies do not make use of them and can use the other
+features of OWL. But they are supported by OWL and, therefore, also supported
+by Tawny-OWL.
+<!--l. 581--><p class="noindent" >
+                                                                     
+
+                                                                     
+<pre><code class="language-tawny">(gci
+ (and Parent
+       (at-most 1 hasChild)
+       (only hasChild Female))
+ (and (oneof Mary, William, Meg) Female))
+</code></pre>
+   <h3 class="sectionHead"><span class="titlemark">8.2   </span> <a 
+ id="x1-500008.2"></a>Recap</h3>
+<!--l. 593--><p class="noindent" >In this chapter, we have described the Family ontology and with it used to
+describe every construct that the OWL language provides.
+                                                                     
+
+                                                                     
+                                                                     
+
+                                                                     
+<!--l. 1--><p class="indent" >
+                                                                     
+
+                                                                     
+   <h2 class="likechapterHead"><a 
+ id="x1-510008.2"></a>Bibliography</h2>
+   <div class="thebibliography">
+   <p class="bibitem" ><span class="biblabel">
+ [1]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="Xaranguren_Stevens_Antezana_2009"></a>Mikel  Egana&#x00A0;Aranguren,  Robert  Stevens,  and  Erick  Antezana.
+   Transforming the axiomisation of ontologies: The ontology pre-processor
+   language. <span 
+class="cmti-10x-x-109">Nature Precedings</span>, Dec 2009.
+   </p>
+   <p class="bibitem" ><span class="biblabel">
+ [2]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="Xtodo"></a>A.N. Other. <span 
+class="cmbx-10x-x-109">TODO: Need this reference</span>.
+   </p>
+   <p class="bibitem" ><span class="biblabel">
+ [3]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="Xgreycite2912"></a>Various.   The protégé; ontology editor and knowledge acquisition
+   system.       <a 
+href="http://protege.stanford.edu/" class="url" ><span 
+class="cmtt-10x-x-109">http://protege.stanford.edu/</span></a>  [Online.   last-accessed:
+   2012-10-07 18:08:04].
+</p>
+   </div>
    <div class="footnotes"><!--l. 47--><p class="indent" >     <span class="footnote-mark"><a 
 href="#fn1x3-bk" id="fn1x3"><sup class="textsuperscript">1</sup></a></span><span 
 class="cmr-9">One of the joys of ontology development is that the ontology development community is</span>
@@ -2732,7 +3394,17 @@ href="#fn1x8-bk" id="fn1x8"><sup class="textsuperscript">1</sup></a></span><span
 class="cmr-9">Many IDEs have mechanisms for running </span><code class="language-tawny">macroexpand&minus;1</code> <span 
 class="cmr-9">and printing the output</span>
 <span 
-class="cmr-9">nicely.</span>                                                                                                             </div>
+class="cmr-9">nicely.</span>
+<!--l. 66--><p class="indent" >      <span class="footnote-mark"><a 
+href="#fn1x9-bk" id="fn1x9"><sup class="textsuperscript">1</sup></a></span><span 
+class="cmr-9">The OWL Primer from which I borrowed this ontology has a data property called</span>
+<span 
+class="cmr-9">hasSSN or social security number. But I don&#8217;t have one of these which reflects the dangers of</span>
+<span 
+class="cmr-9">over-generalisation in ontology building</span>
+<!--l. 369--><p class="indent" >      <span class="footnote-mark"><a 
+href="#fn2x9-bk" id="fn2x9"><sup class="textsuperscript">2</sup></a></span><span 
+class="cmr-9">I never claimed that this ontology was a good reflection of the real world</span>          </div>
  
 </body></html> 
 
