@@ -527,7 +527,7 @@ defining logic restrictions, but they work with datatypes too.
   :equivalent (span >=< 0 17))
 
 (defdatatype adultAge
-  :equivalent (and personAge (not minorAge)))
+  :equivalent (and personAge (not childAge)))
 \end{tawny}
 
 We can define |toddlerAge| just by describing all the possibilities as
@@ -567,7 +567,7 @@ Finally, we define a class and individual.
 (defindividual Meg :type Female)
 \end{tawny}
 
-We define a \href{GCI}{http://ontogenesis.knowledgeblog.org/1288} or
+We define a \href{http://ontogenesis.knowledgeblog.org/1288}{GCI} or
 General Concept Inclusion, which defines a general rule relating two
 different class expressions. This allows us to draw a relationship
 between two unnamed classes. In this case, we are saying that one of
