@@ -11,8 +11,6 @@ install:
   - export
   - emacs -version
   - export EMACS=~/.evm/bin/emacs
-  - cask emacs -version
-  - cask
   - sudo apt-get install texlive-latex-extra tex4ht
 env:
   - EVM_EMACS=emacs-25.3-travis
