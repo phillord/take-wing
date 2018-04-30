@@ -29,7 +29,7 @@ test: gen-src
 
 PDFLATEX=pdflatex -interaction=nonstopmode
 
-pdf:
+pdf: gen-src
 	cd latex;$(PDFLATEX) take_wing.tex;$(PDFLATEX) take_wing.tex
 
 html: gen-html
@@ -48,6 +48,7 @@ clean:
 		-not -name "cf.cfg" -not -name "*css" -not -name "*js" \
 		-not -name "Makefile" -not -name ".dir-locals.el" \
 		-not -name "*org" -not -name "*sty" \
+		-not -name "*.png" \
 		-print -exec rm {} \;
 	- rm latex/take_wing.css
 	- rm latex/_region_*
